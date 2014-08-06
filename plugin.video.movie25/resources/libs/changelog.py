@@ -24,7 +24,12 @@ def showChangeLog(env):
         html = main.OPENURL(url,cookie='github')
     else:
         if selfAddon.getSetting("autosource") == "false":
-	    url = 'https://github.com/mash2k3/AutoUpdate/commits/master'
+            if selfAddon.getSetting("updateoption") == "gitupdate1":
+                url = 'https://github.com/mashupdater/gitupdate1/commits/master'
+            elif selfAddon.getSetting("updateoption") == "gitupdate2":
+                url = 'https://github.com/mashupdater/gitupdate2/commits/master'
+            else:
+                url = 'https://github.com/mash2k3/AutoUpdate/commits/master'
 	else:
 	    import time
 	    url='https://bitbucket.org/!api/2.0/repositories/mash2k3/bitautoupdate1/commits?'+ str(time.time())

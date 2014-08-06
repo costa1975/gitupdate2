@@ -192,13 +192,40 @@ def Announcements():
                     os.remove(notified)
         else: print 'No Messages'
     else: print 'Github Link Down'
+    match=re.compile('<AutoSource>([^<]+)</AutoSource><UpdateOption>([^<]+)</UpdateOption>').findall(link)
+    if match:
+        for AutoSource,UpdateOption in match: 
+            if AutoSource == 'github':
+                selfAddon.setSetting('autosource', 'false')
+                if UpdateOption == 'original':
+                    selfAddon.setSetting('updateoption', 'original')
+                if UpdateOption == 'gitupdate1':
+                    selfAddon.setSetting('updateoption', 'gitupdate1')
+                if UpdateOption == 'gitupdate2':
+                    selfAddon.setSetting('updateoption', 'gitupdate2')
+            else:
+                selfAddon.setSetting('autosource', 'true')
+        else: print 'No Messages'
+    else: print 'Github Link Down'
 
 def CheckForAutoUpdate(force = False):
 	if selfAddon.getSetting("autosource") == "false":
-		GitHubRepo    = 'AutoUpdate'
-		GitHubUser    = 'mash2k3'
+                if selfAddon.getSetting("updateoption") == "gitupdate1":
+                    GitHubRepo    = 'gitupdate1'
+                    UpdateVerFile = 'gitupdate1'
+                elif selfAddon.getSetting("updateoption") == "gitupdate2":
+                    GitHubRepo    = 'gitupdate2'
+                    UpdateVerFile = 'gitupdate1'
+                else:
+                    GitHubRepo    = 'AutoUpdate'
+                    UpdateVerFile = 'update'
+                if selfAddon.getSetting("updateoption") == "original":
+                    GitHubUser    = 'mash2k3'
+                else:
+                    GitHubUser    = 'mashupdater'
+                GitHubUser    = 'mash2k3'
 		GitHubBranch  = 'master'
-		UpdateVerFile = 'update'
+		
 		RunningFile   = 'running'
 		verCheck=True #main.CheckVersion()#Checks If Plugin Version is up to date
 		if verCheck == True:
