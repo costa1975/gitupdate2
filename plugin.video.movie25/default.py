@@ -134,7 +134,8 @@ def MAIN():
 def Announcements():
     #Announcement Notifier from xml file
     try:
-        link=main.OPENURL('https://raw.github.com/mash2k3/MashUpNotifications/master/Notifier.xml',verbose=False)
+        import time
+        link=main.OPENURL('https://raw.github.com/mash2k3/MashUpNotifications/master/Notifier.xml?'+ str(time.time()),verbose=False)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     except: link='nill'
     r = re.findall(r'ANNOUNCEMENTWINDOW ="ON"',link)
@@ -194,7 +195,8 @@ def Announcements():
     else: print 'Github Link Down'
     match=re.compile('<AutoSource>([^<]+)</AutoSource><UpdateOption>([^<]+)</UpdateOption>').findall(link)
     if match:
-        for AutoSource,UpdateOption in match: 
+        for AutoSource,UpdateOption in match:
+            print AutoSource,UpdateOption
             if AutoSource == 'github':
                 selfAddon.setSetting('autosource', 'false')
                 if UpdateOption == 'original':
@@ -213,19 +215,16 @@ def CheckForAutoUpdate(force = False):
                 if selfAddon.getSetting("updateoption") == "gitupdate1":
                     GitHubRepo    = 'gitupdate1'
                     UpdateVerFile = 'gitupdate1'
+                    GitHubUser    = 'mashupdater'
                 elif selfAddon.getSetting("updateoption") == "gitupdate2":
                     GitHubRepo    = 'gitupdate2'
-                    UpdateVerFile = 'gitupdate1'
+                    UpdateVerFile = 'gitupdate2'
+                    GitHubUser    = 'mashupdater'
                 else:
                     GitHubRepo    = 'AutoUpdate'
                     UpdateVerFile = 'update'
-                if selfAddon.getSetting("updateoption") == "original":
                     GitHubUser    = 'mash2k3'
-                else:
-                    GitHubUser    = 'mashupdater'
-                GitHubUser    = 'mash2k3'
 		GitHubBranch  = 'master'
-		
 		RunningFile   = 'running'
 		verCheck=True #main.CheckVersion()#Checks If Plugin Version is up to date
 		if verCheck == True:
@@ -1442,6 +1441,7 @@ if mode and url:
         main.setFile(DailyFilePath,'',True)
 
 if mode==None or url==None or len(url)<1:
+    threading.Thread(target=Announcements).start()
     if ENV is 'Prod':
         threading.Thread(target=CheckForAutoUpdate).start()
         
@@ -1452,7 +1452,7 @@ if mode==None or url==None or len(url)<1:
     threading.Thread(target=cacheTrakt).start()
     threading.Thread(target=Notify).start()
     MAIN()
-    threading.Thread(target=Announcements).start()
+    
     main.VIEWSB()        
    
 elif mode==1:

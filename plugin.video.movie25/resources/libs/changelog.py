@@ -38,8 +38,7 @@ def showChangeLog(env):
     
     
     if selfAddon.getSetting("autosource") == "false":
-        commits=re.findall('(?sim)class="message" data-pjax="true" title="([^"]+?)".+?datetime="([^"]+?)"',html)
-        for changes,date in commits:
+        for changes,date in re.findall('(?sim)class="message" data-pjax="true" title="([^"]+?)".+?datetime="([^"]+?)"',html):
             shift = int(re.sub('.*([+-])(\d+):(\d+)$',tosec,date))
             try:
                 date = re.sub('([+-])(\d+):(\d+)$','',date)
