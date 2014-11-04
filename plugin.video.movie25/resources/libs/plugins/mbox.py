@@ -78,11 +78,11 @@ def LIST(type):
         if data['active'] == '1':
             thumb=str(data["poster"]).replace("\/'",'/')
             if 'movies'in type or '25movies'in type:
-                main.addDown4(str(data["title"].encode('utf-8'))+' ('+str(data["year"])+')',apibase+'/api/serials/get_movie_data?id='+str(data["id"]),279,thumb,'','','','','')
+                main.addDown4(main.unescapes(str(data["title"].encode('utf-8')))+' ('+str(data["year"])+')',apibase+'/api/serials/get_movie_data?id='+str(data["id"]),279,thumb,'','','','','')
             elif 'music' in type:
-                main.addDirMs(str(data["title"].encode('utf-8')),apibase+'/api/serials/get_artist_data/?id='+str(data["id"])+'&type=1',302,thumb,'','','','','')
+                main.addDirMs(main.unescapes(str(data["title"].encode('utf-8'))),apibase+'/api/serials/get_artist_data/?id='+str(data["id"])+'&type=1',302,thumb,'','','','','')
             else:
-                main.addDirT(str(data["title"].encode('utf-8')),data["id"]+'xoxe'+data["seasons"],280,thumb,'','','','','')
+                main.addDirT(main.unescapes(str(data["title"].encode('utf-8'))),data["id"]+'xoxe'+data["seasons"],280,thumb,'','','','','')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Content Cached :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -141,6 +141,13 @@ def EPISODES(mname,murl):
 def superSearch(encode,type):
     try:
         returnList=[]
+        epi = re.search('(?i)s(\d+?)e(\d+?)$',encode)
+        if epi:
+            epistring = encode.rpartition('%20')[2].upper()
+            e = int(epi.group(2))
+            s = int(epi.group(1))
+            encodewithoutepi = urllib.quote(re.sub('(?i)(\ss(\d+)e(\d+))|(Season(.+?)Episode)|(\d+)x(\d+)','',urllib.unquote(encode)).strip())
+            encode=encodewithoutepi
         encode = encode.replace('%20',' ')
         try: 
             lib=os.path.join(datapath, 'MBox.zip')
@@ -162,7 +169,13 @@ def superSearch(encode,type):
                 else:
                     name = str(data["title"].encode('utf-8'))
                     if re.search('(?i)'+encode,name):
-                        returnList.append((name,prettyName,data["id"]+'xoxe'+data["seasons"],thumb,280,True))
+                        if epi:
+                            url = apibase+'/api/serials/e?h='+str(data["id"])+'&u='+str(s)+'&y='+str(e)
+                            link = main.OPENURL(url,ua=useragent,verbose=False)
+                            if link != '[]':
+                                returnList.append((name+' '+epistring,prettyName,url,thumb,279,False))
+                        else:
+                            returnList.append((name,prettyName,data["id"]+'xoxe'+data["seasons"],thumb,280,True))
         return returnList
     except: return []
 
@@ -186,6 +199,11 @@ def PLAY(mname,murl,thumb):
     stream_url = resolveMBLink(murl)
     r = re.findall('(.+?)\sSeason\s(\d+)\sEpisode\s(\d+)',mname,re.I)
     if r:
+        s = r[0][1]
+        e = r[0][2]
+        if(len(s)==1): s = "0" + s
+        if(len(e)==1): e = "0" + e
+        mname = r[0][0] + " S" + s + "E" + e
         infoLabels =main.GETMETAEpiT(mname,'','')
         video_type='episode'
         season=infoLabels['season']

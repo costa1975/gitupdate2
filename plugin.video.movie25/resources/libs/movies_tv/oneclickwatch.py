@@ -13,14 +13,14 @@ def LISTSP(murl):
         urllist=main.batchOPENURL(('http://oneclickwatch.org/category/movies/','http://oneclickwatch.org/category/movies/page/2/','http://oneclickwatch.org/category/movies/page/3/','http://oneclickwatch.org/category/movies/page/4/','http://oneclickwatch.org/category/movies/page/5/','http://oneclickwatch.org/category/movies/page/6/','http://oneclickwatch.org/category/movies/page/7/','http://oneclickwatch.org/category/movies/page/8/','http://oneclickwatch.org/category/movies/page/9/','http://oneclickwatch.org/category/movies/page/10/'))
         if urllist:
                 urllist=main.unescapes(urllist)
-                match=re.compile('<a href="([^<]+)" title=".+?".+? src="(.+?)" .+?/><br />(.+?)<br />').findall(urllist)
+                match=re.compile('title=".+?">([^<]+)</a></h2>.+?href=".+?<a href="(.+?)" .+?href=".+?>.+?src="(.+?)"').findall(urllist)
                 dialogWait = xbmcgui.DialogProgress()
                 ret = dialogWait.create('Please wait until Movie list is cached.')
                 totalLinks = len(match)
                 loadedLinks = 0
                 remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
                 dialogWait.update(0,'[B]Will load instantly from now on[/B]',remaining_display)
-                for url,thumb,name in match:
+                for name,url,thumb in match:
                         name=name.replace('<strong>','').replace('</strong>','')
                         main.addPlayM(name,url,135,thumb,'','','','','')
                         loadedLinks = loadedLinks + 1
@@ -75,7 +75,8 @@ def PLAYOCW(mname,murl):
         xbmc.executebuiltin("XBMC.Notification(Please Wait!,Collecting Hosts,5000)")
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        match=re.compile('<p><a href="([^"]+?)".*?>().+?</a></p>').findall(link)
+        
+        match=re.compile('<a href="([^"]+?)" rel="nofollow">([^>]+?)</a>').findall(link)
         if len(match)==0:                
             match=re.compile('<a href="(.+?)">(.+?)</a><br />').findall(link)
         desc=re.compile('<.+? />Plot:(.+?)<.+? />').findall(link)
@@ -143,7 +144,7 @@ def VIDEOLINKST3(mname,murl):
         xbmc.executebuiltin("XBMC.Notification(Please Wait!,Collecting Hosts,5000)")
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        match=re.compile('<p><a href="([^"]+?)".*?>().+?</a></p>').findall(link)
+        match=re.compile('<a href="([^"]+?)" rel="nofollow">([^>]+?)</a>').findall(link)
         if len(match)==0:                
             match=re.compile('<a href="(.+?)">(.+?)</a><br />').findall(link)
         desc=re.compile('<.+? />Plot:(.+?)<.+? />').findall(link)

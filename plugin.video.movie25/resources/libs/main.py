@@ -223,6 +223,30 @@ def ClearDir(dir, clearNested = False):
         else:
             try:os.unlink(file_path)
             except Exception, e: print str(e)
+            
+def CleanTitle(mname):
+    title = mname.strip()
+    quality = re.search('(?i)(1080p?)',mname)
+    if not quality: quality = re.search('(?i)(720p?)',mname)
+    if not quality: quality = re.search('(?i)(480p?)',mname)
+    if quality:
+        quality = quality.group(1).lower()
+        if not re.search('p$',quality): quality += 'p'
+    else:
+        tag = re.search('(?i)(dvdrip|pdtv|xvid|bluray|hdtv|\scam(?![a-z])|r6|r5|\sts|webrip|bdrip|brrip)',mname)
+        if tag:
+            quality = tag.group(1).strip()
+        else: quality = ''
+    epi = re.search('(?i)s(\d+)e(\d+?)',mname)
+    if epi:
+        title = re.findall('(?i)(.+?s\d+e\d+)',mname)[0].strip()
+        if quality:
+            title = title + ' [COLOR red]' + quality + '[/COLOR]'
+    else:
+        movie = re.search('(?i)(.+?\s\d{4})',mname.replace('(','').replace(')',''))
+        if movie:
+            title = movie.group(1).strip() + ' [COLOR red]' + quality + '[/COLOR]'
+    return title
 
 def removeFile(file):
     try: 
@@ -771,10 +795,8 @@ def resolveDownloadLinks(url):
     elif re.search('movie25',url):
         from resources.libs import movie25
         url = movie25.resolveM25URL(url)
-    elif url.startswith('ice'):
+    elif '</t><sec>' in url:
         from resources.libs.movies_tv import icefilms
-        url = url.lstrip('ice')
-        url = eval(urllib.unquote(url))
         url = icefilms.resolveIceLink(url)
     elif 'mobapps.cc' in url or 'vk.com' in url:
         from resources.libs.plugins import mbox
@@ -849,21 +871,9 @@ def Download(url, dest,originalName, displayname=False):
     return True
 
 def QuietDownload(url, dest,originalName, videoname):
-    #quote parameters passed to download script     
-    q_url = urllib.quote_plus(url)
-    q_dest = urllib.quote_plus(dest)
-    q_vidname = urllib.quote_plus(videoname)
-    q_vidOname = urllib.quote_plus(originalName)
-    
-    #Create possible values for notification
-    notifyValues = [2, 5, 10, 20, 25, 50, 100]
+    import download
+    download.download(url, dest,title=originalName)
 
-    # get notify value from settings
-    NotifyPercent=int(selfAddon.getSetting('notify-percent'))
-    
-    script = os.path.join( mashpath, 'resources', 'libs', "DownloadInBackground.py" )
-    xbmc.executebuiltin( "RunScript(%s, %s, %s, %s, %s, %s)" % ( script, q_url, q_dest, q_vidname,q_vidOname, str(notifyValues[NotifyPercent]) ) )
-    return True
  
 def _pbhook(numblocks, blocksize, filesize, dp, start_time):
         try: 
@@ -1139,25 +1149,26 @@ checkGA()
 ################################################################################ Types of Directories ##########################################################################################################
 
 def addDirX(name,url,mode,iconimage,plot='',fanart='',dur=0,genre='',year='',imdb='',tmdb='',isFolder=True,searchMeta=False,addToFavs=True,
-            id=None,fav_t='',fav_addon_t='',fav_sub_t='',metaType='Movies',menuItemPos=None,menuItems=None,down=False,replaceItems=True):
-    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&plot="+urllib.quote_plus(plot)+"&fanart="+urllib.quote_plus(fanart)+"&genre="+urllib.quote_plus(genre)
-    if 'http://api.video.mail.ru/videos/embed/' in url or mode==364:
-        name=name.decode('windows-1251')
-        plot=plot.decode('windows-1251')
+            id=None,fav_t='',fav_addon_t='',fav_sub_t='',metaType='Movies',menuItemPos=None,menuItems=None,down=False,replaceItems=True,index=False):
+    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&plot="+urllib.quote_plus(plot)+"&fanart="+urllib.quote_plus(fanart)+"&genre="+urllib.quote_plus(genre)+"&index="+str(index)
     if searchMeta:
         if metaType == 'TV':
             infoLabels = GETMETAEpiT(name,iconimage,plot)
         else:
             infoLabels = GETMETAT(name,genre,fanart,iconimage,plot,imdb,tmdb)
         iconimage = infoLabels['cover_url']
+        if iconimage.startswith('w342') or iconimage.startswith('w92') or iconimage.startswith('w500') or iconimage.startswith('original') or iconimage.startswith('w154') or iconimage.startswith('w185'):
+            iconimage = 'http://image.tmdb.org/t/p/' + iconimage
         fanart = infoLabels['backdrop_url']
+        if fanart.startswith('original') or fanart.startswith('w1280') or fanart.startswith('w780') or fanart.startswith('w300'):
+            fanart = 'http://image.tmdb.org/t/p/' + fanart
         plot = infoLabels['plot']
     if not fanart: fanart=fanartimage
     if not iconimage: iconimage=art+'/vidicon.png'
     if not plot: plot='Sorry description not available'
     plot=plot.replace(",",'.')
     Commands = []
-    if addToFavs: 
+    if selfAddon.getSetting("ctx_fav") != "false" and addToFavs: 
         fav = getFav()
         fname = name.replace(",",'')
         if isFolder:
@@ -1173,7 +1184,6 @@ def addDirX(name,url,mode,iconimage,plot='',fanart='',dur=0,genre='',year='',imd
             Commands.append(('Download with jDownloader', 'XBMC.RunPlugin(%s?mode=776&name=%s&url=%s)' % (sys.argv[0], sysname, sysurl)))
         else:
             Commands.append(('Copy to Clipboard', 'XBMC.RunPlugin(%s?mode=776&name=%s&url=%s)' % (sys.argv[0], sysname, sysurl)))
-
   
     if searchMeta:
         Commands.append(('[B]Super Search [COLOR=FF67cc33]Me[/COLOR][/B]','XBMC.Container.Update(%s?mode=21&name=%s&url=%s)'% (sys.argv[0], urllib.quote_plus(name),'###')))
@@ -1223,8 +1233,8 @@ def addDirX(name,url,mode,iconimage,plot='',fanart='',dur=0,genre='',year='',imd
     liz.setProperty('fanart_image', fanart)
     return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=isFolder)
 
-def addDirT(name,url,mode,iconimage,plot,fanart,dur,genre,year):
-    return addDirX(name,url,mode,iconimage,plot,fanart,dur,genre,year,fav_t='TV',fav_addon_t='TV Show',fav_sub_t='Shows')
+def addDirT(name,url,mode,iconimage,plot,fanart,dur,genre,year,index=False):
+    return addDirX(name,url,mode,iconimage,plot,fanart,dur,genre,year,fav_t='TV',fav_addon_t='TV Show',fav_sub_t='Shows',index=index)
 
 def addPlayT(name,url,mode,iconimage,plot,fanart,dur,genre,year):
     return addDirX(name,url,mode,iconimage,plot,fanart,dur,genre,year,isFolder=False,fav_t='TV',fav_addon_t='TV Show',fav_sub_t='Shows')
@@ -1315,11 +1325,11 @@ def addLink(name,url,iconimage):
     liz.setProperty('fanart_image', fanartimage)
     return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
 
-def addDir(name,url,mode,iconimage,plot=''):
-    return addDirX(name,url,mode,iconimage,plot,addToFavs=0,replaceItems=False)
+def addDir(name,url,mode,iconimage,plot='',fanart='',index=False):
+    return addDirX(name,url,mode,iconimage,plot,fanart,addToFavs=0,replaceItems=False,index=index)
 
-def addDirHome(name,url,mode,iconimage):
-    return addDirX(name,url,mode,iconimage,addToFavs=0)
+def addDirHome(name,url,mode,iconimage,index=False):
+    return addDirX(name,url,mode,iconimage,addToFavs=0,index=index)
 
 def addDirFIX(name,url,mode,iconimage,location,path):
     contextMenuItems = []

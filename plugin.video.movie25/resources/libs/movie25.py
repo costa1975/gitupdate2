@@ -10,7 +10,7 @@ art = main.art
 MainUrl='http://www.movie25.so'
 prettyName='Movie25'
 
-def LISTMOVIES(murl):
+def LISTMOVIES(murl,index=False):
     link=main.OPENURL(murl)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     match = re.findall('movie_pic"><a href="([^"]+)"  target=".+?<img src="(.+?)".+?target="_self">([^<]+)</a>.+?>([^<]+)</a>.+?<br/>Views: <span>(.+?)</span>.+?(.+?)votes.*?<li class="current-rating" style="width:(\d+?)px',link)
@@ -24,7 +24,10 @@ def LISTMOVIES(murl):
     for url,thumb,name,genre,views,votes,rating in match:
         votes=votes.replace('(','')
         name=name.replace('-','').replace('&','').replace('acute;','').strip()
-        main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',MainUrl+url,3,thumb,genre,'')
+        if index == 'True':
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',MainUrl+url,21,thumb,genre,'')
+        else:
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',MainUrl+url,3,thumb,genre,'')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -38,15 +41,15 @@ def LISTMOVIES(murl):
     paginate=re.compile('</a><a href=\'([^<]+)\'>Next</a>').findall(link)
     if paginate:
 #                 main.addDir('[COLOR red]Home[/COLOR]','',2000,art+'/home.png')
-        main.addDir('[COLOR red]Enter Page #[/COLOR]',murl,207,art+'/gotopage.png')
+        main.addDir('[COLOR red]Enter Page #[/COLOR]',murl,207,art+'/gotopage.png',index=index)
         xurl=MainUrl+paginate[0]
         r = re.findall('>Next</a><a href=\'/.+?/(\d+)\'>Last</a>',link)
         pg= re.findall('/.+?/(\d+)',paginate[0])
         pg=int(pg[0])-1
         if r:
-            main.addDir('[COLOR blue]Page '+ str(pg)+' of '+r[0]+'[/COLOR]',xurl,1,art+'/next2.png')
+            main.addDir('[COLOR blue]Page '+ str(pg)+' of '+r[0]+'[/COLOR]',xurl,1,art+'/next2.png',index=index)
         else:
-            main.addDir('[COLOR blue]Page '+ str(pg)+'[/COLOR]',xurl,1,art+'/next2.png')
+            main.addDir('[COLOR blue]Page '+ str(pg)+'[/COLOR]',xurl,1,art+'/next2.png',index=index)
     
     xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
     main.VIEWS()
@@ -76,20 +79,20 @@ def UFCMOVIE25():
     main.addDir('[COLOR blue]Page 2[/COLOR]','http://www.movie25.so/search.php?page=2&key=ufc',9,art+'/next2.png')
     main.GA("UFC","UFC_Movie25-List")
 
-def Searchhistory():
+def Searchhistory(index=False):
     seapath=os.path.join(main.datapath,'Search')
     SeaFile=os.path.join(seapath,'SearchHistory25')
     if not os.path.exists(SeaFile):
-        SEARCH()
+        SEARCH(index=index)
     else:
-        main.addDir('Search','###',4,art+'/search.png')
+        main.addDir('Search','###',4,art+'/search.png',index=index)
         main.addDir('Clear History',SeaFile,128,art+'/cleahis.png')
         thumb=art+'/link.png'
         searchis=re.compile('search="(.+?)",').findall(open(SeaFile,'r').read())
         for seahis in reversed(searchis):
             url=seahis
             seahis=seahis.replace('%20',' ')
-            main.addDir(seahis,url,4,thumb)
+            main.addDir(seahis,url,4,thumb,index=index)
             
 def superSearch(encode,type):
     try:
@@ -105,7 +108,7 @@ def superSearch(encode,type):
         return returnList
     except: return []
 
-def SEARCH(murl = ''):
+def SEARCH(murl = '',index=False):
     encode = main.updateSearchFile(murl,'Movies')
     if not encode: return False   
     surl=MainUrl+'/search.php?key='+encode+'&submit='
@@ -122,7 +125,10 @@ def SEARCH(murl = ''):
     for url,thumb,name,genre,views,votes,rating in match:
         name=name.replace('-','').replace('&','').replace('acute;','')
         furl= MainUrl+url
-        main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,3,thumb,genre,'')
+        if index == 'True':
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,21,thumb,genre,'')
+        else:
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,3,thumb,genre,'')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -134,26 +140,26 @@ def SEARCH(murl = ''):
     if exist:
         r = re.findall(""">Next</a><a href='search.php.?page=([^<]+)&key=.+?'>Last</a>""",link)
         if r:
-            main.addDir('[COLOR blue]Page 1 of '+r[0]+'[/COLOR]','http://www.movie25.so/search.php?page=2&key='+encode,9,art+'/next2.png')
+            main.addDir('[COLOR blue]Page 1 of '+r[0]+'[/COLOR]','http://www.movie25.so/search.php?page=2&key='+encode,9,art+'/next2.png',index=index)
         else:
-            main.addDir('[COLOR blue]Page 1[/COLOR]','http://www.movie25.so/search.php?page=2&key='+encode,9,art+'/next2.png')
+            main.addDir('[COLOR blue]Page 1[/COLOR]','http://www.movie25.so/search.php?page=2&key='+encode,9,art+'/next2.png',index=index)
     xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
     main.GA("None","Movie25-Search")
 
 
-def ENTYEAR():
+def ENTYEAR(index=False):
     dialog = xbmcgui.Dialog()
     d = dialog.numeric(0, 'Enter Year')
     if d:
         encode=urllib.quote(d)
         if encode < '2014' and encode > '1900':
             surl='http://www.movie25.so/search.php?year='+encode+'/'
-            YEARB(surl)
+            YEARB(surl,index=index)
         else:
             dialog = xbmcgui.Dialog()
             ret = dialog.ok('Wrong Entry', 'Must enter year in four digit format like 1999','Enrty must be between 1900 and 2014')
         
-def GotoPage(url):
+def GotoPage(url,index=False):
     link=main.OPENURL(url)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     r = re.findall('>Next</a><a href=\'/.+?/(\d+)\'>Last</a>',link)
@@ -165,7 +171,7 @@ def GotoPage(url):
         if int(d) <= pagelimit:
             encode=urllib.quote(d)
             surl=MainUrl+x[0]+'/'+encode
-            LISTMOVIES(surl)
+            LISTMOVIES(surl,index=index)
         else:
             dialog = xbmcgui.Dialog()
             ret = dialog.ok('Wrong Entry', 'The page number you entered does not exist.',' This sections page limit is '+str(pagelimit) )
@@ -173,7 +179,7 @@ def GotoPage(url):
         xbmcplugin.endOfDirectory(int(sys.argv[1]), False, False)
         return False
 
-def GotoPageB(url):
+def GotoPageB(url,index=False):
     link=main.OPENURL(url)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     r = re.findall('>Next</a><a href=\'search.php.?page=(.+?)&year=.+?\'>Last</a>',link)
@@ -187,7 +193,7 @@ def GotoPageB(url):
             url  = url.split('year=')
             url  = url[0].split('page=')
             surl=url[0]+'page='+encode+'&year='+year[1]
-            NEXTPAGE(surl)
+            NEXTPAGE(surl,index=index)
         else:
             dialog = xbmcgui.Dialog()
             ret = dialog.ok('Wrong Entry', 'The page number you entered does not exist.',' This sections page limit is '+str(pagelimit) )
@@ -195,7 +201,7 @@ def GotoPageB(url):
         xbmcplugin.endOfDirectory(int(sys.argv[1]), False, False)
         return False
 
-def YEARB(murl):
+def YEARB(murl,index=False):
     link=main.OPENURL(murl)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     match=re.compile('<div class="movie_pic"><a href="(.+?)" target=".+?">    <img src="(.+?)" width=".+?" height=".+?" />.+?<a href=".+?" target=".+?">(.+?)</a></h1><div class=".+?">Genre:  <a href=".+?" target=\'.+?\'>(.+?)</a>.+?Release:.+?<br/>Views: <span>(.+?)</span>.+?id=RateCount_.+?>(.+?)</span> votes.*?<li class="current-rating" style="width:(\d+?)px').findall(link)
@@ -208,7 +214,10 @@ def YEARB(murl):
     for url,thumb,name,genre,views,votes,rating in match:
         name=name.replace('-','').replace('&','').replace('acute;','')
         furl= 'http://movie25.com/'+url
-        main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,3,thumb,genre,'')
+        if index == 'True':
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,21,thumb,genre,'')
+        else:
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,3,thumb,genre,'')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -219,15 +228,15 @@ def YEARB(murl):
     ye = murl[38:45]
     r = re.findall("Next</a><a href='search.php.?page=([^<]+)&year=.+?'>Last</a>",link)
     if r:
-        main.addDir('[COLOR red]Enter Page #[/COLOR]',murl,208,art+'/gotopage.png')
-        main.addDir('[COLOR blue]Page 1 of '+r[0]+'[/COLOR]','http://www.movie25.so/search.php?page=2&year='+str(ye),9,art+'/next2.png')    
+        main.addDir('[COLOR red]Enter Page #[/COLOR]',murl,208,art+'/gotopage.png',index=index)
+        main.addDir('[COLOR blue]Page 1 of '+r[0]+'[/COLOR]','http://www.movie25.so/search.php?page=2&year='+str(ye),9,art+'/next2.png',index=index)    
     else:
-        main.addDir('[COLOR blue]Page 1[/COLOR]','http://www.movie25.so/search.php?page=2&year='+str(ye),9,art+'/next2.png')
+        main.addDir('[COLOR blue]Page 1[/COLOR]','http://www.movie25.so/search.php?page=2&year='+str(ye),9,art+'/next2.png',index=index)
     
     xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
     main.VIEWS()
         
-def NEXTPAGE(murl):
+def NEXTPAGE(murl,index=False):
     link=main.OPENURL(murl)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     match=re.compile('<div class="movie_pic"><a href="(.+?)" target=".+?">    <img src="(.+?)" width=".+?" height=".+?" />.+?<a href=".+?" target=".+?">(.+?)</a></h1><div class=".+?">Genre:  <a href=".+?" target=\'.+?\'>(.+?)</a>.+?Release:.+?<br/>Views: <span>(.+?)</span>.+?id=RateCount_.+?>(.+?)</span> votes.*?<li class="current-rating" style="width:(\d+?)px').findall(link)
@@ -240,7 +249,10 @@ def NEXTPAGE(murl):
     for url,thumb,name,genre,views,votes,rating in match:
         name=name.replace('-','').replace('&','').replace('acute;','')
         furl= MainUrl+url
-        main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,3,thumb,genre,'')
+        if index == 'True':
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,21,thumb,genre,'')
+        else:
+            main.addInfo(name+'[COLOR blue] Views: '+views+'[/COLOR] [COLOR red]Votes: '+votes+'[/COLOR] [COLOR green]Rating: '+rating+'/100[/COLOR]',furl,3,thumb,genre,'')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -259,10 +271,10 @@ def NEXTPAGE(murl):
 #                 main.addDir('[COLOR red]Home[/COLOR]','',0,art+'/home.png')
         r = re.findall("Next</a><a href='search.php.?page=([^<]+)&year=.+?'>Last</a>",link)
         if r:
-            main.addDir('[COLOR red]Enter Page #[/COLOR]',murl,208,art+'/gotopage.png')
-            main.addDir('[COLOR blue]Page '+str(page)+' of '+r[0]+'[/COLOR]',jurl,9,art+'/next2.png')
+            main.addDir('[COLOR red]Enter Page #[/COLOR]',murl,208,art+'/gotopage.png',index=index)
+            main.addDir('[COLOR blue]Page '+str(page)+' of '+r[0]+'[/COLOR]',jurl,9,art+'/next2.png',index=index)
         else:
-            main.addDir('[COLOR blue]Page '+str(page)+'[/COLOR]',jurl,9,art+'/next2.png')
+            main.addDir('[COLOR blue]Page '+str(page)+'[/COLOR]',jurl,9,art+'/next2.png',index=index)
         xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
         main.VIEWS()                
     else:
@@ -274,9 +286,9 @@ def NEXTPAGE(murl):
 #                 main.addDir('[COLOR red]Home[/COLOR]','',0,art+'/home.png')
         r = re.findall(""">Next</a><a href='search.php.?page=([^<]+)&key=.+?'>Last</a>""",link)
         if r:
-            main.addDir('[COLOR blue]Page '+str(page)+' of '+r[0]+'[/COLOR]',jurl,9,art+'/next2.png')
+            main.addDir('[COLOR blue]Page '+str(page)+' of '+r[0]+'[/COLOR]',jurl,9,art+'/next2.png',index=index)
         else:
-            main.addDir('[COLOR blue]Page '+str(page)+'[/COLOR]',jurl,9,art+'/next2.png')
+            main.addDir('[COLOR blue]Page '+str(page)+'[/COLOR]',jurl,9,art+'/next2.png',index=index)
 
 def VIDEOLINKS(name,url):
     link=main.OPENURL(url)

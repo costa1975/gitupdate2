@@ -76,25 +76,25 @@ def INDEX(url):
         name = name+' [COLOR red]'+re.sub('(?sim)^(TV-|Movies-)(.*)','\\2',tag)+'[/COLOR]'
         if SearchType == None:
             if 'TV' in tag:
-                main.addDirTE(name,url,1003,'','','','','','')
+                main.addDirTE(main.CleanTitle(name),url,1003,'','','','','','')
             elif 'Movies' in tag:
                 if re.findall('\s\d+\s',name):
                     r = name.rpartition('\s\d{4}\s')
-                main.addDirM(name,url,1003,'','','','','','')
+                main.addDirM(main.CleanTitle(name),url,1003,'','','','','','')
         elif SearchType == 'tv' and 'TV' in tag:
-            main.addDirTE(name,url,1003,'','','','','','')
+            main.addDirTE(main.CleanTitle(name),url,1003,'','','','','','')
         elif SearchType == 'movie' and 'Movies' in tag:
             r = name.rpartition('\s\d{4}\s')
-            main.addDirM(name,url,1003,'','','','','','')
+            main.addDirM(main.CleanTitle(name),url,1003,'','','','','','')
         
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Media loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
         dialogWait.update(percent,'[B]Will load instantly from now on[/B]',remaining_display)
-        if dialogWait.iscanceled(): return False
+        if dialogWait.iscanceled(): break
     dialogWait.close()
     del dialogWait
-    if "<div class='zmg_pn'" in html:
+    if "<div class='zmg_pn'" in html and loadedLinks >= totalLinks:
         r = re.findall("""<span class='zmg_pn_current'>(\d+?)</span>[^<]*?<span class='zmg_pn_standar'><a href="([^"]+?)">""", html, re.I|re.DOTALL|re.M)
         total = re.findall('">(\d+)</a></span>', html)
         if total: total = total[-1]
@@ -157,7 +157,7 @@ def superSearch(encode,type):
                 for name in r:
                     pass
             name = name+' [COLOR red]'+re.sub('(?sim)^(TV-|Movies-)(.*)','\\2',tag)+'[/COLOR]'
-            returnList.append((name,prettyName,url,'',1003,True))
+            returnList.append((main.CleanTitle(name),prettyName,url,'',1003,True))
         return returnList
     except: return []
 

@@ -58,12 +58,13 @@ def setCookie(srDomain):
         post_data['amember_pass'] = passw
         for name, value in r:
             post_data[name] = value
-        net().http_GET('http://hostaccess.org/amember/login')
-        net().http_POST('http://hostaccess.org/amember/login',post_data)
+        net().http_GET('https://hostaccess.org/amember/protect/new-rewrite?f=2&url=/member1/&host=hostaccess.org&ssl=off')
+        net().http_POST('https://hostaccess.org/amember/protect/new-rewrite?f=2&url=/member1/&host=hostaccess.org&ssl=off',post_data)
         net().save_cookies(cookie_file)
     else:
         net().set_cookies(cookie_file)
 
+           
 def cleanHex(text):
     def fixup(m):
         text = m.group(0)
@@ -77,19 +78,33 @@ def MAINSA():
     link = response.content
     link = cleanHex(link)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
-    print link
     if '<title>Axxess Streams </title>' in link:
         main.addLink('[COLOR red]Elite Member[/COLOR]','','')
     else:
         main.addLink('[COLOR red]Free Member[/COLOR]','','')
+    main.addDir('[COLOR blue]Schedule[/COLOR]','http://www.sportsaccess.se/forum/calendar.php?action=weekview&calendar=1',476,art+'/skyaccess.png')
     main.addDir('Free Streams','http://sportsaccess.se/forum/misc.php?page=livestreams',412,art+'/skyaccess.png')
     if '<title>Axxess Streams </title>' in link:
         main.addDir('Elite Streams',link,410,art+'/skyaccess.png')
     main.addPlayc('[COLOR blue]Click here for Subscription Info[/COLOR]','https://dl.dropboxusercontent.com/u/35068738/picture%20for%20post/sky.png',244,art+'/skyaccess.png','','','','','')
     main.GA("Live","SportsAccess")
 
+        
+def Calendar(murl):
+    setCookie(murl)
+    response = net().http_GET(murl)
+    link = response.content
+    link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
+    print link
+    month=re.findall('(?sim)<td class="tcat smalltext" colspan="2">([^<]+?)</td>',link)
+    match=re.findall('(?sim)<td class="trow_sep.+?>([^<]+?)</td></tr><tr><td class=".+?<span class="largetext">(\d+)</span></td><td class="trow1.+?>(.+?)</td>',link)
+    for day,num,data in match:
+       main.addLink('[COLOR blue]'+day+' '+num+' '+month[0]+'[/COLOR]','','')
+       match2=re.findall('(?sim)<a href=".+?" class=" public_event" title="(.+?)">.+?</a>',data)
+       for title in match2:
+           main.addLink(title,'','')
+
 def LISTMENU(murl):
-    print "hhop"
     i=0
     match=re.compile('<li><a href="([^"]+)"><center>(.+?)</a>').findall(murl)                 
     for url,name in match:

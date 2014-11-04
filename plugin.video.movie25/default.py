@@ -99,20 +99,18 @@ def MAIN():
             main.addDirHome('Fixes','http://www.movie25.so/',784,art+'/fixes.png')
         elif index==26:
             main.addDirHome('HackerMils Stash','https://raw.github.com/HackerMil/HackerMilsMovieStash/master/Directory/HackerMil_Directory.xml',235,art+'/hackermil.png')
-        elif index==27:
-            main.addDirHome('The New Pirate Bay','https://raw.github.com/mash2k3/MashUpTNPB/master/TNPB_Directory.xml',235,art+'/tnpb.png')
         elif index==29:
-            main.addDirHome('Staael 1982','https://raw.github.com/mash2k3/Staael1982/master/Staael_Directory.xml',235,art+'/staael2014.png')
+            main.addDirHome('Staael 1982','https://raw.github.com/Coolstreams/bobbyelvis/master/Staael_Directory.xml',235,art+'/staael2014.png')
         elif index==34:
-            main.addDirHome('Demon88 Movies','https://raw.github.com/mash2k3/demon88/master/Demon88_Directory.xml',235,art+'/demon88.png')
+            main.addDirHome('Demon88 Movies','https://raw.github.com/dm88/demon88/master/Demon88_Directory.xml',235,art+'/demon88.png')
         elif index==37:
-            main.addDirHome('ONE242415','https://raw.github.com/mash2k3/One242415/master/One242415_Directory.xml',235,art+'/one252515.png')
+            main.addDirHome('ONE242415','https://raw.github.com/One242415/One242415/master/One242415_Directory.xml',235,art+'/one252515.png')
         elif index==30:
             main.addDirHome('My XML Channels','nills',238,art+'/xml.png')
         elif index==31:
-            main.addDirHome("K1M05's Streams",'https://raw.github.com/mash2k3/MashUpK1m05/master/k1m05_mashupDirectory.xml',181,art+'/k1m05.png')
+            main.addDirHome("K1M05's Streams",'https://raw.github.com/crusader88/K1M05/master/k1m05_mashupDirectory.xml',181,art+'/k1m05.png')
         elif index==32:
-            main.addDirHome('Mash Sports','https://raw.github.com/mash2k3/MashSports/master/Mashsprt.xml',182,art+'/mashsports.png')
+            main.addDirHome('Buzzy Sports','https://raw.githubusercontent.com/woodypecker/Woody/master/Woody.xml',181,art+'/mashsports.png')
         elif index==33:
             main.addDirHome('iLive Streams','ilive',119,art+'/ilive.png')
         elif index==35:
@@ -125,6 +123,10 @@ def MAIN():
             else:
                 main.addDirHome("SideReel Show Tracker",'Mash Up',397,art+'/sidereel.png')
                 main.addDirHome("Trakt Show Tracker",'Mash Up',429,art+'/trakt.png')
+        elif index==38:
+            main.addDirHome('Super Movies','index',267,art+'/supermovies.png',index=True)
+        elif index==39:
+            main.addDirHome('Super TV Shows','index',572,art+'/supershows.png',index=True)
     main.addPlayc('Need Help?','http://www.movie25.com/',100,art+'/help.png','','','','','')
     main.addPlayc('Upload Log','http://www.movie25.so/',156,art+'/loguploader.png','','','','','')
     main.addPlayc('Click Me!!!','https://raw.github.com/mash2k3/MashupArtwork/master/skins/vector/donation.png',244,art+'/paypalmash2.png','','','','','')
@@ -375,46 +377,46 @@ def Notify():
         if  os.path.exists(notified):
             os.remove(notified)
         
-def GENRE(url):
-    main.addDir('Action','http://www.movie25.so/movies/action/',1,art+'/act.png')
-    main.addDir('Adventure','http://www.movie25.so/movies/adventure/',1,art+'/adv.png')
-    main.addDir('Animation','http://www.movie25.so/movies/animation/',1,art+'/ani.png')
-    main.addDir('Biography','http://www.movie25.so/movies/biography/',1,art+'/bio.png')
-    main.addDir('Comedy','http://www.movie25.so/movies/comedy/',1,art+'/com.png')
-    main.addDir('Crime','http://www.movie25.so/movies/crime/',1,art+'/cri.png')
-    main.addDir('Documentary','http://www.movie25.so/movies/documentary/',1,art+'/doc.png')
-    main.addDir('Drama','http://www.movie25.so/movies/drama/',1,art+'/dra.png')
-    main.addDir('Family','http://www.movie25.so/movies/family/',1,art+'/fam.png')
-    main.addDir('Fantasy','http://www.movie25.so/movies/fantasy/',1,art+'/fant.png')
-    main.addDir('History','http://www.movie25.so/movies/history/',1,art+'/his.png')
-    main.addDir('Horror','http://www.movie25.so/movies/horror/',1,art+'/hor.png')
-    main.addDir('Music','http://www.movie25.so/movies/music/',1,art+'/mus.png')
-    main.addDir('Musical','http://www.movie25.so/movies/musical/',1,art+'/mucl.png')
-    main.addDir('Mystery','http://www.movie25.so/movies/mystery/',1,art+'/mys.png')
-    main.addDir('Romance','http://www.movie25.so/movies/romance/',1,art+'/rom.png')
-    main.addDir('Sci-Fi','http://www.movie25.so/movies/sci-fi/',1,art+'/sci.png')
-    main.addDir('Short','http://www.movie25.so/movies/short/',1,art+'/sho.png')
-    main.addDir('Sport','http://www.movie25.so/movies/sport/',1,art+'/sport.png')
-    main.addDir('Thriller','http://www.movie25.so/movies/thriller/',1,art+'/thr.png')
-    main.addDir('War','http://www.movie25.so/movies/war/',1,art+'/war.png')
-    main.addDir('Western','http://www.movie25.so/movies/western/',1,art+'/west.png')
+def GENRE(url,index=False):
+    main.addDir('Action','http://www.movie25.so/movies/action/',1,art+'/act.png',index=index)
+    main.addDir('Adventure','http://www.movie25.so/movies/adventure/',1,art+'/adv.png',index=index)
+    main.addDir('Animation','http://www.movie25.so/movies/animation/',1,art+'/ani.png',index=index)
+    main.addDir('Biography','http://www.movie25.so/movies/biography/',1,art+'/bio.png',index=index)
+    main.addDir('Comedy','http://www.movie25.so/movies/comedy/',1,art+'/com.png',index=index)
+    main.addDir('Crime','http://www.movie25.so/movies/crime/',1,art+'/cri.png',index=index)
+    main.addDir('Documentary','http://www.movie25.so/movies/documentary/',1,art+'/doc.png',index=index)
+    main.addDir('Drama','http://www.movie25.so/movies/drama/',1,art+'/dra.png',index=index)
+    main.addDir('Family','http://www.movie25.so/movies/family/',1,art+'/fam.png',index=index)
+    main.addDir('Fantasy','http://www.movie25.so/movies/fantasy/',1,art+'/fant.png',index=index)
+    main.addDir('History','http://www.movie25.so/movies/history/',1,art+'/his.png',index=index)
+    main.addDir('Horror','http://www.movie25.so/movies/horror/',1,art+'/hor.png',index=index)
+    main.addDir('Music','http://www.movie25.so/movies/music/',1,art+'/mus.png',index=index)
+    main.addDir('Musical','http://www.movie25.so/movies/musical/',1,art+'/mucl.png',index=index)
+    main.addDir('Mystery','http://www.movie25.so/movies/mystery/',1,art+'/mys.png',index=index)
+    main.addDir('Romance','http://www.movie25.so/movies/romance/',1,art+'/rom.png',index=index)
+    main.addDir('Sci-Fi','http://www.movie25.so/movies/sci-fi/',1,art+'/sci.png',index=index)
+    main.addDir('Short','http://www.movie25.so/movies/short/',1,art+'/sho.png',index=index)
+    main.addDir('Sport','http://www.movie25.so/movies/sport/',1,art+'/sport.png',index=index)
+    main.addDir('Thriller','http://www.movie25.so/movies/thriller/',1,art+'/thr.png',index=index)
+    main.addDir('War','http://www.movie25.so/movies/war/',1,art+'/war.png',index=index)
+    main.addDir('Western','http://www.movie25.so/movies/western/',1,art+'/west.png',index=index)
     main.GA("None","Movie25-Genre")
     main.VIEWSB()
         
-def YEAR():
-    main.addDir('2013','http://www.movie25.so/search.php?year=2014/',8,art+'/2014.png')
-    main.addDir('2013','http://www.movie25.so/search.php?year=2013/',8,art+'/2013.png')
-    main.addDir('2012','http://www.movie25.so/search.php?year=2012/',8,art+'/2012.png')
-    main.addDir('2011','http://www.movie25.so/search.php?year=2011/',8,art+'/2011.png')
-    main.addDir('2010','http://www.movie25.so/search.php?year=2010/',8,art+'/2010.png')
-    main.addDir('2009','http://www.movie25.so/search.php?year=2009/',8,art+'/2009.png')
-    main.addDir('2008','http://www.movie25.so/search.php?year=2008/',8,art+'/2008.png')
-    main.addDir('2007','http://www.movie25.so/search.php?year=2007/',8,art+'/2007.png')
-    main.addDir('2006','http://www.movie25.so/search.php?year=2006/',8,art+'/2006.png')
-    main.addDir('2005','http://www.movie25.so/search.php?year=2005/',8,art+'/2005.png')
-    main.addDir('2004','http://www.movie25.so/search.php?year=2004/',8,art+'/2004.png')
-    main.addDir('2003','http://www.movie25.so/search.php?year=2003/',8,art+'/2003.png')
-    main.addDir('Enter Year','http://www.movie25.com',23,art+'/enteryear.png')
+def YEAR(index=False):
+    main.addDir('2013','http://www.movie25.so/search.php?year=2014/',8,art+'/2014.png',index=index)
+    main.addDir('2013','http://www.movie25.so/search.php?year=2013/',8,art+'/2013.png',index=index)
+    main.addDir('2012','http://www.movie25.so/search.php?year=2012/',8,art+'/2012.png',index=index)
+    main.addDir('2011','http://www.movie25.so/search.php?year=2011/',8,art+'/2011.png',index=index)
+    main.addDir('2010','http://www.movie25.so/search.php?year=2010/',8,art+'/2010.png',index=index)
+    main.addDir('2009','http://www.movie25.so/search.php?year=2009/',8,art+'/2009.png',index=index)
+    main.addDir('2008','http://www.movie25.so/search.php?year=2008/',8,art+'/2008.png',index=index)
+    main.addDir('2007','http://www.movie25.so/search.php?year=2007/',8,art+'/2007.png',index=index)
+    main.addDir('2006','http://www.movie25.so/search.php?year=2006/',8,art+'/2006.png',index=index)
+    main.addDir('2005','http://www.movie25.so/search.php?year=2005/',8,art+'/2005.png',index=index)
+    main.addDir('2004','http://www.movie25.so/search.php?year=2004/',8,art+'/2004.png',index=index)
+    main.addDir('2003','http://www.movie25.so/search.php?year=2003/',8,art+'/2003.png',index=index)
+    main.addDir('Enter Year','http://www.movie25.com',23,art+'/enteryear.png',index=index)
     main.GA("None","Movie25-Year")
     main.VIEWSB()
 
@@ -478,6 +480,7 @@ def TVAll():
     main.addDir('Watchseries.lt[COLOR red] DC[/COLOR]','TV',572,art+'/watchseries.png')
     main.addDir('tubePLUS[COLOR red] DC[/COLOR]','tp+',1020,art+'/tubeplus.png')
     main.addDir('Icefilms[COLOR red] DC[/COLOR]','ice',294,art+'/icefilms.png')
+    main.addDir('PFTV[COLOR red] DC[/COLOR]','TV',459,art+'/pftv.png')
     main.addDir('Series Gate','TV',601,art+'/sg.png')
     main.addDir('iWatchOnline [COLOR red] DC[/COLOR]','TV',584,art+'/iwatchonline.png')
     main.addDir('TV-Release[COLOR red] DC[/COLOR][COLOR blue] (Works Best With Debrid)[/COLOR]','tvr',1000,art+'/tvrelease.png')
@@ -487,7 +490,7 @@ def TVAll():
     main.addDir('Noobroom [COLOR red]DC[/COLOR]','TV',296,art+'/noobroom.png')
     main.addDir('MBox [COLOR red]DC[/COLOR]','TV',276,art+'/mbox.png')
     main.addDir('Yify','yify',421,art+'/yify.png')
-    main.addDir('Shush','TV',451,art+'/shush.png')
+    #main.addDir('Shush','TV',451,art+'/shush.png')
     main.addDir('SominalTvFilms','TV',619,art+'/sominal.png')
     main.addDir('Dramania','TV',268,art+'/dramania.png')
     main.addDir('SokroStream','french',324,art+'/sokrostream.png')
@@ -495,21 +498,21 @@ def TVAll():
     main.addDir('3Arabtv','arabic',351,art+'/3arabtv.png')
     main.addDir('MailRu','http://my.mail.ru/video/top',357,art+'/mailru.png')
     #main.addDir('Watching Now','TV',530,art+'/watchingnow.png')
-    main.addDir('FMA','TV',567,art+'/fma.png')
+    #main.addDir('FMA','TV',567,art+'/fma.png')
     #main.addDir('Global BC','gbc',165,art+'/globalbc.png')       
     main.GA("None","Plugin")
 
-def Movie25():
-    main.addDirHome('Search','http://www.movie25.so/',420,art+'/search2.png')
-    main.addDirHome('A-Z','http://www.movie25.so/',6,art+'/az2.png')
-    main.addDirHome('New Releases','http://www.movie25.so/movies/new-releases/',1,art+'/new2.png')
-    main.addDirHome('Latest Added','http://www.movie25.so/movies/latest-added/',1,art+'/latest2.png')
-    main.addDirHome('Featured Movies','http://www.movie25.so/movies/featured-movies/',1,art+'/feat2.png')
-    main.addDirHome('Most Viewed','http://www.movie25.so/movies/most-viewed/',1,art+'/view2.png')
-    main.addDirHome('Most Voted','http://www.movie25.so/movies/most-voted/',1,art+'/vote2.png')
-    main.addDirHome('HD Releases','http://www.movie25.so/movies/latest-hd-movies/',1,art+'/dvd2hd.png')
-    main.addDirHome('Genre','http://www.movie25.so/',2,art+'/genre2.png')
-    main.addDirHome('By Year','http://www.movie25.so/',7,art+'/year2.png')
+def Movie25(index=False):
+    main.addDirHome('Search','http://www.movie25.so/',420,art+'/search2.png',index=index)
+    main.addDirHome('A-Z','http://www.movie25.so/',6,art+'/az2.png',index=index)
+    main.addDirHome('New Releases','http://www.movie25.so/movies/new-releases/',1,art+'/new2.png',index=index)
+    main.addDirHome('Latest Added','http://www.movie25.so/movies/latest-added/',1,art+'/latest2.png',index=index)
+    main.addDirHome('Featured Movies','http://www.movie25.so/movies/featured-movies/',1,art+'/feat2.png',index=index)
+    main.addDirHome('Most Viewed','http://www.movie25.so/movies/most-viewed/',1,art+'/view2.png',index=index)
+    main.addDirHome('Most Voted','http://www.movie25.so/movies/most-voted/',1,art+'/vote2.png',index=index)
+    main.addDirHome('HD Releases','http://www.movie25.so/movies/latest-hd-movies/',1,art+'/dvd2hd.png',index=index)
+    main.addDirHome('Genre','http://www.movie25.so/',2,art+'/genre2.png',index=index)
+    main.addDirHome('By Year','http://www.movie25.so/',7,art+'/year2.png',index=index)
 
 def ANIME():
     main.addDir('Animania','TV',343,art+'/animania.png')
@@ -534,9 +537,8 @@ def HD():
     main.addDir('Latest True 1080p Movies (Rls1Click)[COLOR red](Debrid Only)[/COLOR]','HD',407,art+'/hd2.png')
     main.addDir('Latest Movies (Oneclickwatch)','http://oneclickwatch.org/category/movies/',25,art+'/hd2.png')
     main.addDir('HackerMil HD Movies','https://raw.github.com/HackerMil/HackerMilsMovieStash/master/Movies/HD.xml',236,art+'/hd2.png')
-    main.addDir('TNPB HD Movies','https://raw.github.com/mash2k3/MashUpTNPB/master/720p%20Movies.xml',236,art+'/hd2.png')
-    main.addDir('Staael1982 HD Movies','https://raw.github.com/mash2k3/Staael1982/master/veehdCollection.xml',236,art+'/hd2.png')
-    main.addDir('Demon88 HD Movies','https://raw.github.com/mash2k3/demon88/master/1080pMovies%20.xml',236,art+'/hd2.png')
+    main.addDir('Staael1982 HD Movies','https://raw.github.com/Coolstreams/bobbyelvis/master/veehdCollection.xml',236,art+'/hd2.png')
+    main.addDir('Demon88 HD Movies','https://raw.github.com/dm88/Demon88/master/1080pMovies%20.xml',236,art+'/hd2.png')
     main.GA("None","HD")
     
 def INT():
@@ -585,7 +587,7 @@ def INTCAT(murl):
         main.addDir('Latest French Documentaire (Video Documentaire)','http://www.dps.com',331,art+'/intl.png')
     if 'kor' in murl:
         main.addDir('Latest Korean/Jappenese/Chinese Movies&Dramas (Dramania)','http://www.cinevip.org/',268,art+'/intl.png')
-        main.addDir('Latest Korean/Jappenese/Chinese Movies&Dramas (Catiii.tv)','http://www.cinevip.org/',434,art+'/intl.png')
+        #main.addDir('Latest Korean/Jappenese/Chinese Movies&Dramas (Catiii.tv)','http://www.cinevip.org/',434,art+'/intl.png')
     if 'danish' in murl:
         main.addDir('Staael1982 Danish Movies','https://raw.github.com/mash2k3/Staael1982/master/danish%20movies.xml',236,art+'/intl.png')
 
@@ -601,6 +603,7 @@ def SPORTS():
     main.addDir('Wild TV','https://www.wildtv.ca/shows',92,art+'/wildtv.png')
     main.addDir('Workouts','https://www.wildtv.ca/shows',194,art+'/workout.png')
     main.addDir('The Golf Channel','golf',217,art+'/golfchannel.png')
+    main.addDir('HQZone','na',470,art+'/hqzone.png')
     link=getListFile('https://raw.github.com/mash2k3/MashUpNotifications/master/Sport_Directory.xml', os.path.join(CachePath,'Sports'))
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
     match=re.compile('<name>(.+?)</name><link>(.+?)</link><thumbnail>(.+?)</thumbnail><mode>(.+?)</mode>').findall(link)
@@ -645,8 +648,7 @@ def KIDZone(murl):
     main.addDir('National Geographic Kids','ngk',71,art+'/ngk.png')
     main.addDir('WB Kids','wbk',77,art+'/wb.png')
     main.addDir('Youtube Kids','wbk',84,art+'/youkids.png')
-    main.addDir('TNPB KidsZone','https://raw.github.com/mash2k3/MashUpTNPB/master/kidszone.xml',236,art+'/kidzone2.png')
-    main.addDir('Staael1982 Animated Movies','https://github.com/mash2k3/Staael1982/raw/master/kids%20%26%20animation.xml',236,art+'/kidzone2.png')
+    main.addDir('Staael1982 Animated Movies','https://github.com/Coolstreams/bobbyelvis/raw/master/kids%20%26%20animation.xml',236,art+'/kidzone2.png')
             
     main.GA("None","KidZone")
     main.VIEWSB()
@@ -669,7 +671,7 @@ def LiveStreams():
     main.addDir('By Country','navi',143,art+'/countrysec.png')
     main.addDir('Arabic Streams','navi',231,art+'/arabicstream.png')
     main.addDir('NHL [COLOR red]GOTHAM ONLY[/COLOR]','navi',394,art+'/nhl.png')
-    main.addDir('Kiwi','kiwi',439,art+'/kiwi.png')
+    #main.addDir('Kiwi','kiwi',439,art+'/kiwi.png')
     link=getListFile('https://raw.github.com/mash2k3/MashUpNotifications/master/LiveDirectory(mash2k3Only).xml',os.path.join(CachePath,'LiveStreams'))
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('type=playlistname=Sorted by user-assigned order','').replace('name=Sorted [COLOR=FF00FF00]by user-assigned order[/COLOR]','').replace('name=Live Tv Channels Twothumb','')
     match=re.compile('<name>(.+?)</name><link>(.+?)</link><thumbnail>(.+?)</thumbnail><mode>(.+?)</mode>').findall(link)
@@ -681,6 +683,7 @@ def LiveStreams():
         main.addDir(name,url,int(mode),thumbs)
     main.addDir('USA Live','na',457,art+'/usalive.png')
     main.addDir('SportsAccess','na',409,art+'/sportsaccess.png')
+    main.addDir('HQZone','na',470,art+'/hqzone.png')
     if selfAddon.getSetting("customchannel") == "true":
         main.addDir('My XML Channels','nills',238,art+'/xml.png')
     main.addDir('TubTub.com','http://tubtub.com/',185,art+'/tubtub.png')
@@ -1395,6 +1398,7 @@ season=None
 episode=None
 location=None
 path=None
+index=None
 
 try: name=urllib.unquote_plus(params["name"])
 except: pass
@@ -1423,6 +1427,8 @@ except: pass
 try: location=urllib.unquote_plus(params["location"])
 except: pass
 try: path=urllib.unquote_plus(params["path"])
+except: pass
+try: index=urllib.unquote_plus(params["index"])
 except: pass
 
 print "Mode: "+str(mode)
@@ -1457,21 +1463,21 @@ if mode==None or url==None or len(url)<1:
    
 elif mode==1:
     from resources.libs import movie25
-    movie25.LISTMOVIES(url)
+    movie25.LISTMOVIES(url,index=index)
     
 elif mode==2:
     print ""+url
-    GENRE(url)
+    GENRE(url,index=index)
 
 elif mode==4:
     from resources.libs import movie25
     print ""+url
-    movie25.SEARCH(url)
+    movie25.SEARCH(url,index=index)
     
 elif mode==420:
     from resources.libs import movie25
     print ""+url
-    movie25.Searchhistory()
+    movie25.Searchhistory(index=index)
 
 elif mode==3:
     from resources.libs import movie25
@@ -1488,10 +1494,10 @@ elif mode==171:
     print ""+url
     movie25.PLAYB(name,url)
 elif mode==6:
-    AtoZ()
+    AtoZ(index=index)
 
 elif mode==7:
-    YEAR()
+    YEAR(index=index)
 
 elif mode==19:
     from resources.libs import supersearch
@@ -1503,6 +1509,7 @@ elif mode==20:
     
 elif mode==21:
     from resources.libs import supersearch
+    name = re.sub('(?i)\[B\].*?\[/B\]','',name)
     name = main.removeColoredText(name)
 #     name = re.sub('(?i)[^a-zA-Z0-9]',' ',name)
     if re.search('(?i)s(\d+)e(\d+)',name) or re.search('(?i)Season(.+?)Episode',name) or re.search('(?i)(\d+)x(\d+)',name):
@@ -1524,25 +1531,25 @@ elif mode==21:
         supersearch.SEARCH(name,'TV')
     else:
         if re.search('(?i).\s\([12][90]\d{2}\)',name):
-            name = re.sub('(?i)^(.+?)\s\([12][90]\d{2}\).*','\\1',name)
+            name = re.sub('(?i)^(.+?)\s\(([12][90]\d{2})\).*','\\1 \\2',name)
         elif re.search('(?i).\s[12][90]\d{2}',name):
-            name = re.sub('(?i)^(.+?)\s[12][90]\d{2}.*','\\1',name)
+            name = re.sub('(?i)^(.+?)\s([12][90]\d{2}).*','\\1 \\2',name)
         name = re.sub('(?i)\s\s+',' ',name).strip()
         supersearch.SEARCH(name,'Movies')
         
 elif mode==23:
     from resources.libs import movie25
-    movie25.ENTYEAR()
+    movie25.ENTYEAR(index=index)
     
 elif mode==8:
     from resources.libs import movie25
     print ""+url
-    movie25.YEARB(url)
+    movie25.YEARB(url,index=index)
 
 elif mode==9:
     from resources.libs import movie25
     print ""+url
-    movie25.NEXTPAGE(url)
+    movie25.NEXTPAGE(url,index=index)
     
 elif mode==10:
     from resources.libs import movie25
@@ -1621,14 +1628,27 @@ elif mode==36:
 elif mode==37:
     from resources.libs.international import  einthusan
     print ""+url
-    einthusan.LISTINT(name,url)
-
+    einthusan.MAINFULLS()
 elif mode==38:
     from resources.libs.international import  einthusan
     print ""+url
     einthusan.LINKINT(name,url)
-
-######39-42 available
+elif mode==39:
+    from resources.libs.international import einthusan
+    print ""+url
+    einthusan.DIRINT(url)
+elif mode==40:
+    from resources.libs.international import einthusan
+    print ""+url
+    einthusan.AZMOVIES(url)
+elif mode==41:
+    from resources.libs.international import einthusan
+    print ""+url
+    einthusan.AZBLURAY(url)
+elif mode==42:
+    from resources.libs.international import einthusan
+    print ""+url
+    einthusan.LISTINT(url)
         
 elif mode==43:
     print ""+url
@@ -2372,12 +2392,12 @@ elif mode==206:
 elif mode==207:
     from resources.libs import movie25
     print ""+url
-    movie25.GotoPage(url)
+    movie25.GotoPage(url,index=index)
 
 elif mode==208:
     from resources.libs import movie25
     print ""+url
-    movie25.GotoPageB(url)
+    movie25.GotoPageB(url,index=index)
 
 elif mode==209:
     from resources.libs.movies_tv import newmyvideolinks
@@ -2614,7 +2634,8 @@ elif mode==266:
     customchannel.subLink(name,url)
 
 elif mode==267:
-    Movie25()
+    Movie25(index=index)
+    main.VIEWSB()
 
 elif mode==268:
     from resources.libs.plugins import dramania
@@ -3257,7 +3278,7 @@ elif mode==393:
 elif mode==394:
     from resources.libs.live import nhl
     print ""+url
-    nhl.MAINNHL()
+    nhl.MAINNHL(url)
 
 elif mode==395:
     from resources.libs.live import nhl
@@ -3358,7 +3379,7 @@ elif mode==418:
     
 elif mode==419:
     from resources.libs.international import  einthusan
-    einthusan.SEARCHEIN()
+    einthusan.SEARCHEIN(url)
 
 elif mode==421:
     from resources.libs.plugins import yify
@@ -3528,6 +3549,78 @@ elif mode==458:
     from resources.libs.live import ibrod
     print ""+url
     ibrod.USALINK(name,url,iconimage)
+
+elif mode==459:
+    from resources.libs.plugins import pftv
+    pftv.MAINPFTV()
+
+elif mode==460:
+    from resources.libs.plugins import pftv
+    pftv.LISTPFTV(url)
+
+elif mode==461:
+    from resources.libs.plugins import pftv
+    pftv.LISTHOST(name,url,iconimage)
+
+elif mode==462:
+    from resources.libs.plugins import pftv
+    pftv.PLAYPFTV(name,url)
+
+elif mode==463:
+    from resources.libs.plugins import pftv
+    pftv.AtoZPFTV()
+
+elif mode==464:
+    from resources.libs.plugins import pftv
+    pftv.LISTSHOW(name,url)
+
+elif mode==465:
+    from resources.libs.plugins import pftv
+    pftv.LISTSEASON(name,url)
+
+elif mode==466:
+    from resources.libs.plugins import pftv
+    pftv.LISTEPISODE(name,url)
+
+elif mode==467:
+    from resources.libs.plugins import pftv
+    pftv.POPULARPFTV(url)
+
+elif mode==468:
+    from resources.libs.plugins import pftv
+    pftv.SearchhistoryPFTV()
+
+elif mode==469:
+    from resources.libs.plugins import pftv
+    pftv.SEARCHPFTV(url)
+
+elif mode==470:
+    from resources.libs.live import hqzone
+    hqzone.MAINHQ()
+    
+elif mode==471:
+    from resources.libs.live import hqzone
+    hqzone.LISTMENU(url)
+        
+elif mode==472:
+    from resources.libs.live import hqzone
+    hqzone.LISTCONTENT(url,iconimage)
+        
+elif mode==473:
+    from resources.libs.live import hqzone
+    hqzone.LISTMENU2(url)
+            
+elif mode==474:
+    from resources.libs.live import hqzone
+    hqzone.PLAYLINK(name,url,iconimage)
+
+elif mode==475:
+    from resources.libs.live import hqzone
+    hqzone.Calendar(url)
+
+elif mode==476:
+    from resources.libs.live import skyaccess
+    skyaccess.Calendar(url)
 ######################################################################################################
 elif mode==500:
     TVAll()        
@@ -3632,7 +3725,9 @@ elif mode==550:
     from resources.libs.movies_tv import newmyvideolinks
     newmyvideolinks.SearchhistoryEtowns(url)
 
-        
+if mode==3000:
+    print""
+    
 elif mode==567:
     from resources.libs.plugins import fma
     print ""+url
@@ -3671,12 +3766,12 @@ elif mode==647:
 elif mode==572:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.MAINWATCHS()
+    watchseries.MAINWATCHS(index=index)
 
 elif mode==573:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.LISTWATCHS(url)
+    watchseries.LISTWATCHS(url,index=index)
 
 elif mode==574:
     from resources.libs.plugins import watchseries
@@ -3691,42 +3786,42 @@ elif mode==575:
 elif mode==576:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.LISTSHOWWATCHS(url)
+    watchseries.LISTSHOWWATCHS(url,index=index)
 
 elif mode==577:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.AtoZWATCHS()
+    watchseries.AtoZWATCHS(index=index)
         
 elif mode==578:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.LISTWATCHSEASON(name, url)
+    watchseries.LISTWATCHSEASON(name, url,index=index)
 
 elif mode==579:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.LISTWATCHEPISODE(name, url)
+    watchseries.LISTWATCHEPISODE(name, url,index=index)
         
 elif mode==580:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.POPULARWATCHS(url)
+    watchseries.POPULARWATCHS(url,index=index)
 
 elif mode==581:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.SearchhistoryWS()
+    watchseries.SearchhistoryWS(index=index)
         
 elif mode==582:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.SEARCHWS(url)
+    watchseries.SEARCHWS(url,index=index)
 
 elif mode==583:
     from resources.libs.plugins import watchseries
     print ""+url
-    watchseries.GENREWATCHS()
+    watchseries.GENREWATCHS(index=index)
 
 elif mode==584:
     from resources.libs.plugins import iwatchonline

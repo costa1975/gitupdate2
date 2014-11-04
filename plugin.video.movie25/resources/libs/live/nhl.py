@@ -10,71 +10,62 @@ addon = Addon('plugin.video.movie25', sys.argv)
 art = main.art
 
 
-def MAINNHL():
+def MAINNHL(murl):
     source_media = {}
     from datetime import datetime
-    date=datetime.now().strftime('%Y%m%d')
-    xml='http://feeds.cdnak.neulion.com/fs/nhl/mobile/feeds/data/'+str(date)+'.xml'
+    datex=datetime.now().strftime('%Y%m%d')
+    xml='http://live.nhl.com/GameData/SeasonSchedule-20142015.json'
     link=main.OPENURL(xml)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
-    match=re.compile('<eastern-start-time>(.+?)</eastern-start-time>.+?<away-team>.+?<team-abbreviation>(.+?)</team-abbreviation>.+?</away-team><home-team>.+?<team-abbreviation>(.+?)</team-abbreviation>.+?</home-team><video-clip/><streams>(.+?)</streams>',re.DOTALL).findall(link)
-    for timed,ateam,hteam,streams in match:
+    main.addDir('[COLOR red]Archived Games[/COLOR]','Archived',394,art+'/nhl.png')
+    if 'Archived' not in murl:
+        main.addLink("[COLOR red]Live Games Windows Only, Requires some modifications to get working visit forum.[/COLOR]",'','')
+    match=re.compile('{"id":(.+?),"est":"(.+?)","a":"(.+?)","h":"(.+?)"}',re.DOTALL).findall(link)
+    for id,timed,ateam,hteam in match:
         split= re.search('(.+?)\s(\d+:\d+):\d+',timed)
         split1=str(split.group(1))
         split2=str(split.group(2))
-        timed = time.strftime("%I:%M %p", time.strptime(split2, "%H:%M"))
-        main.addDir(ateam+' at '+hteam+' [COLOR red]('+timed+')[/COLOR] [COLOR blue]('+split1+')[/COLOR]',streams,395,art+'/nhl.png')
+        if 'Archived' in murl:
+            if int(split1)<=int(datex):
+                dates= re.search('(\d{4})(\d{2})(\d{2})',split1)
+                date=str(dates.group(2))+"/"+str(dates.group(3))+"/"+str(dates.group(1))
+                timed = time.strftime("%I:%M %p", time.strptime(split2, "%H:%M"))
+                main.addDir(ateam+' at '+hteam+' [COLOR red]('+timed+')[/COLOR] [COLOR blue]('+date+')[/COLOR]',id,395,art+'/nhl.png')
+        else:
+            if datex == split1:
+                
+                dates= re.search('(\d{4})(\d{2})(\d{2})',split1)
+                date=str(dates.group(2))+"/"+str(dates.group(3))+"/"+str(dates.group(1))
+                timed = time.strftime("%I:%M %p", time.strptime(split2, "%H:%M"))
+                main.addDir(ateam+' at '+hteam+' [COLOR red]('+timed+')[/COLOR] [COLOR blue]('+date+')[/COLOR]',id,395,art+'/nhl.png')
+                
 
 def LISTSTREAMS(mname,murl):
     mname=main.removeColoredText(mname)
-    awayteam= mname.split(' at ')[0]
-    hometeam= mname.split(' at ')[1]
-    match=re.compile('<live bitrate="0">([^<]+ipad.m3u8)</live>',re.DOTALL).findall(murl)
-    if len(match)==0:
-        link=main.OPENURL('http://breadwinka.com/get_games.php?client=nhl&playerclient=hop')
-        link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
-        match=re.compile('<home_team>'+hometeam.replace(' ','')+'</home_team><away_team>'+awayteam.replace(' ','')+'</away_team><assignments><assignment.+?name="away"><ipad_url>(.+?)</ipad_url></assignment><assignment.+?name="home"><ipad_url>(.+?)</ipad_url>',re.DOTALL).findall(link)
-        for away,home in match:
-            pass
-        link=main.OPENURL(home)
-        url1=home.split('_hd')[0]
-        link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        home=re.compile('BANDWIDTH=\d+(.+?.mp4.m3u8)',re.DOTALL).findall(link)
-        for i in home:
-            f= i.split('_hd_')[1]
-            bitrate=f.split('_ipad_')[0]
-            final= url1+'_hd_'+f
-            main.addPlayc(hometeam+' Home'+' '+bitrate+' Kbps',final,396,art+'/nhl.png','','','','','')
-        link2=main.OPENURL(away)
-        url2=away.split('_hd')[0]
-        link2=link2.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        away=re.compile('BANDWIDTH=\d+(.+?.mp4.m3u8)',re.DOTALL).findall(link2)
-        for i in away:
-            f= i.split('_hd_')[1]
-            bitrate=f.split('_ipad_')[0]
-            final= url2+'_hd_'+f
-            main.addPlayc(awayteam+' Away'+' '+bitrate+' Kbps',final,396,art+'/nhl.png','','','','','')
-    else:
-        url1=match[0].split('_hd')[0]
-        link=main.OPENURL(match[0])
-        link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        home=re.compile('BANDWIDTH=\d+(.+?_ipad.m3u8)',re.DOTALL).findall(link)
-        for i in home:
-            f= i.split('_hd_')[1]
-            bitrate=f.split('_ipad.m3u8')[0]
-            final= url1+'_hd_'+f
-            main.addPlayc(hometeam+' Home'+' '+bitrate+' Kbps',final,396,art+'/nhl.png','','','','','')
-        url2=match[1].split('_hd')[0]
-        link2=main.OPENURL(match[1])
-        link2=link2.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        away=re.compile('BANDWIDTH=\d+(.+?_ipad.m3u8)',re.DOTALL).findall(link2)
-        for i in away:
-            f= i.split('_hd_')[1]
-            bitrate=f.split('_ipad.m3u8')[0]
-            final= url2+'_hd_'+f
-            main.addPlayc(awayteam+' Away'+' '+bitrate+' Kbps',final,396,art+'/nhl.png','','','','','')
-    
-
+    id= re.search('(\d{4})(\d{2})(\d{4})',murl)
+    xml='http://smb.cdnak.neulion.com/fs/nhl/mobile/feed_new/data/streams/'+str(id.group(1))+'/ipad/'+str(id.group(2))+'_'+str(id.group(3))+'.json'
+    link=main.OPENURL(xml)
+    link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
+    match=re.compile('"vod-condensed":{"bitrate0":"([^"]+)"},"vod-continuous":{"bitrate0":"([^"]+)","image":"([^"]+)"},"vod-whole":{"bitrate0":"([^"]+)"}',re.DOTALL).findall(link)
+    for cond,cont,thumb,whole in match:
+        if '_h_condensed' in cond:
+            main.addPlayc(mname+' [COLOR blue]Home Condensed[/COLOR]',cond,396,thumb,'','','','','')
+        else:
+            main.addPlayc(mname+' [COLOR blue]Away Condensed[/COLOR]',cond,396,thumb,'','','','','')
+        if '_h_continuous' in cont:
+            main.addPlayc(mname+' [COLOR blue]Home Continuous[/COLOR]',cont,396,thumb,'','','','','')
+        else:
+            main.addPlayc(mname+' [COLOR blue]Away Continuous[/COLOR]',cont,396,thumb,'','','','','')
+        if '_h_whole' in whole:
+            main.addPlayc(mname+' [COLOR blue]Home Whole[/COLOR]',whole,396,thumb,'','','','','')
+        else:
+            main.addPlayc(mname+' [COLOR blue]Away Whole[/COLOR]',whole,396,thumb,'','','','','')
+    match2=re.compile('"away".+?"live":{"bitrate0":"([^"]+)"},.+?"image":"([^"]+)"',re.DOTALL).findall(link)
+    for live,thumb in match2:
+        main.addPlayc(mname+' [COLOR blue]Away Live[/COLOR]',live+'x0xe'+str(murl),396,thumb,'','','','','')
+    match3=re.compile('"home".+?"live":{"bitrate0":"([^"]+)"},.+?"image":"([^"]+)"',re.DOTALL).findall(link)
+    for live,thumb in match3:
+        main.addPlayc(mname+' [COLOR blue]Home LIVE[/COLOR]',live+'x0xe'+str(murl),396,thumb,'','','','','')
 def LINK(mname,murl,thumb):
         main.GA(mname,"Watched")
         ok=True
@@ -82,7 +73,54 @@ def LINK(mname,murl,thumb):
         urllist=[]
         playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
         playlist.clear()
-        stream_url = murl+'|User-Agent=PS4 libhttp/1.60 (PlayStation 4)'
+        if '_whole' in murl:
+            link=main.OPENURL(murl)
+            link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
+            part= re.findall('/([^/]+)ipad.mp4.m3u8',murl)[0]
+            match=re.compile('BANDWIDTH=.+?'+part+'(.+?)_ipad.mp4.m3u8',re.DOTALL).findall(link)
+            for band in sorted(match):
+                namelist.append(band)
+            dialog = xbmcgui.Dialog()
+            answer =dialog.select("Pick A Bandwidth", namelist)
+            if answer != -1:
+                nurl=murl.split('ipad.mp4.m3u8')[0]
+                stream_url=nurl+namelist[int(answer)]+'_ipad.mp4.m3u8'+'|User-Agent=PS4 libhttp/1.76 (PlayStation 4)'
+            else:
+                return
+        elif '/live/' in murl:
+            import subprocess
+            jarfile = xbmc.translatePath('special://home/addons/plugin.video.movie25/resources/libs/live/FuckNeulionV2.jar')
+            if 'Home' in mname:
+                Side='home'
+            if 'Away' in murl:
+                Side='away'
+            SelectGame=murl.split('x0xe')[1]
+            murl=murl.split('x0xe')[0]
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            command=['java','-jar',jarfile,SelectGame,Side]
+            proxy_hack_process = subprocess.Popen(command,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT,
+                          startupinfo=startupinfo)
+            link=main.OPENURL(murl)
+            link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
+            part= re.findall('/([^/]+)ipad.m3u8',murl)[0]
+            match=re.compile('BANDWIDTH=.+?'+part+'(.+?)_ipad.m3u8',re.DOTALL).findall(link)
+            for band in sorted(match):
+                namelist.append(band)
+            dialog = xbmcgui.Dialog()
+            answer =dialog.select("Pick A Bandwidth", namelist)
+            if answer != -1:
+                nurl=murl.split('ipad.m3u8')[0]
+                stream_url=nurl+namelist[int(answer)]+'_ipad.m3u8'+'|User-Agent=PS4 libhttp/1.76 (PlayStation 4)'
+            
+            else:
+                return
+        else:
+            stream_url = murl+'|User-Agent=PS4 libhttp/1.76 (PlayStation 4)'
         listitem = xbmcgui.ListItem(thumbnailImage=thumb)
         infoL={'Title': mname, 'Genre': 'Live'} 
         from resources.universal import playbackengine

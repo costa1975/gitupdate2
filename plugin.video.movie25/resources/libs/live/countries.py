@@ -14,7 +14,7 @@ art = main.art
 
 def COUNTRIES():
         main.GA("Live","Countries")
-        link=main.OPENURL('https://raw.github.com/mash2k3/MashUpStreams/master/countries.xml')
+        link=main.OPENURL('https://raw.github.com/crusader88/MashUpStreams/master/countries.xml')
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('type=playlistname=Sorted by user-assigned order','').replace('name=Sorted [COLOR=FF00FF00]by user-assigned order[/COLOR]','').replace('name=Live Tv Channels Twothumb','')
         match=re.compile('<name>(.+?)</name><link>(.+?)</link><thumbnail>(.+?)</thumbnail>').findall(link)
         for name,url,thumb in sorted(match):

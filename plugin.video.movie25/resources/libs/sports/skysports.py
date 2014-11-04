@@ -13,16 +13,7 @@ art = main.art
     
 wh = watchhistory.WatchHistory('plugin.video.movie25')
 
-pyamfpath = xbmc.translatePath(os.path.join('special://home/addons', 'script.module.pyamf'))
-try: 
-    if not os.path.exists(pyamfpath):
-        url = 'https://github.com/mash2k3/MashUpFixes/raw/master/FIXES/script.module.pyamf.zip'
-        path = xbmc.translatePath(os.path.join('special://home/addons','packages'))
-        lib=os.path.join(path, 'script.module.pyamf.zip')
-        if main.downloadFile(url,lib):
-            addonfolder = xbmc.translatePath(os.path.join('special://home/addons',''))
-            xbmc.executebuiltin("XBMC.Extract(%s,%s)"%(lib,addonfolder))
-except: pass
+
 
 def SKYSPORTS():
         main.addDir('All Videos','http://www1.skysports.com/watch/more/5/27452/200/1',173,art+'/skysports.png')
@@ -247,7 +238,7 @@ def SKYSPORTSTV(murl):
         main.GA("SkySportsTV","List")
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        match = re.compile('<img src=".+?" data-src="(.+?)" class=".+?">                                                                                                                    </a>                                </div>                                <div class=".+?">                                    <a href="(.+?)" class=".+?">                                        <h4 class=".+?">(.+?)</h4>').findall(link)
+        match = re.compile('<img src=".+?" data-src="([^"]+)" class=".+?<a href="([^"]+)" class=".+?<h4 class=".+?">([^<]+)</h4>').findall(link)
         for thumb,url, name in match:
             thumb=thumb.replace('16-9/#{30}','384x216')
             url=url.replace('watch/tv-shows','watch/video/tv-shows').replace('/fantasyFC','/watch/video/tv-shows/fantasyFC')
@@ -258,7 +249,7 @@ def SKYSPORTSList(murl):
         main.GA("SkySports","List")
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        match=re.compile('<a href="(.+?)" class=".+?">                                <img src=".+?" data-src="(.+?)" class=".+?">                                                                    <div class=".+?"><span class=".+?"></span></div>                                                            </a>                        </div>                        <div class=".+?">                            <a href=".+?" class="-a-block">                                <h4 class=".+?">(.+?)</h4>                                                                    <p class=".+?">(.+?)</p>                                                                            <button class=".+?">(.+?)</button>').findall(link)
+        match=re.compile('<a href="([^"]+)" class=".+?data-src="([^"]+)" class=".+?<h4 class=".+?">([^<]+)</h4>.+?">([^<]+)</p>.+?">([^<]+)</button>').findall(link)
         for url,thumb,name,date,typ in match:
                 thumb=thumb.replace('16-9/#{30}','384x216')
                 if name!='Sky Sports News Report':
@@ -277,7 +268,7 @@ def SKYSPORTSList2(murl):
                         durl=durl.replace('{currentPage}','1').replace('/12/','/75/')
                 link2=main.OPENURL('http://www1.skysports.com'+durl)
                 link2=link2.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-                match=re.compile('<a href="(.+?)" class=".+?">                                <img src=".+?" data-src="(.+?)" class=".+?">                                                                    <div class=".+?"><span class=".+?"></span></div>                                                            </a>                        </div>                        <div class=".+?">                            <a href=".+?" class="-a-block">                                <h4 class=".+?">(.+?)</h4>                                                                    <p class=".+?">(.+?)</p>                                                                            <button class=".+?">(.+?)</button>').findall(link2)
+                match=re.compile('<a href="([^"]+)" class=".+?data-src="([^"]+)" class=".+?<h4 class=".+?">([^<]+)</h4>.+?">([^<]+)</p>.+?">([^<]+)</button>').findall(link)
                 for url,thumb,name,date,typ in match:
                         thumb=thumb.replace('16-9/#{30}','384x216')
                         if name!='Sky Sports News Report':
@@ -288,29 +279,7 @@ def SKYSPORTSList2(murl):
         else:
                 xbmc.executebuiltin("XBMC.Notification(Sorry!,No Video's to list,3000)")
 
-def playBrightCoveStream(bc_videoID):
-        from pyamf import remoting
-        import httplib
-        bc_playerID = 813474149001
-        bc_publisherID = 165012893
-        bc_const = "cf760beae3fbdde270b76f2109537e13144e6fbd"
-        conn = httplib.HTTPConnection("c.brightcove.com")
-        envelope = remoting.Envelope(amfVersion=3)
-        envelope.bodies.append(("/1", remoting.Request(target="com.brightcove.player.runtime.PlayerMediaFacade.findMediaById", body=[bc_const, bc_playerID, bc_videoID, bc_publisherID], envelope=envelope)))
-        conn.request("POST", "/services/messagebroker/amf?playerId=" + str(bc_playerID), str(remoting.encode(envelope).read()), {'content-type': 'application/x-amf'})
-        response = conn.getresponse().read()
-        response = remoting.decode(response).bodies[0][1].body
-        streamUrl = ""
-        for item in sorted(response['renditions'], key=lambda item: item['encodingRate'], reverse=False):
-                encRate = item['encodingRate']
-                if encRate <= selfAddon.getSetting("ss-qua"):
-                        streamUrl = item['defaultURL']
-        if streamUrl.find("http://") == 0:
-                return streamUrl+"?videoId="+bc_videoID+"&lineUpId=&pubId="+str(bc_publisherID)+"&playerId="+str(bc_playerID)+"&affiliateId=&v=&fp=&r=&g="
-        else:
-                url = streamUrl[0:streamUrl.find("&")]
-                playpath = streamUrl[streamUrl.find("&")+1:]
-                return url+' playpath='+playpath        
+  
         
 
 def SKYSPORTSLink(mname,murl):
@@ -320,14 +289,19 @@ def SKYSPORTSLink(mname,murl):
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
         match=re.compile('data-video-id="([^"]+?)"').findall(link)
-        stream_url=playBrightCoveStream(match[0])
+        vlink='http://cf.c.ooyala.com/'+match[0]+'/'+match[0]+'_1.f4m'
         desc=re.compile('<meta name="description" content="(.+?)"/>').findall(link)
-        thumb=re.compile("<link rel='image_src' href='(.+?)' />").findall(link)
+        thumb=re.compile("<link rel='image_src' href='([^']+?)' />").findall(link)[0]
+        print
         infoL={ "Title": mname, "Plot": desc[0]}
-        # play with bookmark
-        player = playbackengine.PlayWithoutQueueSupport(resolved_url=stream_url, addon_id=addon_id, video_type='', title=mname,season='', episode='', year='',img=thumb[0],infolabels=infoL, watchedCallbackwithParams=main.WatchedCallbackwithParams,imdb_id='')
-        #WatchHistory
+        from resources.universal import F4mProxy
+        player=F4mProxy.f4mProxyHelper()
+        proxy=None
+        use_proxy_for_chunks=False
+        player.playF4mLink(vlink, mname, proxy, use_proxy_for_chunks,'',thumb)
         if selfAddon.getSetting("whistory") == "true":
-            wh.add_item(mname+' '+'[COLOR green]SkySports[/COLOR]', sys.argv[0]+sys.argv[2], infolabels='', img=thumb[0], fanart='', is_folder=False)
-        player.KeepAlive()
-        return ok
+            from resources.universal import watchhistory
+            wh = watchhistory.WatchHistory(addon_id)
+            wh.add_item(mname+' '+'[COLOR green]SkySports[/COLOR]', sys.argv[0]+sys.argv[2], infolabels=infoL, img=thumb, fanart='', is_folder=False)
+
+

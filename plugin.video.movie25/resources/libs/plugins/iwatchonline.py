@@ -75,15 +75,26 @@ def superSearch(encode,type):
         returnList=[]
         search_url = 'http://www.iwatchonline.to/search'
         from t0mm0.common.net import Net as net
-        search_content = net().http_POST(search_url, { 'searchquery' : encode, 'searchin' : type} ).content.encode('utf-8')
+        encodewithoutepi = urllib.quote(re.sub('(?i)(\ss(\d+)e(\d+))|(Season(.+?)Episode)|(\d+)x(\d+)','',urllib.unquote(encode)).strip())
+        search_content = net().http_POST(search_url, { 'searchquery' : encodewithoutepi, 'searchin' : type} ).content.encode('utf-8')
         r = re.findall('(?s)<table(.+?)</table>',search_content)
         r=main.unescapes(r[0])
+        epi = re.search('(?i)s(\d+?)e(\d+?)$',encode)
+        if epi:
+            epistring = encode.rpartition('%20')[2].upper()
+
         match=re.compile('<img.+?src=\"(.+?)\".+?<a.+?href=\"(.+?)\">(.+?)</a>').findall(r)
         for thumb,url,name in match:
             if type=='m':
                 returnList.append((name,prettyName,url,thumb,588,True))
             else:
-                returnList.append((name,prettyName,url,thumb,590,True))
+                if epi:
+                    url = url.replace('/tv-shows/','/episode/')+'-'+epistring.lower()
+                    name=re.sub('(\d{4})','',name.replace(' (','').replace(')',''))
+                    returnList.append((name + ' ' + epistring,prettyName,url,thumb,588,True))
+                else:
+
+                    returnList.append((name,prettyName,url,thumb,590,True))
         return returnList
     except: return []
 
@@ -225,11 +236,10 @@ def iWatchLISTMOVIES(murl):
             percent = (loadedLinks * 100)/totalLinks
             remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
             dialogWait.update(percent,'[B]Will load instantly from now on[/B]',remaining_display)
-            if (dialogWait.iscanceled()):
-                    return False   
+            if (dialogWait.iscanceled()): break 
         dialogWait.close()
         del dialogWait
-        if len(match)==25:
+        if len(match)==25 and loadedLinks == 25:
             paginate=re.compile('([^<]+)&p=([^<]+)').findall(murl)
             for purl,page in paginate:
                 i=int(page)+25
@@ -399,10 +409,9 @@ def iWatchLINK(mname,url):
     links = re.search('<tbody>(.+?)</tbody>', link2)
     
     if links:
-        links = links.group(1)
-        print links
-        
-        match=re.compile('<a href="([^"]+?)" target="_blank" rel="nofollow"><img src=".+?> ([^<]+?)</td>  <td><img src=".+?</td>  <td>.+?</td>  <td>([^<]+?)</td>', re.DOTALL).findall(links)
+        links = links.group(1).replace('  ','')
+        #print links         href="([^"]+?)" target="_blank" rel="nofollow"><img src=".+?>([^<]+?)</td><td><img src=".+?</td><td>.+?</td><td>([^<]+?)</td>
+        match=re.compile('href="([^"]+?)" target="_blank" rel="nofollow"><img src=".+?>([^<]+?)</td><td><img src=".+?</td><td>.+?</td><td>([^<]+?)</td>', re.DOTALL).findall(links)
         for url, name, qua in match:
             name=name.replace(' ','')
             if name[0:1]=='.':

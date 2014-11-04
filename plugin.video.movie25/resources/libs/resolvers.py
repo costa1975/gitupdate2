@@ -75,6 +75,8 @@ def resolve_url(url, filename = False):
                 stream_url=resolve_googleDocs(url)
             elif re.search('mrfile',url,re.I):
                 stream_url=resolve_mrfile(url)
+            elif re.search('sockshare',url,re.I):
+                stream_url=resolve_sockshare(url)
             elif re.search('picasaweb.google',url,re.I):
                 stream_url=resolve_picasaWeb(url)
             elif re.search('youtube',url,re.I):
@@ -258,6 +260,59 @@ def resolve_realdebrid(url):
     except Exception, e:
         logerror('**** Real-Debrid Error occured: %s' % e)
         xbmc.executebuiltin('[B][COLOR white]Real-Debrid[/COLOR][/B]','[COLOR red]%s[/COLOR]' % e, 5000, elogo)
+
+
+def resolve_sockshare(url):
+        try:
+            html = net().http_GET(url).content
+            dialog = xbmcgui.DialogProgress()
+            dialog.create('Resolving', 'Resolving MashUp Sockshare Link...')
+            pattern = '<a href="(/.+?)" class="download_file_link" style="margin:0px 0px;">Download File</a>'
+            link = re.search(pattern, html)
+            if link:
+                logerror('Direct link found: %s' % link.group(1))
+                return 'http://www.sockshare.com%s' % link.group(1)
+
+            r = re.search('value="([^"]+)" name="hash"', html)
+            if r:
+                session_hash = r.group(1)
+            else:
+                raise Exception ('Sockshare: session hash not found')
+
+            html = net().http_POST(url, form_data={'hash': session_hash,'confirm': 'Continue as Free User'}).content
+        
+            r = re.search('\?stream=(.+?)\'', html)
+            if r:
+                playlist_code = r.group(1)
+            else:
+                r = re.search('key=(.+?)&',html)
+                playlist_code = r.group(1)
+            Avi = "http://sockshare.com/get_file.php?stream=%s&original=1"%playlist_code
+            if Avi:
+                html = net().http_GET(Avi).content
+                final=re.compile('url="(.+?)"').findall(html)[0].replace('&amp;','&')
+                return "%s?User-Agent=%s"%(final,'Mozilla%2F5.0%20(Windows%20NT%206.1%3B%20rv%3A11.0)%20Gecko%2F20100101%20Firefox%2F11.0')
+            else:
+                xml_url = re.sub('/(file|embed)/.+', '/get_file.php?stream=', url)
+                xml_url += playlist_code
+                html = net().http_GET(xml_url).content
+
+                r = re.search('url="(.+?)"', html)
+                if r:
+                    flv_url = r.group(1)
+                else:
+                    raise Exception ('Sockshare: stream url not found')
+
+                return "%s?User-Agent=%s"%(flv_url.replace('&amp;','&'),'Mozilla%2F5.0%20(Windows%20NT%206.1%3B%20rv%3A11.0)%20Gecko%2F20100101%20Firefox%2F11.0')
+        
+        except urllib2.URLError, e:
+            logerror('Sockshare: got http error %d fetching %s' %
+                                    (e.code, url))
+            #return unresolvable(code=3, msg=e)
+        except Exception, e:
+            logerror('**** Sockshare Error occured: %s' % e)
+            xbmc.executebuiltin('[B][COLOR white]Sockshare[/COLOR][/B]','[COLOR red]%s[/COLOR]' % e, 5000, elogo)
+            return unresolvable(code=0, msg=e)
         
 def resolve_mrfile(url):
     try:
@@ -942,43 +997,52 @@ def resolve_megarelease(url):
         raise ResolverError(str(e),"MegaRelease")
     finally:
         dialog.close()
-
-def resolve_veehd(url):
-    name = "veeHD"
-    cookie_file = os.path.join(datapath, '%s.cookies' % name)
-    user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'
+        
+def setCookie(url):
     from random import choice
-    userName = ['mashup1', 'mashup3', 'mashup4', 'mashup5', 'mashup6', 'mashup7']
+    cookieExpired = False
+    name = "veeHD"
+    userName = ['mashup12', 'mashup13', 'mashup14', 'mashup15', 'mashup16']
+    ref = 'http://veehd.com'
+    submit = 'Login'
+    terms = 'on'
+    remember_me = 'on'
+    net().http_GET(url)
+    net().http_POST('http://veehd.com/login',{'ref': ref, 'uname': choice(userName), 'pword': 'xbmcisk00l', 'submit': submit, 'terms': terms,'remember_me':remember_me})
+
+        
+def resolve_veehd(url):
+    
+    
     try:
         dialog = xbmcgui.DialogProgress()
         dialog.create('Resolving', 'Resolving Mash Up VeeHD Link...')       
         dialog.update(0)
-        loginurl = 'http://veehd.com/login'
-        ref = 'http://veehd.com/'
-        submit = 'Login'
-        terms = 'on'
-        remember_me = 'on'
-        data = {'ref': ref, 'uname': choice(userName), 'pword': 'xbmcisk00l', 'submit': submit, 'terms': terms, 'remember_me': remember_me}
-        html = net(user_agent).http_POST(loginurl, data).content
         if dialog.iscanceled(): return False
         dialog.update(33)
-        net().save_cookies(cookie_file)
         headers = {}
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.13+ (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2'}
-        net().set_cookies(cookie_file)
+        headers = {'User-Agent': 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7','Referer':url}
         print 'Mash Up VeeHD - Requesting GET URL: %s' % url
+        setCookie('http://veehd.com')
         html = net().http_GET(url, headers).content
         if dialog.iscanceled(): return False
         dialog.update(66)
         fragment = re.findall('playeriframe".+?attr.+?src : "(.+?)"', html)
-        frag = 'http://%s%s'%('veehd.com',fragment[1])
-        net().set_cookies(cookie_file)
+        for frags in fragment:
+            pass
+        frag = 'http://%s%s'%('veehd.com',frags)
+        setCookie('http://veehd.com')
         html = net().http_GET(frag, headers).content
+        va=re.search('iframe" src="([^"]+?)"',html)
+        if va:
+            poop='http://veehd.com'+va.group(1)
+            headers = {'User-Agent': 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7','Referer':frag,'Cache-Control':'max-age=0'}
+            setCookie(poop)
+            html = net().http_GET(frag, headers).content
         r = re.search('"video/divx" src="(.+?)"', html)
         if r:
             stream_url = r.group(1)
         if not r:
-            print name + '- 1st attempt at finding the stream_url failed probably an Mp4, finding Mp4'
             a = re.search('"url":"(.+?)"', html)
             if a:
                 r=urllib.unquote(a.group(1))

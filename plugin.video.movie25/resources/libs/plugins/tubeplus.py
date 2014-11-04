@@ -8,7 +8,7 @@ art = main.art
 error_logo = art+'/bigx.png'
 
 if selfAddon.getSetting("tube-proxy") == "true":
-    BASE_URL = 'http://tubeplus.unblocked2.co/'
+    BASE_URL = 'http://tubeplus.unblocked2.bz/'
 else:
     BASE_URL = 'http://tubeplus.me/'
 prettyName = 'TubePlus'
@@ -147,7 +147,7 @@ def LATEST_TV(url):
 def SEASONS(mname,url,thumb):
     if thumb == None:
         thumb=''
-    if 'http://' not in url:
+    if 'http://www.tubeplus.me/' not in url:
         url=BASE_URL+url
     html = main.OPENURL2(url)
     r = re.findall(r'id="l(sea.+?)" class="season"',html,flags=re.DOTALL|re.M)
@@ -298,7 +298,7 @@ def GOTOP(url):
     xbmc.executebuiltin("XBMC.Notification(Sorry!,This feature will be ready next update,8000)")
 
 def superSearch(encode,type):
-    try:
+    if encode:
         returnList=[]
         epi = re.search('(?i)s(\d+?)e(\d+?)$',encode)
         if epi:
@@ -308,14 +308,11 @@ def superSearch(encode,type):
             site = 'site:http://tubeplus.me'
             results = main.SearchGoogle(urllib.unquote(encode), site)
             for res in results:
-                t = res.title.encode('utf8').strip('...')
+                t = res.title.encode('utf8')
                 u = res.url.encode('utf8')
                 if type == 'TV':
                     t = re.sub('(.*\)).*','\\1',t)
-                    t = t.strip(" -").replace("-","").split(" Watch Online")[0].title()
-                    t = re.sub('\s\s+',' ',t).strip()
-                    t = re.sub('(?i)(s\d+e\d+\s?)(.*?)$','\\1[COLOR blue]\\2[/COLOR]',t)
-                    returnList.append((t,prettyName,u.replace('http://www.tubeplus.me/',''),'',1026,True))
+                    returnList.append((t.strip(" -").replace("-","").split(" Watch Online")[0],prettyName,u.replace('http://www.tubeplus.me/',''),'',1026,True))
                     return returnList
         if type=='Movies':
             surl = BASE_URL+'search/movies/'+encode+'/0/'
@@ -333,7 +330,7 @@ def superSearch(encode,type):
             else:
                 returnList.append((name,prettyName,url,thumb,1049,True))
         return returnList
-    except: return []
+    #except: return []
 
 def SEARCH(murl):
     if murl == 'tv':

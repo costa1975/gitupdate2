@@ -9,11 +9,11 @@ selfAddon = xbmcaddon.Addon(id=addon_id)
 #Commands.append(('[B][COLOR lime]Mash Up[/COLOR] Settings[/B]','XBMC.RunScript('+xbmc.translatePath(mashpath + '/resources/libs/settings.py')+')'))
 def getHomeItems():
     d=[]
-    for x in range(38): 
+    for x in range(40): 
         d.append(None);
         itemid = str(x + 1)
-        if selfAddon.getSetting("homeitem_" +itemid+ "_enabled")== "true":
-            d[x]=int(selfAddon.getSetting("homeitem_" + itemid))
+        if selfAddon.getSetting("homeitems_" +itemid+ "_enabled")== "true":
+            d[x]=int(selfAddon.getSetting("homeitems_" + itemid))
     return d
 
 def getRefreshRequiredSettings():

@@ -235,7 +235,8 @@ def superSearch(searchQuery,type):
             name = processTitle(title,quality)
             if isArchive(url): name = '[B][Archived][/B] ' + name
             url=url.replace('\/','/')
-            returnList.append((name,prettyName,url,'',62,True))
+            if '[Archived]' not in name:
+                returnList.append((name,prettyName,url,'',62,True))
         return returnList
     except: return []
             

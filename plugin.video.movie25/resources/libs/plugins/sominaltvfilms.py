@@ -24,20 +24,20 @@ wh = watchhistory.WatchHistory('plugin.video.movie25')
 def MAIN():
         main.GA("Plugin","SominalTv")
         main.addDir('Search','xoxe',624,art+'/search.png')
-        main.addDir('Hindi','http://www.sominaltvfilms.com/category/hindi-movies',620,art+'/hindi.png')
-        main.addDir('Telugu','http://www.sominaltvfilms.com/category/telugu',620,art+'/telugu.png')
-        main.addDir('Tamil','http://www.sominaltvfilms.com/category/tamil',620,art+'/tamil.png')
-        main.addDir('Malayalam','http://www.sominaltvfilms.com/category/malayalam',620,art+'/malayalam.png')
-        main.addDir('Punjabi','http://www.sominaltvfilms.com/category/punjabi',620,art+'/punjabi.png')
-        main.addDir('BluRay','http://www.sominaltvfilms.com/category/bluray',620,art+'/bluray.png')
-        main.addDir('All English Subtitled Movies','http://www.sominaltvfilms.com/category/english-subtitled',620,art+'/subtitled.png')
-        main.addDir('All Hindi Dubbed Movies','http://www.sominaltvfilms.com/category/hindi-dubbed',620,art+'/dubbed.png')
+        main.addDir('Hindi','http://www.playindiafilms.com/hindi-movies',620,art+'/hindi.png')
+        main.addDir('Telugu','http://www.playindiafilms.com/telugu',620,art+'/telugu.png')
+        main.addDir('Tamil','http://www.playindiafilms.com/tamil',620,art+'/tamil.png')
+        main.addDir('Malayalam','http://www.playindiafilms.com/malayalam',620,art+'/malayalam.png')
+        main.addDir('Punjabi','http://www.playindiafilms.com/punjabi',620,art+'/punjabi.png')
+        main.addDir('BluRay','http://www.playindiafilms.com/bluray',620,art+'/bluray.png')
+        main.addDir('All English Subtitled Movies','http://www.playindiafilms.com/english-subtitled',620,art+'/subtitled.png')
+        main.addDir('All Hindi Dubbed Movies','http://www.playindiafilms.com/hindi-dubbed',620,art+'/dubbed.png')
 
 
 def AtoZ(url):
-    main.addDir('0-9','http://www.sominaltvfilms.com/search/label/%23'+url+'?&max-results=15',620,art+'/09.png')
+    main.addDir('0-9','http://www.playindiafilms.com/search/label/%23'+url+'?&max-results=15',620,art+'/09.png')
     for i in string.ascii_uppercase:
-            main.addDir(i,'http://www.sominaltvfilms.com/search/label/'+i+url+'?&max-results=15',620,art+'/'+i.lower()+'.png')
+            main.addDir(i,'http://www.playindiafilms.com/search/label/'+i+url+'?&max-results=15',620,art+'/'+i.lower()+'.png')
     main.GA("Watchseries","A-Z")
     main.VIEWSB()
     
@@ -47,7 +47,7 @@ def SEARCH():
         if (keyb.isConfirmed()):
                 search = keyb.getText()
                 encode=urllib.quote(search)
-                surl='http://www.sominaltvfilms.com/?s='+encode
+                surl='http://www.playindiafilms.com/?s='+encode
         link=main.OPENURL(surl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
         match=re.compile('<img width=".+?" height=".+?" src="(.+?)" class=".+?" alt=".+?".+?<h1 class=".+?"><a class=".+?" href="(.+?)" title=".+?">(.+?)</a></h1>.+?<div class="excerpt-wrapper"><div class="excerpt"><p>(.+?)</p>').findall(link)
@@ -61,23 +61,24 @@ def SEARCH():
 def LIST(mname,murl):
         main.GA("SominalTv","List")
         if mname=='Hindi':
-                main.addDir('Hindi English Subtitled','http://www.sominaltvfilms.com/category/hindi-movies-english-subtitles',620,art+'/subtitled.png')
-                main.addDir('Hindi BluRay','http://www.sominaltvfilms.com/category/hindi-blurays',620,art+'/bluray.png')
+                main.addDir('Hindi English Subtitled','http://www.playindiafilms.com/hindi-movies-english-subtitles',620,art+'/subtitled.png')
+                main.addDir('Hindi BluRay','http://www.playindiafilms.com/hindi-blurays',620,art+'/bluray.png')
         elif mname=='Telugu':
-                main.addDir('Telugu English Subtitled','http://www.sominaltvfilms.com/category/telugu-movies-english-subtitles',620,art+'/subtitled.png')
-                main.addDir('Telugu BluRay','http://www.sominaltvfilms.com/category/telugu-blurays',620,art+'/bluray.png')
+                main.addDir('Telugu English Subtitled','http://www.playindiafilms.com/telugu-movies-english-subtitles',620,art+'/subtitled.png')
+                main.addDir('Telugu BluRay','http://www.playindiafilms.com/telugu-blurays',620,art+'/bluray.png')
         elif mname=='Tamil':
-                main.addDir('Tamil English Subtitled','http://www.sominaltvfilms.com/category/tamil-movies-english-subtitles',620,art+'/subtitled.png')
-                main.addDir('Tamil BluRay','http://www.sominaltvfilms.com/category/tamil-blurays',620,art+'/bluray.png')
+                main.addDir('Tamil English Subtitled','http://www.playindiafilms.com/tamil-movies-english-subtitles',620,art+'/subtitled.png')
+                main.addDir('Tamil BluRay','http://www.playindiafilms.com/tamil-blurays',620,art+'/bluray.png')
         elif mname=='Malayalam':
-                main.addDir('Malayalam English Subtitled','http://www.sominaltvfilms.com/category/malayalam-movies-english-subtitles',620,art+'/subtitled.png')
+                main.addDir('Malayalam English Subtitled','http://www.playindiafilms.com/malayalam-movies-english-subtitles',620,art+'/subtitled.png')
         elif mname=='Punjabi':
-                main.addDir('Punjabi English Subtitled','http://www.sominaltvfilms.com/category/punjabi-movies-english-subtitles',620,art+'/subtitled.png')
+                main.addDir('Punjabi English Subtitled','http://www.playindiafilms.com/punjabi-movies-english-subtitles',620,art+'/subtitled.png')
         elif mname=='All Hindi Dubbed Movies':
-                main.addDir('Dubbed BluRay','http://www.sominaltvfilms.com/category/hindi-dubbed-blurays',620,art+'/bluray.png')
+                main.addDir('Dubbed BluRay','http://www.playindiafilms.com/hindi-dubbed-blurays',620,art+'/bluray.png')
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        match=re.compile("""<a href="([^<]+)"><img src="(.+?)" alt="(.+?)"/>.+?<div class='description'>.+?<p>(.+?)</p>""").findall(link)
+        
+        match=re.compile("""<img src="([^"]+?)" alt="([^"]+?)"/></a>.+?class="title"><b><a href='([^']+?)'>.+?</b>.+?class='description'><div class='excerpt'><p>(.+?)...""").findall(link)
                                                         
         dialogWait = xbmcgui.DialogProgress()
         ret = dialogWait.create('Please wait until Show list is cached.')
@@ -85,7 +86,7 @@ def LIST(mname,murl):
         loadedLinks = 0
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
         dialogWait.update(0,'[B]Will load instantly from now on[/B]',remaining_display)
-        for url,thumb,name,desc in match:
+        for thumb,name,url,desc in match:
                 desc=desc.replace('  ','')
                 name=main.unescapes(name)
                 main.addDirM(name,url,621,thumb,desc,thumb,'','','')
@@ -97,7 +98,7 @@ def LIST(mname,murl):
                     return False   
         dialogWait.close()
         del dialogWait
-        paginate = re.compile("""<a class="nextpostslink" href="(.+?)">.+?</a>""").findall(link)
+        paginate = re.compile("""rel="next" href="(.+?)">.+?</a>""").findall(link)
         if len(paginate)>0:
             main.addDir('Next',paginate[0],620,art+'/next2.png')
         main.VIEWS()
@@ -136,6 +137,15 @@ def unescapes(text):
 
 def getvideo2(murl,answer=''):
         link2=main.OPENURL(murl)
+        stream_url3= re.compile("f=(.+?)',").findall(link2)
+        if stream_url3:
+                link3=main.OPENURL(stream_url3[0])
+                stream_url4= re.compile("<hd>([^>]+?)</hd>").findall(link3)
+                if stream_url4:
+                        return stream_url4[0]
+                else:
+                        stream_url4= re.compile("<src>([^>]+?)</src>").findall(link3)
+                        return stream_url4[0]
         linkx=dekode(link2)
         stream_url2= re.compile('file: "(.+?)"').findall(linkx)
         if stream_url2:
@@ -149,7 +159,6 @@ def getvideo2(murl,answer=''):
                 if docUrl: docUrl=docUrl[0]
                 else:
                     link3=dekode(link2)
-                    print link3
                     try:
                         docid= re.compile('docid=(.+?)\&').findall(link3)
                         if docid:
@@ -171,7 +180,6 @@ def getvideo2(murl,answer=''):
         
 
                 if docUrl:
-                        print docUrl
                         xbmc.executebuiltin("XBMC.Notification(Please Wait!,Collecting Links,3000)")
                         stream_url = main.resolve_url(docUrl.replace('\/','/'))
                         return stream_url
@@ -194,7 +202,6 @@ def LINK2(mname,murl,thumb,desc):
         main.GA("SominalTv","Watched")
         if murl:
                 if "'," in murl:
-                    print murl
                     mname=main.removeColoredText(mname)
                     pl=xbmc.PlayList(1);pl.clear()
                     playlist = sorted(list(set(eval(murl))), key=lambda playlist: playlist[0])

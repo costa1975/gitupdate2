@@ -169,6 +169,11 @@ def resolveIceLink(params):
     from t0mm0.common.net import Net as net
     ajax_url = IceURL + '/membersonly/components/com_iceplayer/video.phpAjaxResp.php'
     headers = {'Content-type':'application/x-www-form-urlencoded'}
+    s_params=re.search('<t>([^<]+?)</t><sec>([^<]+?)</sec><id>([^<]+?)</id>',params)
+    params = {}
+    params['sec'] = s_params.group(2)
+    params['t']=s_params.group(1)
+    params['id']=s_params.group(3)
     import random
     source_params = {'iqs': '','url': '', 'cap': '' }
     source_params['m'] = random.randrange(100, 300) * -1
@@ -178,6 +183,7 @@ def resolveIceLink(params):
     return urllib.unquote(re.search('url=(.*)', ajax_content).group(1))
 
 def GetHostsName(url):
+    print "ddds "+str(url)
     #murl = eval(urllib.unquote(url))
     url=resolveIceLink(url)
     host_list = {"2shared.com":"2shared","180upload.com":"180upload","vidhog.com":"vidhog","sharebees.com": "sharebees","movreel.com":"movreel",
@@ -199,17 +205,21 @@ def LISTLINKS(mname,murl):
     content = main.OPENURL(IceURL+url, verbose=False)
     source_args = {}
     source_args['sec'] = re.search('f\.lastChild\.value="([^"]+?)",a', content).group(1)
-    source_args['t'] = re.search('"&t=([^"]+)",', content).group(1)         
+    source_args['t'] = re.search('"&t=([^"]+)",', content).group(1)
+    sec = re.search('f\.lastChild\.value="([^"]+?)",a', content).group(1)
+    t = re.search('"&t=([^"]+)",', content).group(1)
     for quality, links in re.findall('<div class=ripdiv><b>([^<]+?)</b><p>(.+?)<p></div>', content):
         if 'DVD' in quality: quality = 'SD'
         elif 'HD' in quality: quality = 'HD'
-        for id in re.findall('<a[^>]+?go\(([^\)]+?)\)[^"]', links):
+        for id, text in re.findall('''<a[^>]+?go\(([^\)]+?)\)'>Source #\d+: (.+?)</a>''', links):
             
             source_params = source_args
             source_params['id'] = id
-            host=GetHostsName(source_params)
-            thumb = host[0].lower()
-            main.addDown2(mname+' [COLOR red]'+quality+'[/COLOR]'+' [COLOR blue]'+host[0].upper()+'[/COLOR]',host[1],284,art+'/hosts/'+thumb+".png",art+'/hosts/'+thumb+".png")
+            s_params='<t>'+t+'</t><sec>'+sec+'</sec><id>'+id+'</id>'
+            host=re.sub('<.*?>','',text,re.I|re.DOTALL).strip()
+            #host=GetHostsName(source_params)
+            thumb = host.lower()
+            main.addDown2(mname+' [COLOR red]'+quality+'[/COLOR]'+' [COLOR blue]'+host.upper()+'[/COLOR]',s_params,284,art+'/hosts/'+thumb+".png",art+'/hosts/'+thumb+".png")
             
 def StartIceFilmsSearch(type='Movies'):
     searchpath=os.path.join(main.datapath,'Search')
@@ -229,7 +239,16 @@ def StartIceFilmsSearch(type='Movies'):
 def superSearch(encode,type):
     try:
         returnList=[]
-        if type == 'Movies':
+        epi = re.search('(?i)s(\d+?)e(\d+?)$',encode)
+        if epi:
+            epistring = encode.rpartition('%20')[2].upper()
+            e = int(epi.group(2))
+            s = int(epi.group(1))
+            if len(str(e)) == 1:
+                e='0'+str(e)
+            encodewithoutepi = urllib.quote(re.sub('(?i)(\ss(\d+)e(\d+))|(Season(.+?)Episode)|(\d+)x(\d+)','',urllib.unquote(encode)).strip())
+            encode=encodewithoutepi+' '+str(s)+'x'+str(e)
+        if type == 'Movies' or epi:
             site = 'site:http://icefilms.info/ip'
         else: site = 'site:http://icefilms.info/tv/series'
         results = main.SearchGoogle(urllib.unquote(encode), site)
@@ -237,8 +256,12 @@ def superSearch(encode,type):
             t = res.title.encode('utf8')
             u = res.url.encode('utf8')
             if type == 'TV':
-                t = t.rpartition('Episode List')[0]
-                returnList.append((t.strip(" -"),prettyName,u,'',289,True))
+                if epi:
+                    t = re.sub('(.*\)).*','\\1',t)
+                    returnList.append((t.strip(" -"),prettyName,u,'',283,True))
+                else:
+                    t = t.rpartition('Episode List')[0]
+                    returnList.append((t.strip(" -"),prettyName,u,'',289,True))
             else:
                 if not re.search('(?i)\s\d+x\d+',t) and (re.search('(?i)links',t) or re.search('\.\.\.$',t)):
                     t = re.sub('(.*\)).*','\\1',t)
@@ -299,6 +322,7 @@ def PLAYLINK(mname,murl):
     img=infoLabels['cover_url']
     fanart =infoLabels['backdrop_url']
     imdb_id=infoLabels['imdb_id']
+    murl=resolveIceLink(murl)
     infolabels = { 'supports_meta' : 'true', 'video_type':video_type, 'name':str(infoLabels['title']), 'imdb_id':str(infoLabels['imdb_id']), 'season':str(season), 'episode':str(episode), 'year':str(infoLabels['year']) }
     try:
         xbmc.executebuiltin("XBMC.Notification(Please Wait!,Resolving Link,3000)")

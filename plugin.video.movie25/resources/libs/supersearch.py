@@ -94,6 +94,10 @@ def SEARCH(mname,type,libID=''):
         encodeunquoted = urllib.unquote(encode)
         encode = re.sub('(?i)[^a-zA-Z0-9]',' ',encodeunquoted)
         encode = re.sub('(?i)\s\s+',' ',encode).strip()
+        try: year = int(re.sub('(?i)^.+?\s\(?([12][90]\d{2})\)?.*','\\1',mname))
+        except: year = 0
+        encodeorg = encode
+        encode = re.sub('(?i)^(.+?)\s\(?[12][90]\d{2}\)?.*','\\1',encode)
         encode = urllib.quote(encode)
         if type=='Movies':
             if selfAddon.getSetting('ssm_iwatch') != 'false':
@@ -130,12 +134,12 @@ def SEARCH(mname,type,libID=''):
                 q = queue.Queue()
                 threading.Thread(target=yify,args=(encode,type,q)).start()
                 results.append(q)
-            if selfAddon.getSetting('ssm_noobroom') != 'false':
-                if selfAddon.getSetting('username') != '' and selfAddon.getSetting('password') != '':
-                    sources.append('NoobRoom')
-                    q = queue.Queue()
-                    threading.Thread(target=noobroom,args=(encode,type,q)).start()
-                    results.append(q)
+#             if selfAddon.getSetting('ssm_noobroom') != 'false':
+#                 if selfAddon.getSetting('username') != '' and selfAddon.getSetting('password') != '':
+#                     sources.append('NoobRoom')
+#                     q = queue.Queue()
+#                     threading.Thread(target=noobroom,args=(encode,type,q)).start()
+#                     results.append(q)
             if selfAddon.getSetting('ssm_tubeplus') != 'false':
                 sources.append('TubePlus')
                 q = queue.Queue()
@@ -171,33 +175,43 @@ def SEARCH(mname,type,libID=''):
                 q = queue.Queue()
                 threading.Thread(target=vip,args=(encode,type,q)).start()
                 results.append(q)
+#             if selfAddon.getSetting('ssm_rls1click') != 'false':
+#                 sources.append('Rls1Click')
+#                 q = queue.Queue()
+#                 threading.Thread(target=rls1click,args=(encode,type,q)).start()
+
         else:
             encodetv = urllib.quote(re.sub('(?i)^(.*?((\ss(\d+)e(\d+))|(Season(.+?)Episode \d+)|(\d+)x(\d+))).*','\\1',urllib.unquote(encode)))
             encodewithoutepi = urllib.quote(re.sub('(?i)(\ss(\d+)e(\d+))|(Season(.+?)Episode)|(\d+)x(\d+)','',urllib.unquote(encodetv)).strip())
             if selfAddon.getSetting('sstv_mbox') != 'false':
                 sources.append('MBox')
                 q = queue.Queue()
-                threading.Thread(target=mbox,args=(encodewithoutepi,type,q)).start()
+                threading.Thread(target=mbox,args=(encodetv,type,q)).start()
                 results.append(q)
             if selfAddon.getSetting('sstv_watchseries') != 'false':
                 sources.append('WatchSeries')
                 q = queue.Queue()
-                threading.Thread(target=watchseries,args=(encodewithoutepi,type,q)).start()
+                threading.Thread(target=watchseries,args=(encodetv,type,q)).start()
                 results.append(q)
             if selfAddon.getSetting('sstv_iwatch') != 'false':
                 sources.append('iWatchOnline')
                 q = queue.Queue()
-                threading.Thread(target=iwatch,args=(encodewithoutepi,type,q)).start()
+                threading.Thread(target=iwatch,args=(encodetv,type,q)).start()
+                results.append(q)
+            if selfAddon.getSetting('sstv_pftv') != 'false':
+                sources.append('PFTV')
+                q = queue.Queue()
+                threading.Thread(target=pftv,args=(encodetv,type,q)).start()
                 results.append(q)
             if selfAddon.getSetting('sstv_icefilms') != 'false':
                 sources.append('IceFilms')
                 q = queue.Queue()
-                threading.Thread(target=icefilms,args=(encodewithoutepi,type,q)).start()
+                threading.Thread(target=icefilms,args=(encodetv,type,q)).start()
                 results.append(q)
             if selfAddon.getSetting('sstv_tubeplus') != 'false':
                 sources.append('TubePlus')
                 q = queue.Queue()
-                threading.Thread(target=tubeplus,args=(encodewithoutepi,type,q)).start()
+                threading.Thread(target=tubeplus,args=(encodetv,type,q)).start()
                 results.append(q)
             if selfAddon.getSetting('sstv_tvrelease') != 'false':
                 sources.append('TVRelease')
@@ -230,6 +244,7 @@ def SEARCH(mname,type,libID=''):
                 q = queue.Queue()
                 threading.Thread(target=scenesource,args=(encodetv,type,q)).start()
                 results.append(q)
+
             encodewithoutepi = urllib.unquote(encodewithoutepi)
         encode = urllib.unquote(encode)
         if libID=='':
@@ -270,6 +285,7 @@ def SEARCH(mname,type,libID=''):
             t.join()
             
         else:
+            encode = encodeorg
             if type == 'TV':
                 wordsalt = set(encodewithoutepi.lower().split())
                 encode = urllib.unquote(encodetv)
@@ -277,7 +293,11 @@ def SEARCH(mname,type,libID=''):
             for name,section,url,thumb,mode,dir in searchList:
                 name = name.replace('&rsquo;',"'").replace('&quot;','"').strip()
                 cname = re.sub('(?i)[^a-zA-Z0-9]',' ',name)
-                name = name+' [COLOR=FF67cc33]'+section+'[/COLOR]'
+                try: cyear = int(re.sub('(?i)^.+?\s\(?([12][90]\d{2})\)?.*','\\1',cname))
+                except: cyear = 0 
+                if year and not re.search('(?i)^.+?\s\(?([12][90]\d{2})\)?.*',cname): cname += ' ' + str(year)
+                elif (cyear + 1) == year or (cyear - 1) == year: cname = cname.replace(str(cyear),str(year))
+                name = name +' [COLOR=FF67cc33]'+section+'[/COLOR]'
                 if type == 'TV' and (section == 'MBox' or section == 'WatchSeries' or section == 'iWatchOnline' or section == 'IceFilms' or section == 'TubePlus'):
                     words = wordsalt
                 else: words = wordsorg
@@ -328,6 +348,12 @@ def iwatch(encode,type,q):
     returnList = iwatchonline.superSearch(encode,type)
     if q: q.put(returnList)
     return returnList
+
+def pftv(encode,type,q):
+    from resources.libs.plugins import pftv
+    returnList = pftv.superSearch(encode,type)
+    if q: q.put(returnList)
+    return returnList
         
 def icefilms(encode,type,q):
     from resources.libs.movies_tv import icefilms
@@ -347,11 +373,11 @@ def fma(encode,type,q):
     if q: q.put(returnList)
     return returnList
 
-def noobroom(encode,type,q):
-    from resources.libs.movies_tv import starplay
-    returnList = starplay.superSearch(encode,type)
-    if q: q.put(returnList)
-    return returnList
+# def noobroom(encode,type,q):
+#     from resources.libs.movies_tv import starplay
+#     returnList = starplay.superSearch(encode,type)
+#     if q: q.put(returnList)
+#     return returnList
 
 def tubeplus(encode,type,q):
     from resources.libs.plugins import tubeplus
@@ -419,6 +445,13 @@ def filestube(encode,type,q):
     if q: q.put(returnList)
     return returnList
 
+# def rls1click(encode,type,q):
+#     from resources.libs.movies_tv import rls1click
+#     returnList = rls1click.superSearch(encode,type)
+#     if q: q.put(returnList)
+#     return returnList
+
+
 def vip(encode,type,q):
     from resources.libs.movies_tv import filestube
     returnList = vipSuperSearch(encode,type)
@@ -431,12 +464,12 @@ def vipSuperSearch(encode,type):
         encode = encode.replace('%20',' ')
         urls = []
         urls.append('https://raw.githubusercontent.com/mash2k3/demon88/master/1080pMovies%20.xml')
-        urls.append('https://raw.githubusercontent.com/mash2k3/Staael1982/master/veehdCollection.xml')
-        urls.append('https://raw.githubusercontent.com/mash2k3/Staael1982/master/2013%20HD.xml')
-        urls.append('https://raw.githubusercontent.com/mash2k3/Staael1982/master/2014%20HD.xml')
+        urls.append('https://raw.githubusercontent.com/Coolstreams/bobbyelvis/master/veehdCollection.xml')
+        urls.append('https://raw.githubusercontent.com/Coolstreams/bobbyelvis/master/2013%20HD.xml')
+        urls.append('https://raw.githubusercontent.com/Coolstreams/bobbyelvis/master/2014%20HD.xml')
         urls.append('https://raw.githubusercontent.com/mash2k3/MashUpTNPB/master/720p%20Movies.xml')
         urls.append('https://raw.githubusercontent.com/HackerMil/HackerMilsMovieStash/master/Movies/HD.xml')
-        xml = main.batchOPENURL(urls)
+        xml = main.batchOPENURL(urls,verbose=False)
         match=re.compile('(?sim)(<poster>.*?(?=<poster>|\Z))').findall(xml)
         for posterXML in match:
             poster = re.compile('(?sim)<poster>(.*?)</poster>').findall(posterXML)[0]

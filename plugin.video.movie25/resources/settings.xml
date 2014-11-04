@@ -37,82 +37,86 @@
    
    <category label="Home Layout">
 		<setting label="Customize your Home screen" type="lsep" />
-		<setting id="homeitem_36_enabled" type="bool" label="[B]Super Search[/B]" default="true"/>
-			<setting id="homeitem_36" type="number" label="     Order" default="5" visible="!eq(-1,false)"/>
-		<setting id="homeitem_1_enabled" type="bool" label="[B]Search (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_1" type="number" label="     Order" default="10" visible="!eq(-1,false)"/>
-		<setting id="homeitem_2_enabled" type="bool" label="[B]Favorites[/B]" default="true"/>
-			<setting id="homeitem_2" type="number" label="     Order" default="20" visible="!eq(-1,false)"/>
-		<setting id="homeitem_3_enabled" type="bool" label="[B]A-Z (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_3" type="number" label="     Order" default="30" visible="!eq(-1,false)"/>
-		<setting id="homeitem_4_enabled" type="bool" label="[B]New Releases (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_4" type="number" label="     Order" default="40" visible="!eq(-1,false)"/>
-		<setting id="homeitem_5_enabled" type="bool" label="[B]Lastest Added (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_5" type="number" label="     Order" default="50" visible="!eq(-1,false)"/>
-		<setting id="homeitem_6_enabled" type="bool" label="[B]Featured Movies (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_6" type="number" label="     Order" default="60" visible="!eq(-1,false)"/>
-		<setting id="homeitem_7_enabled" type="bool" label="[B]Most Viewed (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_7" type="number" label="     Order" default="70" visible="!eq(-1,false)"/>
-		<setting id="homeitem_8_enabled" type="bool" label="[B]Most Voted (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_8" type="number" label="     Order" default="80" visible="!eq(-1,false)"/>
-		<setting id="homeitem_9_enabled" type="bool" label="[B]HD Releases (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_9" type="number" label="     Order" default="90" visible="!eq(-1,false)"/>
-		<setting id="homeitem_10_enabled" type="bool" label="[B]Genre (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_10" type="number" label="     Order" default="100" visible="!eq(-1,false)"/>
-		<setting id="homeitem_11_enabled" type="bool" label="[B]By Year (Movie25)[/B]" default="true"/>
-			<setting id="homeitem_11" type="number" label="     Order" default="110" visible="!eq(-1,false)"/>
-		<setting id="homeitem_12_enabled" type="bool" label="[B]Watch History[/B]" default="true"/>
-			<setting id="homeitem_12" type="number" label="     Order" default="120" visible="!eq(-1,false)"/>
-		<setting id="homeitem_13_enabled" type="bool" label="[B]HD Movies[/B]" default="true"/>
-			<setting id="homeitem_13" type="number" label="     Order" default="130" visible="!eq(-1,false)"/>
-		<setting id="homeitem_14_enabled" type="bool" label="[B]3D Movies[/B]" default="true"/>
-			<setting id="homeitem_14" type="number" label="     Order" default="140" visible="!eq(-1,false)"/>
-		<setting id="homeitem_15_enabled" type="bool" label="[B]International[/B]" default="true"/>
-			<setting id="homeitem_15" type="number" label="     Order" default="150" visible="!eq(-1,false)"/>
-		<setting id="homeitem_16_enabled" type="bool" label="[B]TV Latest[/B]" default="true"/>
-			<setting id="homeitem_16" type="number" label="     Order" default="160" visible="!eq(-1,false)"/>
-		<setting id="homeitem_37_enabled" type="bool" label="[B]Show Tracker Source[/B]" default="false"/>
-			<setting id="homeitem_37" type="number" label="     Order" default="165" visible="!eq(-1,false)"/>
-		<setting id="homeitem_17_enabled" type="bool" label="[B]Live Section[/B]" default="true"/>
-			<setting id="homeitem_17" type="number" label="     Order" default="170" visible="!eq(-1,false)"/>
-		<setting id="homeitem_18_enabled" type="bool" label="[B]More Tv Shows & Movies[/B]" default="true"/>
-			<setting id="homeitem_18" type="number" label="     Order" default="180" visible="!eq(-1,false)"/>
-		<setting id="homeitem_19_enabled" type="bool" label="[B]Anime[/B]" default="true"/>
-			<setting id="homeitem_19" type="number" label="     Order" default="190" visible="!eq(-1,false)"/>	
-		<setting id="homeitem_20_enabled" type="bool" label="[B]VIPlaylist[/B]" default="true"/>
-			<setting id="homeitem_20" type="number" label="     Order" default="200" visible="!eq(-1,false)"/>
-		<setting id="homeitem_21_enabled" type="bool" label="[B]Sports Section[/B]" default="true"/>
-			<setting id="homeitem_21" type="number" label="     Order" default="210" visible="!eq(-1,false)"/>
-		<setting id="homeitem_22_enabled" type="bool" label="[B]Adventure[/B]" default="true"/>
-			<setting id="homeitem_22" type="number" label="     Order" default="220" visible="!eq(-1,false)"/>
-		<setting id="homeitem_23_enabled" type="bool" label="[B]Kids Zone[/B]" default="true"/>
-			<setting id="homeitem_23" type="number" label="     Order" default="230" visible="!eq(-1,false)"/>
-		<setting id="homeitem_24_enabled" type="bool" label="[B]Documentaries[/B]" default="true"/>
-			<setting id="homeitem_24" type="number" label="     Order" default="240" visible="!eq(-1,false)"/>
-		<setting id="homeitem_25_enabled" type="bool" label="[B]How to Videos[/B]" default="true"/>
-			<setting id="homeitem_25" type="number" label="     Order" default="250" visible="!eq(-1,false)"/>
-		<setting id="homeitem_26_enabled" type="bool" label="[B]FixIt Section[/B]" default="true"/>
-			<setting id="homeitem_26" type="number" label="     Order" default="260" visible="!eq(-1,false)"/>
-		<setting id="homeitem_27_enabled" type="bool" label="[B]HackerMils Stash[/B]" default="true"/>
-			<setting id="homeitem_27" type="number" label="     Order" default="270" visible="!eq(-1,false)"/>
-		<setting id="homeitem_28_enabled" type="bool" label="[B]The New Pirate Bay[/B]" default="false"/>
-			<setting id="homeitem_28" type="number" label="     Order" default="280" visible="!eq(-1,false)"/>
-		<setting id="homeitem_29_enabled" type="bool" label="[B]More Power[/B]" default="false"/>
-			<setting id="homeitem_29" type="number" label="     Order" default="290" visible="!eq(-1,false)"/>
-		<setting id="homeitem_30_enabled" type="bool" label="[B]Staael 1982[/B]" default="false"/>
-			<setting id="homeitem_30" type="number" label="     Order" default="300" visible="!eq(-1,false)"/>
-		<setting id="homeitem_35_enabled" type="bool" label="[B]Demon88 Movies[/B]" default="false"/>
-			<setting id="homeitem_35" type="number" label="     Order" default="301" visible="!eq(-1,false)"/>
-		<setting id="homeitem_38_enabled" type="bool" label="[B]ONE242415[/B]" default="false"/>
-			<setting id="homeitem_38" type="number" label="     Order" default="302" visible="!eq(-1,false)"/>
-		<setting id="homeitem_31_enabled" type="bool" label="[B]Custom XML Channels[/B]" default="false"/>
-			<setting id="homeitem_31" type="number" label="     Order" default="310" visible="!eq(-1,false)"/>
-		<setting id="homeitem_32_enabled" type="bool" label="[B]K1M05[/B]" default="false"/>
-			<setting id="homeitem_32" type="number" label="     Order" default="320" visible="!eq(-1,false)"/>
-		<setting id="homeitem_33_enabled" type="bool" label="[B]Mash Sports[/B]" default="false"/>
-			<setting id="homeitem_33" type="number" label="     Order" default="330" visible="!eq(-1,false)"/>
-		<setting id="homeitem_34_enabled" type="bool" label="[B]iLive[/B]" default="false"/>
-			<setting id="homeitem_34" type="number" label="     Order" default="340" visible="!eq(-1,false)"/>
+		<setting id="homeitems_36_enabled" type="bool" label="[B]Super Search[/B]" default="true"/>
+			<setting id="homeitems_36" type="number" label="     Order" default="5" visible="!eq(-1,false)"/>	
+		<setting id="homeitems_1_enabled" type="bool" label="[B]Search (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_1" type="number" label="     Order" default="10" visible="!eq(-1,false)"/>
+		<setting id="homeitems_2_enabled" type="bool" label="[B]Favorites[/B]" default="true"/>
+			<setting id="homeitems_2" type="number" label="     Order" default="20" visible="!eq(-1,false)"/>
+		<setting id="homeitems_39_enabled" type="bool" label="[B]Super Movies[/B]" default="true"/>
+			<setting id="homeitems_39" type="number" label="     Order" default="25" visible="!eq(-1,false)"/>
+		<setting id="homeitems_40_enabled" type="bool" label="[B]Super TV Shows[/B]" default="true"/>
+			<setting id="homeitems_40" type="number" label="     Order" default="26" visible="!eq(-1,false)"/>
+		<setting id="homeitems_3_enabled" type="bool" label="[B]A-Z (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_3" type="number" label="     Order" default="30" visible="!eq(-1,false)"/>
+		<setting id="homeitems_4_enabled" type="bool" label="[B]New Releases (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_4" type="number" label="     Order" default="40" visible="!eq(-1,false)"/>
+		<setting id="homeitems_5_enabled" type="bool" label="[B]Lastest Added (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_5" type="number" label="     Order" default="50" visible="!eq(-1,false)"/>
+		<setting id="homeitems_6_enabled" type="bool" label="[B]Featured Movies (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_6" type="number" label="     Order" default="60" visible="!eq(-1,false)"/>
+		<setting id="homeitems_7_enabled" type="bool" label="[B]Most Viewed (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_7" type="number" label="     Order" default="70" visible="!eq(-1,false)"/>
+		<setting id="homeitems_8_enabled" type="bool" label="[B]Most Voted (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_8" type="number" label="     Order" default="80" visible="!eq(-1,false)"/>
+		<setting id="homeitems_9_enabled" type="bool" label="[B]HD Releases (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_9" type="number" label="     Order" default="90" visible="!eq(-1,false)"/>
+		<setting id="homeitems_10_enabled" type="bool" label="[B]Genre (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_10" type="number" label="     Order" default="100" visible="!eq(-1,false)"/>
+		<setting id="homeitems_11_enabled" type="bool" label="[B]By Year (Movie25)[/B]" default="false"/>
+			<setting id="homeitems_11" type="number" label="     Order" default="110" visible="!eq(-1,false)"/>
+		<setting id="homeitems_12_enabled" type="bool" label="[B]Watch History[/B]" default="true"/>
+			<setting id="homeitems_12" type="number" label="     Order" default="120" visible="!eq(-1,false)"/>
+		<setting id="homeitems_13_enabled" type="bool" label="[B]HD Movies[/B]" default="true"/>
+			<setting id="homeitems_13" type="number" label="     Order" default="130" visible="!eq(-1,false)"/>
+		<setting id="homeitems_14_enabled" type="bool" label="[B]3D Movies[/B]" default="true"/>
+			<setting id="homeitems_14" type="number" label="     Order" default="140" visible="!eq(-1,false)"/>
+		<setting id="homeitems_15_enabled" type="bool" label="[B]International[/B]" default="true"/>
+			<setting id="homeitems_15" type="number" label="     Order" default="150" visible="!eq(-1,false)"/>
+		<setting id="homeitems_16_enabled" type="bool" label="[B]TV Latest[/B]" default="true"/>
+			<setting id="homeitems_16" type="number" label="     Order" default="160" visible="!eq(-1,false)"/>
+		<setting id="homeitems_37_enabled" type="bool" label="[B]Show Tracker Source[/B]" default="true"/>
+			<setting id="homeitems_37" type="number" label="     Order" default="165" visible="!eq(-1,false)"/>
+		<setting id="homeitems_17_enabled" type="bool" label="[B]Live Section[/B]" default="true"/>
+			<setting id="homeitems_17" type="number" label="     Order" default="170" visible="!eq(-1,false)"/>
+		<setting id="homeitems_18_enabled" type="bool" label="[B]More Tv Shows & Movies[/B]" default="true"/>
+			<setting id="homeitems_18" type="number" label="     Order" default="180" visible="!eq(-1,false)"/>
+		<setting id="homeitems_19_enabled" type="bool" label="[B]Anime[/B]" default="true"/>
+			<setting id="homeitems_19" type="number" label="     Order" default="190" visible="!eq(-1,false)"/>	
+		<setting id="homeitems_20_enabled" type="bool" label="[B]VIPlaylist[/B]" default="true"/>
+			<setting id="homeitems_20" type="number" label="     Order" default="200" visible="!eq(-1,false)"/>
+		<setting id="homeitems_21_enabled" type="bool" label="[B]Sports Section[/B]" default="true"/>
+			<setting id="homeitems_21" type="number" label="     Order" default="210" visible="!eq(-1,false)"/>
+		<setting id="homeitems_22_enabled" type="bool" label="[B]Adventure[/B]" default="true"/>
+			<setting id="homeitems_22" type="number" label="     Order" default="220" visible="!eq(-1,false)"/>
+		<setting id="homeitems_23_enabled" type="bool" label="[B]Kids Zone[/B]" default="true"/>
+			<setting id="homeitems_23" type="number" label="     Order" default="230" visible="!eq(-1,false)"/>
+		<setting id="homeitems_24_enabled" type="bool" label="[B]Documentaries[/B]" default="true"/>
+			<setting id="homeitems_24" type="number" label="     Order" default="240" visible="!eq(-1,false)"/>
+		<setting id="homeitems_25_enabled" type="bool" label="[B]How to Videos[/B]" default="true"/>
+			<setting id="homeitems_25" type="number" label="     Order" default="250" visible="!eq(-1,false)"/>
+		<setting id="homeitems_26_enabled" type="bool" label="[B]FixIt Section[/B]" default="true"/>
+			<setting id="homeitems_26" type="number" label="     Order" default="260" visible="!eq(-1,false)"/>
+		<setting id="homeitems_27_enabled" type="bool" label="[B]HackerMils Stash[/B]" default="true"/>
+			<setting id="homeitems_27" type="number" label="     Order" default="270" visible="!eq(-1,false)"/>
+		<setting id="homeitems_28_enabled" type="bool" label="[B]The New Pirate Bay[/B]" default="false"/>
+			<setting id="homeitems_28" type="number" label="     Order" default="280" visible="!eq(-1,false)"/>
+		<setting id="homeitems_29_enabled" type="bool" label="[B]More Power[/B]" default="false"/>
+			<setting id="homeitems_29" type="number" label="     Order" default="290" visible="!eq(-1,false)"/>
+		<setting id="homeitems_30_enabled" type="bool" label="[B]Staael 1982[/B]" default="false"/>
+			<setting id="homeitems_30" type="number" label="     Order" default="300" visible="!eq(-1,false)"/>
+		<setting id="homeitems_35_enabled" type="bool" label="[B]Demon88 Movies[/B]" default="false"/>
+			<setting id="homeitems_35" type="number" label="     Order" default="301" visible="!eq(-1,false)"/>
+		<setting id="homeitems_38_enabled" type="bool" label="[B]ONE242415[/B]" default="false"/>
+			<setting id="homeitems_38" type="number" label="     Order" default="302" visible="!eq(-1,false)"/>
+		<setting id="homeitems_31_enabled" type="bool" label="[B]Custom XML Channels[/B]" default="false"/>
+			<setting id="homeitems_31" type="number" label="     Order" default="310" visible="!eq(-1,false)"/>
+		<setting id="homeitems_32_enabled" type="bool" label="[B]K1M05[/B]" default="false"/>
+			<setting id="homeitems_32" type="number" label="     Order" default="320" visible="!eq(-1,false)"/>
+		<setting id="homeitems_33_enabled" type="bool" label="[B]Mash Sports[/B]" default="false"/>
+			<setting id="homeitems_33" type="number" label="     Order" default="330" visible="!eq(-1,false)"/>
+		<setting id="homeitems_34_enabled" type="bool" label="[B]iLive[/B]" default="false"/>
+			<setting id="homeitems_34" type="number" label="     Order" default="340" visible="!eq(-1,false)"/>
    </category>
    <category label="Super Search">
 		<setting label="Customize what sources to use in Super Search" type="lsep" />
@@ -133,9 +137,10 @@
 		<setting id="ssm_filestube" type="bool" label="FilesTube" default="true" visible="!eq(-14,TV)"/>
 		<setting id="ssm_vip" type="bool" label="VIP" default="true" visible="!eq(-15,TV)"/>
 
-		<setting id="sstv_mbox" type="bool" label="MBox" default="true" visible="!eq(-16,Movies)"/>
-		<setting id="sstv_watchseries" type="bool" label="WatchSeries" default="true" visible="!eq(-17,Movies)"/>
-		<setting id="sstv_iwatch" type="bool" label="iWatchOnline" default="true" visible="!eq(-18,Movies)"/>
+		<setting id="sstv_mbox" type="bool" label="MBox" default="true" visible="!eq(-15,Movies)"/>
+		<setting id="sstv_watchseries" type="bool" label="WatchSeries" default="true" visible="!eq(-16,Movies)"/>
+		<setting id="sstv_iwatch" type="bool" label="iWatchOnline" default="true" visible="!eq(-17,Movies)"/>
+		<setting id="sstv_pftv" type="bool" label="PFTV" default="true" visible="!eq(-18,Movies)"/>
 		<setting id="sstv_icefilms" type="bool" label="IceFilms" default="true" visible="!eq(-19,Movies)"/>
 		<setting id="sstv_tubeplus" type="bool" label="TubePlus" default="true" visible="!eq(-20,Movies)"/>
 		<setting id="sstv_tvrelease" type="bool" label="TVRelease" default="true" visible="!eq(-21,Movies)"/>
@@ -159,6 +164,9 @@
 		<setting label="SportsAccess Account" type="lsep" />
 		<setting id="skyusername" type="text" label="SportsAccess Username" default="" visible="true"/>
 		<setting id="skypassword" type="text"label="SportsAccess Password" default="" visible="true" option="hidden" />
+		<setting label="HQZone Account" type="lsep" />
+		<setting id="hqusername" type="text" label="HQZone Username" default="" visible="true"/>
+		<setting id="hqpassword" type="text"label="HQZone Password" default="" visible="true" option="hidden" />
 		<setting label="RLSMIX Account" type="lsep" />
 		<setting id="rlsusername" type="text" label="RlsMix Username" default="" visible="true"/>
 		<setting id="rlspassword" type="text"label="RlsMix Password" default="" visible="true" option="hidden" />

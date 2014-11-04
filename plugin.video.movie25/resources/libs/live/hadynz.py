@@ -715,7 +715,7 @@ def _get_channel_time_player(channel_name):
     req = urllib2.Request('http://www.teledunet.com/mobile/')
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
     req.add_header('Referer', 'http://www.teledunet.com/')
-    req.add_header('Cookie', 'PHPSESSID=2482d94a5dd7169e98a65386dea3a8e3')
+    req.add_header('Cookie', 'PHPSESSID=a91675d1784ad263e7863aef4d79aa18')
     response = urllib2.urlopen(req)
     link=response.read()
     response.close()
@@ -724,7 +724,7 @@ def _get_channel_time_player(channel_name):
     except:rtmp_url = 'rtmp://178.33.241.201:1935/teledunet'
     play_path= channel_name
     #auth=auth.replace('.','').split('+')[0].replace('E','0')
-    swfUrl='http://www.teledunet.com/mobile/player.swf?id0='+auth+'&channel='+channel_name+' live=true timeout=15 conn=N:1 flashVer=WIN12,0,0,77'
+    swfUrl='http://www.teledunet.com/mobile//player.swf?id0='+auth+'&channel='+channel_name+' live=true timeout=15 conn=N:1 flashVer=WIN12,0,0,77'
     return rtmp_url+' playpath='+play_path+' swfUrl='+swfUrl+' pageUrl=http://www.teledunet.com/mobile/'
 
 

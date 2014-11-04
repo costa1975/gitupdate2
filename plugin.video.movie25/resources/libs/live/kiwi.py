@@ -136,7 +136,7 @@ def GetStream(url):
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace("\/",'/')
         playpath=re.compile("<script type='text/javascript'>id='([^']+?)';").findall(link)
         rtmp='rtmp://185.2.137.204:443/liverepeater'
-        pageurl='http://renatabenj.in/player2.php?id='+playpath[0]+'&width=640&height=460'
+        pageurl='http://thesun.pw/player2.php?id='+playpath[0]+'&width=640&height=460'
         token='#atd%#$ZH'
         stream_url =rtmp+' playpath='+playpath[0]+' swfUrl=http://static.surk.tv/atdedead.swf pageUrl=' + pageurl +' live=1 timeout=14 swfVfy=1 token='+token
         return stream_url

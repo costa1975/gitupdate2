@@ -59,7 +59,7 @@ def LISTSP3(murl):
     for url, name, hostsite in match:
         url = url.decode('utf-8').encode('ascii', 'ignore')
         url = 'http://www.filestube.to' + url
-        main.addPlayM(name.strip() + " [COLOR red]" + hostsite + "[/COLOR]",url,406,'','','','','','')
+        main.addPlayM(main.CleanTitle(name.strip()) + " [COLOR red]" + hostsite + "[/COLOR]",url,406,'','','','','','')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -94,14 +94,15 @@ def superSearch(encode,type):
         link=main.OPENURL(surl, verbose=False)
         link=main.unescapes(link)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
-        match=re.compile('(?sim)<a href="([^"]+?)"[^>]*?class="rL"[^>]*?>(.+?)</a>').findall(link)
-        for url, name in match:
+#         match=re.compile('(?sim)<a href="([^"]+?)"[^>]*?class="rL"[^>]*?>(.+?)</a>').findall(link)
+        match=re.compile('(?sim)<a href="([^"]+?)"[^>]*?class="rL"[^>]*?>(.+?)</a>.*?class="eT.*?<b>([^>]*?)<').findall(link)
+        for url, name, hostsite in match:
             name = name.replace('<b>','').replace('</b>','')
             name=main.unescapes(name)
             url = url.decode('utf-8').encode('ascii', 'ignore')
             url = 'http://www.filestube.to' + url
             if not re.search('(?i)(\\bsubs\\b|\\msubs\\b|fetish)',name) and (re.search('(?i)(20\d\d|19\d\d)',name) or re.search('(?i)(blow|sparks)',name) ):
-                returnList.append((name,prettyName,url,'',406,True))
+                returnList.append((name.strip()+ " [COLOR red]" + hostsite + "[/COLOR]",prettyName,url,'',406,False))
         return returnList
     except: return []     
     
@@ -128,8 +129,10 @@ def LINKSP3(mname,murl):
     titles=[]
     ok=True
     match=re.compile('(?sim)<pre><span id="copy_paste_links">[^<]+?<').findall(link)
+    if not match:
+        match=re.compile('(?sim)<div class="checkstatus"></div>.+?<div').findall(link)
     if match:
-        match = re.compile('(https?://[^<]+)').findall(match[0])
+        match = re.compile('(https?://[^<^"^\']+)').findall(match[0])
     hostsmax = len(match)
     h = 0
     from urlparse import urlparse

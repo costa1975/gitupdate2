@@ -39,7 +39,10 @@ def LISTSP2(murl):
     urls = []
     for n in range(subpages):
         if page + n + 1 > max: break
-        urls.append('http://www.myvideolinks.eu/category/movies/'+category+'/page/'+str(page+n+1))
+        if category == "tv-shows":
+            urls.append('http://tv.myvideolinks.eu/page/'+str(page+n+1))
+        else:
+            urls.append('http://www.myvideolinks.me/category/movies/'+category+'/page/'+str(page+n+1))
     urllist = main.batchOPENURL(urls)
     hasNextPage = re.compile('>&rsaquo;</a>').findall(urllist)
     if category != "3-d-movies" and len(hasNextPage) < subpages or category == "3-d-movies" and subpages * page > max:
@@ -63,12 +66,11 @@ def LISTSP2(murl):
             dialogWait.update(0,'[B]Will load instantly from now on[/B]',remaining_display)
             for url,thumb,title in match:
                 if murl=='TV':
-                     if re.compile('720p').findall(title):
-                         title = re.sub('(?i)(.*?)(hdtv|pdtv|proper|repack|webrip|720p).*','\\1',title).strip()
-                         title = re.sub('(?i)(.*E\d+[^\s]) (.*)','\\1 [COLOR blue]\\2[/COLOR]',title).strip()
-                         title += ' [COLOR red]720p[/COLOR]'
-                         main.addDirTE(title,url,35,thumb,'','','','','')
+#                     if re.compile('720p').findall(title):
+                        title=main.CleanTitle(title)
+                        main.addDirTE(title,url,35,thumb,'','','','','')
                 else:
+                    title=main.CleanTitle(title)
                     main.addDirM(title,url,35,thumb,'','','','','')
                     xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
                 loadedLinks = loadedLinks + 1
@@ -119,13 +121,17 @@ def superSearch(encode,type):
     try:
         returnList=[]
         encode = urllib.unquote(encode).replace(' ','+')
-        surl='http://www.myvideolinks.eu/index.php?s='+encode
+        if type=='Movies':
+            surl='http://myvideolinks.me/?s='+encode
+        else:
+            surl='http://tv.myvideolinks.eu/?s='+encode
         link=main.OPENURL(surl,verbose=False,mobile=True)
         link=main.unescapes(link)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
         match=re.compile(pattern).findall(link)
         for url,thumb,name in match:
-            if re.findall('HDTV',name) and type=='TV' or type=='Movies' and not re.findall('HDTV',name):
+            name=main.CleanTitle(name)
+            if type=='TV' or type=='Movies' and not re.findall('HDTV',name):
                 returnList.append((name,prettyName,url,thumb,35,True))
         return returnList
     except: return []       
@@ -134,44 +140,47 @@ def SEARCHNEW(mname,murl):
     if murl == 'movieNEW':
         encode = main.updateSearchFile(mname,'Movies','Search')
         if not encode: return False
-        surl='http://www.myvideolinks.eu/index.php?s='+encode
+        surl='http://myvideolinks.me/?s='+encode
         link=main.OPENURL(surl)
         link=main.unescapes(link)
         match=re.compile(pattern).findall(link)
         if match:
             for url,thumb,name in match:
+                name=main.CleanTitle(name)
                 if not re.findall('HDTV',name):
                     main.addDirM(name,url,35,thumb,'','','','','')
     elif murl == 'tvNEW':
         encode = main.updateSearchFile(mname,'TV','Search')
         if not encode: return False
-        surl='http://www.myvideolinks.eu/index.php?s='+encode
+        surl='http://tv.myvideolinks.eu/?s='+encode
         link=main.OPENURL(surl)
         link=main.unescapes(link)
         match=re.compile(pattern).findall(link)
         if match:
             for url,thumb,name in match:
+                name=main.CleanTitle(name)
                 main.addDirTE(name,url,35,thumb,'','','','','')
     else:
         if murl == 'tNEW':
             encode = mname.replace(' ','+')
-            surl='http://www.myvideolinks.eu/index.php?s='+encode
+            surl='http://tv.myvideolinks.eu/?s='+encode
             link=main.OPENURL(surl)
             link=main.unescapes(link)
             match=re.compile(pattern).findall(link)
             if match:
                 for url,thumb,name in match:
-                    if re.findall('HDTV',name):
-                       main.addDirTE(name,url,35,thumb,'','','','','')
+                    name=main.CleanTitle(name)
+                    main.addDirTE(name,url,35,thumb,'','','','','')
 
         elif murl == 'mNEW':
             encode = mname.replace(' ','+')
-            surl='http://www.myvideolinks.eu/index.php?s='+encode
+            surl='http://myvideolinks.me/?s='+encode
             link=main.OPENURL(surl)
             link=main.unescapes(link)
             match=re.compile(pattern).findall(link)
             if match:
                 for url,thumb,name in match:
+                    name=main.CleanTitle(name)
                     if not re.findall('HDTV',name):
                         main.addDirM(name,url,35,thumb,'','','','','')
     main.GA("Newmyvideolinks","Search")
@@ -181,9 +190,12 @@ def LINKSP2(mname,url):
     link=main.unescapes(link)
     if selfAddon.getSetting("hide-download-instructions") != "true":
         main.addLink("[COLOR red]For Download Options, Bring up Context Menu Over Selected Link.[/COLOR]",'','')
-    match0=re.compile('<h4>(.+?)</h4>(.+?)</ul>').findall(link)
+    
+    match0=re.compile('title="[^"]+?">([^"]+?)</a>.+?</p><ul>(.+?)</ul>').findall(link)
     if not match0:
-        match0=re.compile('title="[^"]+?">([^"]+?)</a>.+?</p><ul>(.+?)</ul>').findall(link)
+        match0=re.compile('<h4>(.+?)</h4>(.+?)</ul>').findall(link)
+        if not match0:
+            match0=re.compile('<p><img src=".+?" alt="([^"]+?)" /></p>.+?<ul>(.+?)</ul>').findall(link)
     for mname, links in reversed(match0):
         match1=re.compile('<li><a href="([^"]+?)"[^>]*?><img [^>]*?alt="([^"]+?)"[^>]*?></a></li>').findall(links)
         match= match1 + re.compile('<li><a href="([^"]+?)"[^>]*?>([^>]+?)</a></li>').findall(links)
@@ -198,7 +210,7 @@ def LINKSP2(mname,url):
             if main.supportedHost(name):
                 thumb=name.lower()
 #                 if re.search('billionuploads',murl) and filename: murl += '#@#' + filename
-                main.addDown2(mname+' [COLOR blue]'+name+'[/COLOR]',murl,209,art+'/hosts/'+thumb+".png",art+'/hosts/'+thumb+".png")
+                main.addDown2(main.CleanTitle(mname)+' [COLOR blue]'+name+'[/COLOR]',murl,209,art+'/hosts/'+thumb+".png",art+'/hosts/'+thumb+".png")
 
 def LINKSP2B(mname,murl):
     main.GA("Newmyvideolinks","Watched") 

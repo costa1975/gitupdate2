@@ -1,4 +1,4 @@
-import urllib,urllib2,re,cookielib,urlresolver,os,sys
+import urllib,urllib2,re,cookielib,urlresolver,os,sys,string
 import xbmc, xbmcgui, xbmcaddon, xbmcplugin
 from resources.libs import main
 
@@ -12,54 +12,91 @@ addon = Addon('plugin.video.movie25', sys.argv)
 art = main.art
     
 wh = watchhistory.WatchHistory('plugin.video.movie25')
-MainUrl = "http://www.einthusan.com/movies/"
+MainUrl = "http://www.einthusan.com"
+MainMovie = "http://www.einthusan.com/movies/"
 
-def LISTINT(name,url):
-        main.addDir('Search','TV',419,art+'/search.png')
-        urllist=[]
-        page = 1
-        while page < 15 :
-                urllist.append('http://www.einthusan.com/movies/index.php?lang=hindi&organize=Activity&filtered=RecentlyPosted&org_type=Activity&page='+str(page))
-                page += 1
-        if urllist:
-                html = main.batchOPENURL(urllist)
-                urllist=main.unescapes(html)
-                match = re.compile('<a class="movie-cover-wrapper" href="(.+?)"><img src="(.+?)" alt="(.+?)"').findall(urllist)
-                dialogWait = xbmcgui.DialogProgress()
-                ret = dialogWait.create('Please wait until Movie list is cached.')
-                totalLinks = len(match)
-                loadedLinks = 0
+
+def MAINFULLS():
+        #main.addDir('Search','extra',822,art+'/search.png')
+        main.addDir('Tamil','http://www.einthusan.com/index.php?lang=tamil',39,art+'/intl.png')
+        main.addDir('Hindi','http://www.einthusan.com/index.php?lang=hindi',39,art+'/intl.png')
+        main.addDir('Telugu','http://www.einthusan.com/index.php?lang=telugu',39,art+'/intl.png')
+        main.addDir('Malayalam','http://www.einthusan.com/index.php?lang=malayalam',39,art+'/intl.png')
+        main.GA("INT","einthusan")
+        
+def DIRINT(url):
+        langID=re.findall('lang=([^<]+)',url)[0]
+        main.addDir('Search','http://www.einthusan.com/movies/index.php?lang='+langID+'&organize',419,art+'/search.png')
+        main.addDir('A-Z Movies','http://www.einthusan.com/movies/index.php?lang='+langID+'&organize=Alphabetical&filtered=C&org_type=Alphabetical',40,art+'/az2.png')
+        main.addDir('Movies Recently Posted','http://www.einthusan.com/movies/index.php?lang='+langID+'&organize=Activity&filtered=RecentlyPosted&org_type=Activity',42,art+'/latest2.png')
+        main.addDir('Movies Recently Viewed','http://www.einthusan.com/movies/index.php?lang='+langID+'&organize=Activity&filtered=RecentlyViewed&org_type=Activity',42,art+'/view2.png')
+        main.addDir('A-Z bluray','http://www.einthusan.com/bluray/index.php?lang='+langID+'&organize=Alphabetical&filtered=C&org_type=Alphabetical',41,art+'/az2.png')
+        main.addDir('Bluray Recently Posted','http://www.einthusan.com/bluray/index.php?lang='+langID+'&organize=Activity&filtered=RecentlyPosted&org_type=Activity',42,art+'/latest2.png')
+        main.addDir('Bluray Recently Viewed','http://www.einthusan.com/bluray/index.php?lang='+langID+'&organize=Activity&filtered=RecentlyViewed&org_type=Activity',42,art+'/view2.png')
+        main.GA("DIRINT","einthusan")
+        
+def AZMOVIES(url):
+        langID=re.findall('lang=(.+?)&',url)[0]
+        main.addDir('0-9','http://www.einthusan.com/movies/index.php?lang='+langID+'&organize=Alphabetical&filtered=Numerical&org_type=Alphabetical',42,art+'/09.png')
+        for i in string.ascii_uppercase:
+                main.addDir(i,'http://www.einthusan.com/movies/index.php?lang='+langID+'&organize=Alphabetical&filtered='+i+'&org_type=Alphabetical',42,art+'/'+i.lower()+'.png')
+        main.GA("einthusan","A-Z Movies")
+        main.VIEWSB()
+        
+def AZBLURAY(url):
+        langID=re.findall('lang=(.+?)&',url)[0]
+        main.addDir('0-9','http://www.einthusan.com/bluray/index.php?lang='+langID+'&organize=Alphabetical&filtered=Numerical&org_type=Alphabetical',42,art+'/09.png')
+        for i in string.ascii_uppercase:
+                main.addDir(i,'http://www.einthusan.com/bluray/index.php?lang='+langID+'&organize=Alphabetical&filtered='+i+'&org_type=Alphabetical',42,art+'/'+i.lower()+'.png')
+        main.GA("einthusan","A-Z Bluray")
+        main.VIEWSB()
+        
+def LISTINT(murl):
+        html = main.OPENURL(murl)
+        link=main.unescapes(html)
+        match = re.compile('<a class="movie-cover-wrapper" href="(.+?)"><img src="(.+?)" alt="(.+?)"').findall(link)
+        dialogWait = xbmcgui.DialogProgress()
+        ret = dialogWait.create('Please wait until Movie list is cached.')
+        totalLinks = len(match)
+        loadedLinks = 0
+        remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
+        dialogWait.update(0,'[B]Will load instantly from now on[/B]',remaining_display)
+        for url,thumb,name in match:
+                url=url.replace('../movies/','')
+                thumb=thumb.replace('../movies/','')
+                name = name.replace('movie online','').replace('tamil','').replace('hindi','').replace('telugu','').replace('malayalam','')
+                main.addPlayM(name,MainMovie+url,38,MainMovie+thumb,'','','','','')
+                loadedLinks = loadedLinks + 1
+                percent = (loadedLinks * 100)/totalLinks
                 remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
-                dialogWait.update(0,'[B]Will load instantly from now on[/B]',remaining_display)
-                for url,thumb,name in match:
-                        url=url.replace('../movies/','')
-                        thumb=thumb.replace('../movies/','')
-                        name = name.replace('hindi movie online','')
-                        main.addPlayM(name,MainUrl+url,38,MainUrl+thumb,'','','','','')
-                        loadedLinks = loadedLinks + 1
-                        percent = (loadedLinks * 100)/totalLinks
-                        remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
-                        dialogWait.update(percent,'[B]Will load instantly from now on[/B]',remaining_display)
-                        if (dialogWait.iscanceled()):
-                                return False   
+                dialogWait.update(percent,'[B]Will load instantly from now on[/B]',remaining_display)
+                if (dialogWait.iscanceled()):
+                        return False   
         dialogWait.close()
         del dialogWait
-        main.GA("INT","Einthusan")
+        paginate = re.compile('<a class="numerical-nav-selected" href=".+?">.+?</a><a href="([^<]+)">.+?</a>').findall(link)
+        if len(paginate)>0:
+                if 'movies' in murl:
+                    main.addDir('[COLOR blue]Next Page >>>[/COLOR]',MainUrl+'/movies/index.php'+paginate[0],42,art+'/next2.png')
+                else:
+                    main.addDir('[COLOR blue]Next Page >>>[/COLOR]',MainUrl+'/bluray/index.php'+paginate[0],42,art+'/next2.png')
+        main.GA("einthusian","List")
 
-def SEARCHEIN():
+def SEARCHEIN(url):
         keyb = xbmc.Keyboard('', 'Search Movies')
         keyb.doModal()
         if (keyb.isConfirmed()):
             search = keyb.getText()
             encode=urllib.quote(search)
-            surl='http://www.einthusan.com/movies/index.php?lang=hindi&search='+encode
+            langID=re.findall('lang=(.+?)&',url)[0]
+            surl='http://www.einthusan.com/movies/index.php?lang='+langID+'&search='+encode
             link=main.OPENURL(surl)
             match = re.compile('<a class="movie-cover-wrapper" href="(.+?)"><img src="(.+?)" alt="(.+?)"').findall(link)
             for url,thumb,name in match:
                 url=url.replace('../movies/','')
                 thumb=thumb.replace('../movies/','')
-                name = name.replace('hindi movie online','')
-                main.addPlayM(name,MainUrl+url,38,MainUrl+thumb,'','','','','')
+                name = name.replace('movie online','').replace('tamil','').replace('hindi','').replace('telugu','').replace('malayalam','')
+                main.addPlayM(name,MainMovie+url,38,MainMovie+thumb,'','','','','')
 
 def LINKINT(mname,url):
         main.GA("Einthusan","Watched")
@@ -94,4 +131,3 @@ def LINKINT(mname,url):
                 if stream_url != False:
                     main.ErrorReport(e)
                 return ok
-
