@@ -39,26 +39,12 @@ user = selfAddon.getSetting('hqusername')
 passw = selfAddon.getSetting('hqpassword')
 
 def setCookie(srDomain):
-    cookieExpired = False
-    if os.path.exists(cookie_file):
-        try:
-            cookie = open(cookie_file).read()
-            expire = re.search('expires="(.*?)"',cookie, re.I)
-            if expire:
-                expire = str(expire.group(1))
-                import time
-                if time.time() > time.mktime(time.strptime(expire, '%Y-%m-%d %H:%M:%SZ')):
-                   cookieExpired = True
-        except: cookieExpired = True 
-    if not os.path.exists(cookie_file) or cookieExpired:
-        import hashlib
-        m = hashlib.md5()
-        m.update(passw)
-        net().http_GET('http://www.hqzone.tv/forums/view.php?pg=live')
-        net().http_POST('http://www.hqzone.tv/forums/login.php?do=login',{'vb_login_username':user,'vb_login_password':passw,'vb_login_md5password':m.hexdigest(),'vb_login_md5password_utf':m.hexdigest(),'do':'login','securitytoken':'guest','url':'http://www.hqzone.tv/forums/view.php?pg=live','s':''})
-        net().save_cookies(cookie_file)
-    else:
-        net().set_cookies(cookie_file) 
+    import hashlib
+    m = hashlib.md5()
+    m.update(passw)
+    net().http_GET('http://www.hqzone.tv/forums/view.php?pg=live')
+    net().http_POST('http://www.hqzone.tv/forums/login.php?do=login',{'vb_login_username':user,'vb_login_password':passw,'vb_login_md5password':m.hexdigest(),'vb_login_md5password_utf':m.hexdigest(),'do':'login','securitytoken':'guest','url':'http://www.hqzone.tv/forums/view.php?pg=live','s':''})
+
 
 def cleanHex(text):
     def fixup(m):
@@ -80,9 +66,6 @@ def MAINHQ():
         if 'Channels' == name:
             name='VIP Streams'
         main.addDir(name,links,471,art+'/hqzone.png')
-    if not match:
-        os.remove(cookie_file)
-        xbmc.executebuiltin("XBMC.Container.Refresh")
     main.addLink('[COLOR red]VOD[/COLOR]','','')
     match=re.findall('(?sim)<h4 class="panel_headin.+?">([^<]+?)</h4><ul>(.+?)</ul>',link)
     for name,links in match[3:]:
@@ -124,7 +107,6 @@ def LISTCONTENT(murl,thumb):
     response = net().http_GET(murl)
     link = response.content
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
-    print link
     match=re.findall('(?sim)sources: \[\{ file: "([^"]+?)" \}\],title: "([^"]+?)"',link)
     for url,name in match:
         main.addPlayL(name,url,474,'','','','','','')
@@ -141,26 +123,21 @@ def get_link(murl):
     link = cleanHex(link)
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
     m3u8=re.findall('<a href="([^"]+?.m3u8)">',link)
-    iframe=re.findall('<iframe src="(http://admin.livestreamingcdn.com[^"]+?)"',link)
+    flash=re.search('file=(.+?)&streamer=(.+?)&dock',link)
     if m3u8:
         return m3u8[0]
-    elif iframe:
-        response = net().http_GET(iframe[0])
-        link = response.content
-        link = cleanHex(link)
-        link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
-        vlink=re.findall('file: "([^"]+?.m3u8)"',link)
-        return vlink[0]
+    elif flash:
+        swf='http://www.hqzone.tv/forums/jwplayer/player.swf'
+        return flash.group(2)+' playpath='+flash.group(1)+' swfUrl='+swf+' pageUrl='+murl+' live=true timeout=20 token=WY846p1E1g15W7s'
+
     else:
         swf='http://www.hqzone.tv/forums/jwplayer/jwplayer.flash.swf'
-        #file=re.findall("file=(.+?)&",link)[0] 
-        #file=file.replace('.flv','')
         streamer=re.findall("file: '([^']+)',",link)[0]
-        return streamer+' swfUrl='+swf+' pageUrl='+murl+' live=true timeout=20 token=WY846p1E1g15W7s'
+        return streamer.replace('redirect','live')+' swfUrl='+swf+' pageUrl='+murl+' live=true timeout=20 token=WY846p1E1g15W7s'
     
 def PLAYLINK(mname,murl,thumb):
         ok=True
-        main.GA("Live",prettyName)
+        main.GA(prettyName,"Watched")
         stream_url = get_link(murl)     
         playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
         playlist.clear()

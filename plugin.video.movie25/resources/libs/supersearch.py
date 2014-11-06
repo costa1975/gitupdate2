@@ -183,6 +183,7 @@ def SEARCH(mname,type,libID=''):
         else:
             encodetv = urllib.quote(re.sub('(?i)^(.*?((\ss(\d+)e(\d+))|(Season(.+?)Episode \d+)|(\d+)x(\d+))).*','\\1',urllib.unquote(encode)))
             encodewithoutepi = urllib.quote(re.sub('(?i)(\ss(\d+)e(\d+))|(Season(.+?)Episode)|(\d+)x(\d+)','',urllib.unquote(encodetv)).strip())
+            print encodetv
             if selfAddon.getSetting('sstv_mbox') != 'false':
                 sources.append('MBox')
                 q = queue.Queue()
@@ -463,11 +464,10 @@ def vipSuperSearch(encode,type):
         returnList=[]
         encode = encode.replace('%20',' ')
         urls = []
-        urls.append('https://raw.githubusercontent.com/mash2k3/demon88/master/1080pMovies%20.xml')
+        urls.append('https://raw.githubusercontent.com/dm88/demon88/master/1080pMovies%20.xml')
         urls.append('https://raw.githubusercontent.com/Coolstreams/bobbyelvis/master/veehdCollection.xml')
         urls.append('https://raw.githubusercontent.com/Coolstreams/bobbyelvis/master/2013%20HD.xml')
         urls.append('https://raw.githubusercontent.com/Coolstreams/bobbyelvis/master/2014%20HD.xml')
-        urls.append('https://raw.githubusercontent.com/mash2k3/MashUpTNPB/master/720p%20Movies.xml')
         urls.append('https://raw.githubusercontent.com/HackerMil/HackerMilsMovieStash/master/Movies/HD.xml')
         xml = main.batchOPENURL(urls,verbose=False)
         match=re.compile('(?sim)(<poster>.*?(?=<poster>|\Z))').findall(xml)

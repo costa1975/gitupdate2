@@ -124,9 +124,9 @@ def MAIN():
                 main.addDirHome("SideReel Show Tracker",'Mash Up',397,art+'/sidereel.png')
                 main.addDirHome("Trakt Show Tracker",'Mash Up',429,art+'/trakt.png')
         elif index==38:
-            main.addDirHome('Super Movies','index',267,art+'/supermovies.png',index=True)
+            main.addDirHome('Super Movies','index',1052,art+'/supermovies.png',index=True)
         elif index==39:
-            main.addDirHome('Super TV Shows','index',572,art+'/supershows.png',index=True)
+            main.addDirHome('Super TV Shows','index',1054,art+'/supershows.png',index=True)
     main.addPlayc('Need Help?','http://www.movie25.com/',100,art+'/help.png','','','','','')
     main.addPlayc('Upload Log','http://www.movie25.so/',156,art+'/loguploader.png','','','','','')
     main.addPlayc('Click Me!!!','https://raw.github.com/mash2k3/MashupArtwork/master/skins/vector/donation.png',244,art+'/paypalmash2.png','','','','','')
@@ -2710,7 +2710,7 @@ elif mode==281:
 elif mode==282:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.LISTICE(url)
+    icefilms.LISTICE(url,index=index)
 
 elif mode==283:
     from resources.libs.movies_tv import icefilms
@@ -2730,42 +2730,42 @@ elif mode==285:
 elif mode==286:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.StartIceFilmsSearch(url)
+    icefilms.StartIceFilmsSearch(url,index=index)
     
 elif mode==287:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.SearchIceFilms(url,plot)
+    icefilms.SearchIceFilms(url,plot,index=index)
     
 elif mode==288:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.ICETVMAIN()
+    icefilms.ICETVMAIN(index=index)
 
 elif mode==289:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.ICESEASONS(name,url)
+    icefilms.ICESEASONS(name,url,index=index)
 
 elif mode==290:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.ICEEPISODES(name,url)
+    icefilms.ICEEPISODES(name,url,index=index)
 
 elif mode==291:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.ICETODAY(url)
+    icefilms.ICETODAY(url,index=index)
     
 elif mode==292:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.AtoZICE(url)
+    icefilms.AtoZICE(url,index=index)
 
 elif mode==293:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.ICEGENRE(url)
+    icefilms.ICEGENRE(url,index=index)
 
 elif mode==294:
     from resources.libs.movies_tv import icefilms
@@ -2775,7 +2775,7 @@ elif mode==294:
 elif mode==295:
     from resources.libs.movies_tv import icefilms
     print ""+url
-    icefilms.ICEMOVIEMAIN()
+    icefilms.ICEMOVIEMAIN(index=index)
 
 elif mode==296:
     from resources.libs.movies_tv import starplay
@@ -3552,11 +3552,11 @@ elif mode==458:
 
 elif mode==459:
     from resources.libs.plugins import pftv
-    pftv.MAINPFTV()
+    pftv.MAINPFTV(index=index)
 
 elif mode==460:
     from resources.libs.plugins import pftv
-    pftv.LISTPFTV(url)
+    pftv.LISTPFTV(url,index=index)
 
 elif mode==461:
     from resources.libs.plugins import pftv
@@ -3568,31 +3568,31 @@ elif mode==462:
 
 elif mode==463:
     from resources.libs.plugins import pftv
-    pftv.AtoZPFTV()
+    pftv.AtoZPFTV(index=index)
 
 elif mode==464:
     from resources.libs.plugins import pftv
-    pftv.LISTSHOW(name,url)
+    pftv.LISTSHOW(name,url,index=index)
 
 elif mode==465:
     from resources.libs.plugins import pftv
-    pftv.LISTSEASON(name,url)
+    pftv.LISTSEASON(name,url,index=index)
 
 elif mode==466:
     from resources.libs.plugins import pftv
-    pftv.LISTEPISODE(name,url)
+    pftv.LISTEPISODE(name,url,index=index)
 
 elif mode==467:
     from resources.libs.plugins import pftv
-    pftv.POPULARPFTV(url)
+    pftv.POPULARPFTV(url,index=index)
 
 elif mode==468:
     from resources.libs.plugins import pftv
-    pftv.SearchhistoryPFTV()
+    pftv.SearchhistoryPFTV(index=index)
 
 elif mode==469:
     from resources.libs.plugins import pftv
-    pftv.SEARCHPFTV(url)
+    pftv.SEARCHPFTV(url,index=index)
 
 elif mode==470:
     from resources.libs.live import hqzone
@@ -3621,6 +3621,10 @@ elif mode==475:
 elif mode==476:
     from resources.libs.live import skyaccess
     skyaccess.Calendar(url)
+
+elif mode==477:
+    from resources.libs.live import nflfan
+    nflfan.NFLMAIN()
 ######################################################################################################
 elif mode==500:
     TVAll()        
@@ -3831,37 +3835,37 @@ elif mode==584:
 elif mode==642:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.SearchhistoryTV()
+    iwatchonline.SearchhistoryTV(index=index)
         
 elif mode==643:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.SEARCHTV(url)
+    iwatchonline.SEARCHTV(url,index=index)
 
 elif mode==644:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.SearchhistoryM()
+    iwatchonline.SearchhistoryM(index=index)
         
 elif mode==645:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.SEARCHM(url)
+    iwatchonline.SEARCHM(url,index=index)
 
 elif mode==585:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchTV()
+    iwatchonline.iWatchTV(index=index)
 
 elif mode==586:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchMOVIES()
+    iwatchonline.iWatchMOVIES(index=index)
 
 elif mode==587:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchLISTMOVIES(url)
+    iwatchonline.iWatchLISTMOVIES(url,index=index)
 
 elif mode==588:
     from resources.libs.plugins import iwatchonline
@@ -3871,42 +3875,42 @@ elif mode==588:
 elif mode==589:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchLISTSHOWS(url)
+    iwatchonline.iWatchLISTSHOWS(url,index=index)
 
 elif mode==590:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchSeason(name,url,iconimage)
+    iwatchonline.iWatchSeason(name,url,iconimage,index=index)
 
 elif mode==591:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchEpisode(name,url)
+    iwatchonline.iWatchEpisode(name,url,index=index)
 
 elif mode==592:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchToday(url)
+    iwatchonline.iWatchToday(url,index=index)
 
 elif mode==593:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.AtoZiWATCHtv()
+    iwatchonline.AtoZiWATCHtv(index=index)
 
 elif mode==594:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchGenreTV()
+    iwatchonline.iWatchGenreTV(index=index)
 
 elif mode==595:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.AtoZiWATCHm()
+    iwatchonline.AtoZiWATCHm(index=index)
 
 elif mode==596:
     from resources.libs.plugins import iwatchonline
     print ""+url
-    iwatchonline.iWatchGenreM()
+    iwatchonline.iWatchGenreM(index=index)
       
 
 elif mode==601:
@@ -4121,13 +4125,13 @@ elif mode==651:
     ListglobalFavTE()
 elif mode==652:
     from resources.libs.plugins import iwatchonline
-    iwatchonline.iWatchYearM()
+    iwatchonline.iWatchYearM(index=index)
 elif mode==653:
     from resources.libs.plugins import iwatchonline
-    iwatchonline.ENTYEAR()
+    iwatchonline.ENTYEAR(index=index)
 elif mode==654:
     from resources.libs.plugins import iwatchonline
-    iwatchonline.GotoPage(url)
+    iwatchonline.GotoPage(url,index=index)
 
 elif mode==655:
     print ""+url
@@ -4335,6 +4339,18 @@ elif mode == 1050:
 elif mode == 1051:
     from resources.libs.plugins import tubeplus
     tubeplus.INDEXtv(url)      
+
+elif mode == 1052:
+    from resources.libs import indexer
+    indexer.SuperMovies(index=index)
+
+elif mode == 1053:
+    from resources.libs import indexer
+    indexer.ChangeIndex(url)
+
+elif mode == 1054:
+    from resources.libs import indexer
+    indexer.SuperTV(index=index)
 
 elif mode == 1500:
     openMGuide()      

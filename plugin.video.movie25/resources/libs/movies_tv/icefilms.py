@@ -10,53 +10,53 @@ art = main.art
 IceURL='http://www.icefilms.info'
 prettyName='IceFilms'
 
-def AtoZICE(type):
+def AtoZICE(type,index=False):
     import string
-    main.addDir('0-9','/'+type+'/a-z/1',282,art+'/09.png')
+    main.addDir('0-9','/'+type+'/a-z/1',282,art+'/09.png',index=index)
     for i in string.ascii_uppercase:
-        main.addDir(i,'/'+type+'/a-z/'+i,282,art+'/'+i.lower()+'.png')
+        main.addDir(i,'/'+type+'/a-z/'+i,282,art+'/'+i.lower()+'.png',index=index)
     main.VIEWSB()
     
 def ICEMAIN():
     main.addDir('TV','TV',288,art+'/icefilms.png')
     main.addDir('Movies','Movies',295,art+'/icefilms.png')
     
-def ICEMOVIEMAIN():
-    main.addDir('Search for Movies','Movies',286,art+'/search.png')
-    main.addDir('A-Z','movies',292,art+'/az.png')
-    main.addDir('Highly Rated','/movies/rating/1',282,art+'/icefilms.png')
-    main.addDir('Popular Movies','/movies/popular/1',282,art+'/icefilms.png')
-    main.addDir('Latest Released','/movies/release/1',282,art+'/icefilms.png')
-    main.addDir('Latest Added','/movies/added/1',282,art+'/icefilms.png')
-    main.addDir('Genre','movies',293,art+'/genre.png')
+def ICEMOVIEMAIN(index=False):
+    main.addDir('Search for Movies','Movies',286,art+'/search.png',index=index)
+    main.addDir('A-Z','movies',292,art+'/az.png',index=index)
+    main.addDir('Highly Rated','/movies/rating/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Popular Movies','/movies/popular/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Latest Released','/movies/release/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Latest Added','/movies/added/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Genre','movies',293,art+'/genre.png',index=index)
     main.GA("IceFilms","Movie")
     main.VIEWSB2()
 
-def ICETVMAIN():
-    main.addDir('Search for TV Shows','TV',286,art+'/search.png')
-    main.addDir('A-Z','tv',292,art+'/az.png')
-    main.addDir('Latest Releases','TV',291,art+'/icefilms.png')
-    main.addDir('Highly Rated','/tv/rating/1',282,art+'/icefilms.png')
-    main.addDir('Popular Shows','/tv/popular/1',282,art+'/icefilms.png')
-    main.addDir('Latest Released','/tv/release/1',282,art+'/icefilms.png')
-    main.addDir('Latest Added','/tv/added/1',282,art+'/icefilms.png')
-    main.addDir('Genre','tv',293,art+'/genre.png')
+def ICETVMAIN(index=False):
+    main.addDir('Search for TV Shows','TV',286,art+'/search.png',index=index)
+    main.addDir('A-Z','tv',292,art+'/az.png',index=index)
+    main.addDir('Latest Releases','TV',291,art+'/icefilms.png',index=index)
+    main.addDir('Highly Rated','/tv/rating/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Popular Shows','/tv/popular/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Latest Released','/tv/release/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Latest Added','/tv/added/1',282,art+'/icefilms.png',index=index)
+    main.addDir('Genre','tv',293,art+'/genre.png',index=index)
     main.GA("IceFilms","TV")
     main.VIEWSB2()
 
-def ICEGENRE(type):
-    main.addDir('Action','/'+type+'/popular/action',282,art+'/act.png')
-    main.addDir('Animation','/'+type+'/popular/animation',282,art+'/anim.png')
-    main.addDir('Comedy','/'+type+'/popular/comedy',282,art+'/com.png')
-    main.addDir('Documentary','/'+type+'/popular/documentary',282,art+'/doc.png')
-    main.addDir('Drama','/'+type+'/popular/drama',282,art+'/dra.png')
-    main.addDir('Family','/'+type+'/popular/family',282,art+'/fam.png')
-    main.addDir('Horror','/'+type+'/popular/horror',282,art+'/hor.png')
-    main.addDir('Romance','/'+type+'/popular/romance',282,art+'/rom.png')
-    main.addDir('Sci-Fi','/'+type+'/popular/sci-fi',282,art+'/sci.png')
-    main.addDir('Thriller','/'+type+'/popular/thriller',282,art+'/thr.png')
+def ICEGENRE(type,index=False):
+    main.addDir('Action','/'+type+'/popular/action',282,art+'/act.png',index=index)
+    main.addDir('Animation','/'+type+'/popular/animation',282,art+'/anim.png',index=index)
+    main.addDir('Comedy','/'+type+'/popular/comedy',282,art+'/com.png',index=index)
+    main.addDir('Documentary','/'+type+'/popular/documentary',282,art+'/doc.png',index=index)
+    main.addDir('Drama','/'+type+'/popular/drama',282,art+'/dra.png',index=index)
+    main.addDir('Family','/'+type+'/popular/family',282,art+'/fam.png',index=index)
+    main.addDir('Horror','/'+type+'/popular/horror',282,art+'/hor.png',index=index)
+    main.addDir('Romance','/'+type+'/popular/romance',282,art+'/rom.png',index=index)
+    main.addDir('Sci-Fi','/'+type+'/popular/sci-fi',282,art+'/sci.png',index=index)
+    main.addDir('Thriller','/'+type+'/popular/thriller',282,art+'/thr.png',index=index)
 
-def ICETODAY(murl):
+def ICETODAY(murl,index=False):
     link = main.OPENURL(IceURL)
     link = cleanHex(link)
     latest = re.compile('<h1>Latest Releases</h1>(.+?)<h1>',re.DOTALL).findall(link)
@@ -77,7 +77,10 @@ def ICETODAY(murl):
                 title = re.sub(' \[COLOR blue\](& \d+x\d+ )',' \\1[COLOR blue]',title)
                 title = title.replace('[COLOR blue][/COLOR]','').strip()
                 if hd: title += " [COLOR red]HD[/COLOR]"
-                main.addDirTE(title,url,283,'','','','','','')
+                if index == 'True':
+                    main.addDirTE(title,url,21,'','','','','','')
+                else:
+                    main.addDirTE(title,url,283,'','','','','','')
                 loadedLinks += 1
                 percent = (loadedLinks * 100)/totalLinks
                 remaining_display = 'Episodes loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -93,7 +96,7 @@ def cleanHex(text):
         else: return unichr(int(text[2:-1])).encode('utf-8')
     return re.sub("(?i)&#\w+;", fixup, text.decode('ISO-8859-1').encode('utf-8'))
 
-def LISTICE(murl):
+def LISTICE(murl,index=False):
     link = main.OPENURL(IceURL+murl)
     link = cleanHex(link)
     if '/tv/'in murl:
@@ -114,9 +117,12 @@ def LISTICE(murl):
         if hd: title += ' [COLOR red]HD[/COLOR]'
         title = re.sub('\s\s+',' ',title)
         if '/tv/'in murl:
-            main.addDirT(title.strip(),IceURL+url,289,'','','','','','')
+            main.addDirT(title.strip(),IceURL+url,289,'','','','','','',index=index)
         else:
-            main.addDirM(title.strip(),IceURL+url,283,'','','','','','',imdb)
+            if index == 'True':
+                main.addDirM(title.strip(),IceURL+url,21,'','','','','','',imdb)
+            else:
+                main.addDirM(title.strip(),IceURL+url,283,'','','','','','',imdb)
         loadedLinks += 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies/Shows loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -126,7 +132,7 @@ def LISTICE(murl):
     del dialogWait
     main.VIEWS()
     
-def ICESEASONS(name,url):
+def ICESEASONS(name,url,index=False):
     link = main.OPENURL(url)
     link = cleanHex(link)
     name = re.sub('(.*)\(\d{4}\)\s*$','\\1',name).strip(" :-")
@@ -135,9 +141,9 @@ def ICESEASONS(name,url):
     for season,data in seasons:
         episodes = re.compile('<a href=(/ip[^>]+?)>([^<]+?)</a>(.)*?<br>',re.DOTALL).findall(data)
         if not re.search('<h3><a [^>]*?></a>(\d+)', link): episodes = list(reversed(episodes))
-        main.addDir(name+' '+season.strip(),urllib.quote(str(episodes)),290,'','')
+        main.addDir(name+' '+season.strip(),urllib.quote(str(episodes)),290,'','',index=index)
 
-def ICEEPISODES(name,url):
+def ICEEPISODES(name,url,index=False):
     name = re.sub('(.*)\(\d{4}\)\s*$','\\1',name).strip(" :-")
     name = re.sub('(.*)\d{4}$','\\1',name).strip(" :-")
     name = name.partition('Season')[0].strip()
@@ -154,7 +160,10 @@ def ICEEPISODES(name,url):
         title = re.sub(' \[COLOR blue\](& \d+x\d+ )',' \\1[COLOR blue]',title)
         title = title.replace('[COLOR blue][/COLOR]','').strip()
         if hd: title += " [COLOR red]HD[/COLOR]"
-        main.addDirTE(name+' '+title,IceURL+url,283,'','','','','','')
+        if index == 'True':
+            main.addDirTE(name+' '+title,IceURL+url,21,'','','','','','')
+        else:
+            main.addDirTE(name+' '+title,IceURL+url,283,'','','','','','')
         loadedLinks = loadedLinks + 1
         percent = (loadedLinks * 100)/totalLinks
         remaining_display = 'Movies loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
@@ -221,7 +230,7 @@ def LISTLINKS(mname,murl):
             thumb = host.lower()
             main.addDown2(mname+' [COLOR red]'+quality+'[/COLOR]'+' [COLOR blue]'+host.upper()+'[/COLOR]',s_params,284,art+'/hosts/'+thumb+".png",art+'/hosts/'+thumb+".png")
             
-def StartIceFilmsSearch(type='Movies'):
+def StartIceFilmsSearch(type='Movies',index=False):
     searchpath=os.path.join(main.datapath,'Search')
     if type == 'Movies': SearchFile=os.path.join(searchpath,'SearchHistory25')
     else: SearchFile=os.path.join(searchpath,'SearchHistoryTv')
@@ -234,7 +243,7 @@ def StartIceFilmsSearch(type='Movies'):
         searchitems=re.compile('search="(.+?)",').findall(open(SearchFile,'r').read())
         for searchitem in reversed(searchitems):
             searchitem=searchitem.replace('%20',' ')
-            main.addDir(searchitem,searchitem,287,thumb,type)
+            main.addDir(searchitem,searchitem,287,thumb,type,index=index)
             
 def superSearch(encode,type):
     try:
@@ -270,7 +279,7 @@ def superSearch(encode,type):
     except: return []
 
  
-def SearchIceFilms(searchQuery = '',type='Movies'):
+def SearchIceFilms(searchQuery = '',type='Movies',index=False):
     searchQuery = main.updateSearchFile(searchQuery,type)
     if not searchQuery: return False   
     if type == 'Movies':
@@ -290,12 +299,15 @@ def SearchIceFilms(searchQuery = '',type='Movies'):
             u = res.url.encode('utf8')
             if type == 'TV':
                 t = t.rpartition('Episode List')[0]
-                main.addDirT(t.strip(" -"),u,289,'','','','','','')
+                main.addDirT(t.strip(" -"),u,289,'','','','','','',index=index)
                 r += 1
             else:
                 if not re.search('(?i)\s\d+x\d+',t) and (re.search('(?i)links',t) or re.search('\.\.\.$',t)):
                     t = re.sub('(.*\)).*','\\1',t)
-                    main.addDirM(t.strip(),u,283,'','','','','','')
+                    if index == 'True':
+                        main.addDirM(t.strip(),u,21,'','','','','','')
+                    else:
+                        main.addDirM(t.strip(),u,283,'','','','','','')
                     r += 1
                 else: 
                     if totalLinks > 1: totalLinks -= 1

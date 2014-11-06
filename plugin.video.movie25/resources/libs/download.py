@@ -22,7 +22,16 @@ import xbmcgui
 import xbmcplugin
 import os
 import inspect
-
+from t0mm0.common.addon import Addon
+addon_id = 'plugin.video.movie25'
+addon = Addon(addon_id)
+datapath = addon.get_profile()
+DownloadLog=os.path.join(datapath,'Downloads')
+try:
+    os.makedirs(DownloadLog)
+except:
+    pass
+DownloadFile=os.path.join(DownloadLog,'DownloadLog')
 
 def getResponse(url, size, referrer):
     try:
@@ -123,6 +132,7 @@ def doDownload(url, dest, title, referrer):
                 
                     f.close()
                     print '%s download complete' % (dest)
+                    open(DownloadFile,'a').write('{name="%s",destination="%s"}'%(title,dest))
                     if not xbmc.Player().isPlaying(): 
                         xbmcgui.Dialog().ok(title, dest, '' , 'Download finished')
                     return

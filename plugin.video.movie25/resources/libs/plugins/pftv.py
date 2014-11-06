@@ -11,13 +11,13 @@ prettyName = 'PFTV'
 
 BASE_URL='http://free-tv-video-online.me/internet/'
 
-def MAINPFTV():
-        main.addDir('Search','s',468,art+'/search.png')
-        main.addDir('A-Z','s',463,art+'/az.png')
-        main.addDir('Yesterdays Episodes','http://www.free-tv-video-online.me/internet/index_last_3_days.html',460,art+'/yesepi.png')
-        main.addDir('Todays Episodes','http://www.free-tv-video-online.me/internet/index_last.html',460,art+'/toepi2.png')
-        main.addDir('Popular Shows','shows',467,art+'/popshowsws.png')
-        main.addDir('This Weeks Popular Episodes','season',467,art+'/thisweek.png')
+def MAINPFTV(index=False):
+        main.addDir('Search','s',468,art+'/search.png',index=index)
+        main.addDir('A-Z','s',463,art+'/az.png',index=index)
+        main.addDir('Yesterdays Episodes','http://www.free-tv-video-online.me/internet/index_last_3_days.html',460,art+'/yesepi.png',index=index)
+        main.addDir('Todays Episodes','http://www.free-tv-video-online.me/internet/index_last.html',460,art+'/toepi2.png',index=index)
+        main.addDir('Popular Shows','shows',467,art+'/popshowsws.png',index=index)
+        main.addDir('This Weeks Popular Episodes','season',467,art+'/thisweek.png',index=index)
         main.GA("Plugin",prettyName)
         main.VIEWSB()
 
@@ -79,14 +79,14 @@ def SEARCHPFTV(murl = '',index=False):
         for url,name in match:
                 main.addDirT(name,'http://free-tv-video-online.me'+url,465,'','','','','','',index=index)
         main.GA(prettyName,"Search")
-def AtoZPFTV():
-    main.addDir('0-9','#',464,art+'/09.png')
+def AtoZPFTV(index=False):
+    main.addDir('0-9','#',464,art+'/09.png',index=index)
     for i in string.ascii_uppercase:
-            main.addDir(i,(chr(ord(i)+1)),464,art+'/'+i.lower()+'.png')
+            main.addDir(i,(chr(ord(i)+1)),464,art+'/'+i.lower()+'.png',index=index)
     main.GA(prettyName,"A-Z")
     main.VIEWSB()
 
-def LISTSHOW(mname,murl):
+def LISTSHOW(mname,murl,index=False):
     link=main.OPENURL(BASE_URL)
     link=link.replace('\r','').replace('\n','').replace('\t','')
     if 'Z' in mname:
@@ -99,9 +99,9 @@ def LISTSHOW(mname,murl):
         links = links.group(1)
         match=re.compile('''class="mnlcategorylist"><a href="([^"]+?)"><b>([^<]+?)</b></a>''', re.DOTALL).findall(links)
         for url, name in match:
-            main.addDirT(name,BASE_URL+url,465,'','','','','','')
+            main.addDirT(name,BASE_URL+url,465,'','','','','','',index=index)
 
-def POPULARPFTV(murl):
+def POPULARPFTV(murl,index=False):
         link=main.OPENURL('http://www.free-tv-video-online.me/')
         link=link.replace('\r','').replace('\n','').replace('\t','')
         if 'season' in murl:
@@ -114,21 +114,24 @@ def POPULARPFTV(murl):
                     if sepi:
                             name=re.sub('(?sim)(\(s(\d+)e(\d+)\))','',name)
                             fname = re.sub('-',sepi[0],name).replace('(','').replace(')','')
-                    main.addDirTE(fname,'http://free-tv-video-online.me'+url,461,'','','','','','')
+                    if index == 'True':
+                        main.addDirTE(fname,'http://free-tv-video-online.me'+url,21,'','','','','','')
+                    else:
+                        main.addDirTE(fname,'http://free-tv-video-online.me'+url,461,'','','','','','')
             else:
-                    main.addDirT(name,url,465,'','','','','','')
+                    main.addDirT(name,url,465,'','','','','','',index=index)
             #main.addDir(name,murl,461,thumb)
         
             
-def LISTSEASON(mname,murl):
+def LISTSEASON(mname,murl,index=False):
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','')
         thumb=art+'/folder.png'
         match=re.compile('class="mnlcategorylist"><a href="([^"]+?)"><b>([^<]+?)</b></a>([^<]+?)</td>').findall(link)
         for url, name, count in reversed(match):
-            main.addDir(mname+' [COLOR red]'+name+'[/COLOR] '+count,murl+url,466,thumb)
+            main.addDir(mname+' [COLOR red]'+name+'[/COLOR] '+count,murl+url,466,thumb,index=index)
 
-def LISTEPISODE(mname,murl):
+def LISTEPISODE(mname,murl,index=False):
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','')
         match=re.compile('(?sim)<td class="episode"><a name=".+?"></a><b>([^<]+?)</b></td><td class="mnllinklist" align="right"><div class="right">(s\d+e\d+).+?</div>').findall(link)
@@ -138,9 +141,12 @@ def LISTEPISODE(mname,murl):
             name = re.sub('Seas(on)?\.? (\d+).*?Ep(isode)?\.? (\d+)',epi,main.removeColorTags(name),re.I)
             #name=name.encode('utf-8')
             name = name.decode("utf-8", "ignore")
-            main.addDirTE(name,murl,461,'','','','','','')
+            if index == 'True':
+                main.addDirTE(name,murl,21,'','','','','','')
+            else:
+                main.addDirTE(name,murl,461,'','','','','','')
     
-def LISTPFTV(murl):
+def LISTPFTV(murl,index=False):
         main.GA(prettyName,"List")
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','')
@@ -161,7 +167,10 @@ def LISTPFTV(murl):
                 if(len(s)==1): s = "0" + s
                 name = re.sub('Seas(on)?\.? (\d+).*?Ep(isode)?\.? (\d+)','',name,re.I)
                 name = name.strip() + " " + "S" + s + "E" + e
-                main.addDirTE(name,BASE_URL+url,461,'','','','','','')
+                if index == 'True':
+                        main.addDirTE(name,BASE_URL+url,21,'','','','','','')
+                else:
+                        main.addDirTE(name,BASE_URL+url,461,'','','','','','')
                 loadedLinks = loadedLinks + 1
                 percent = (loadedLinks * 100)/totalLinks
                 remaining_display = 'Episodes loaded :: [B]'+str(loadedLinks)+' / '+str(totalLinks)+'[/B].'
