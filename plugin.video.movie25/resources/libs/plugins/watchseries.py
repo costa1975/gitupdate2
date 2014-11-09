@@ -79,7 +79,7 @@ def LISTWATCHS(murl,index=False):
         main.GA("Watchseries","List")
         link=main.OPENURL(murl)
         link=link.replace('\r','').replace('\n','').replace('\t','')
-        match=re.compile('title=".+?" href="(.+?)">.+?</span>(.+?)</a>').findall(link)
+        match=re.compile('<a class=".+?" title=".+?" href="(.+?)">.+?</span>(.+?)</a>').findall(link)
         dialogWait = xbmcgui.DialogProgress()
         ret = dialogWait.create('Please wait until Show list is cached.')
         totalLinks = len(match)
@@ -332,6 +332,14 @@ def LISTHOST(name,murl):
         if len(vidbux) > 0:
             for url in vidbux:
                 main.addDown2(name+"[COLOR blue] : Vidbux[/COLOR]",url+'xocx'+murl+'xocx',574,art+'/hosts/vidbux.png',art+'/hosts/vidbux.png')
+        thefile=re.compile('<span>thefile</span></td><td> <a target=".+?" href="(.+?)"').findall(link)
+        if len(thefile) > 0:
+            for url in thefile:
+                main.addDown2(name+"[COLOR blue] : thefile[/COLOR]",url+'xocx'+murl+'xocx',574,art+'/hosts/thefile.png',art+'/hosts/thefile.png')
+	vodlocker=re.compile('<span>vodlocker</span></td><td> <a target=".+?" href="(.+?)"').findall(link)
+        if len(vodlocker) > 0:
+            for url in vodlocker:
+                main.addDown2(name+"[COLOR blue] : vodlocker[/COLOR]",url+'xocx'+murl+'xocx',574,art+'/hosts/vodlocker.png',art+'/hosts/vodlocker.png')
 
 def geturl(murl):
         link=main.OPENURL(murl)

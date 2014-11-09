@@ -426,8 +426,6 @@ def GlobalFav():
     else:
         main.addLink("[COLOR red]Mash Up Fav's can also be favorited under XBMC favorites[/COLOR]",'','')
         main.addDir("Downloaded Content",'Mash Up',241,art+'/downloadlog.png')
-        main.addDir("Movie25 Fav's",'http://www.movie25.so/',10,art+'/fav2.png')
-        main.addDir("iWatchOnline Fav's",'http://www.movie25.so/',655,art+'/fav+.png')
         main.addDir("Movie Fav's",'http://www.movie25.so/',641,art+'/fav.png')
         main.addDir("TV Show Fav's",'http://www.movie25.so/',640,art+'/fav.png')
         main.addDir("TV Episode Fav's",'http://www.movie25.so/',651,art+'/fav.png')
@@ -587,6 +585,7 @@ def INTCAT(murl):
         main.addDir('Latest French Documentaire (Video Documentaire)','http://www.dps.com',331,art+'/intl.png')
     if 'kor' in murl:
         main.addDir('Latest Korean/Jappenese/Chinese Movies&Dramas (Dramania)','http://www.cinevip.org/',268,art+'/intl.png')
+        main.addDir('Latest Korean/Jappenese/Chinese Movies&Dramas (Viki)','http://www.cinevip.org/',478,art+'/intl.png')
         #main.addDir('Latest Korean/Jappenese/Chinese Movies&Dramas (Catiii.tv)','http://www.cinevip.org/',434,art+'/intl.png')
     if 'danish' in murl:
         main.addDir('Staael1982 Danish Movies','https://raw.github.com/mash2k3/Staael1982/master/danish%20movies.xml',236,art+'/intl.png')
@@ -1024,19 +1023,6 @@ def AddToDixie(secName,name,murl,secIcon):
 ################################################################################ XBMCHUB Repo & Hub Maintenance Installer ##########################################################################################################
 
 
-hubpath = xbmc.translatePath(os.path.join('special://home/addons', ''))
-maintenance=os.path.join(hubpath, 'plugin.video.hubmaintenance')
-
-def downloadFileWithDialog(url,dest):
-    try:
-        dp = xbmcgui.DialogProgress()
-        dp.create("Mash Up","Downloading & Copying File",'')
-        urllib.urlretrieve(url,dest,lambda nb, bs, fs, url=url: main._pbhook(nb,bs,fs,dp,time.time()))
-    except Exception, e:
-        dialog = xbmcgui.Dialog()
-        main.ErrorReport(e)
-        dialog.ok("Mash Up", "Report the error below at " + main.supportsite, str(e), "We will try our best to help you")
-
 def UploadLog():
     from resources.fixes import addon
     addon.LogUploader()
@@ -1044,7 +1030,7 @@ def UploadLog():
 repopath = xbmc.translatePath(os.path.join('special://home/addons', 'repository.divingmule.addons'))
 try: 
     if not os.path.exists(repopath):
-        url = 'https://dl.dropboxusercontent.com/u/35068738/Mashup/repository.divingmule.addons.zip'
+        url = 'https://divingmules-repo.googlecode.com/files/repository.divingmule.addons.zip'
         path = xbmc.translatePath(os.path.join('special://home/addons','packages'))
         lib=os.path.join(path, 'repository.divingmule.addons.zip')
         if main.downloadFile(url,lib):
@@ -1262,7 +1248,9 @@ def ListglobalFavTE():
     xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
 
 def ListglobalFavM():
+    getFavorites("Movie25 Fav's")
     getFavorites("Movie Fav's")
+    getFavorites("iWatchOnline Fav's")
     main.GA("None","Movie-Fav")
     xbmcplugin.setContent(int(sys.argv[1]), 'Movies')
 
@@ -3625,6 +3613,46 @@ elif mode==476:
 elif mode==477:
     from resources.libs.live import nflfan
     nflfan.NFLMAIN()
+
+elif mode==478:
+    from resources.libs.international import viki
+    viki.VIKIMAIN()
+
+elif mode==479:
+    from resources.libs.international import viki
+    viki.VIKICAT(url)
+
+elif mode==480:
+    from resources.libs.international import viki
+    viki.LISTVIKIT(url)
+
+elif mode==481:
+    from resources.libs.international import viki
+    viki.LISTVIKIEPI(url)
+
+elif mode==482:
+    from resources.libs.international import viki
+    viki.LINKINT(name,url,iconimage)
+
+elif mode==483:
+    from resources.libs.international import viki
+    viki.LISTVIKIM(url)
+
+elif mode==484:
+    from resources.libs.international import viki
+    viki.VIKIGENREM(url)
+
+elif mode==485:
+    from resources.libs.international import viki
+    viki.SEARCHVIKI()
+
+elif mode==487:
+    from resources.libs import artist
+    artist.SearchArtist(name,url)
+
+elif mode==488:
+    from resources.libs import artist
+    artist.ListArtist(url,iconimage)
 ######################################################################################################
 elif mode==500:
     TVAll()        

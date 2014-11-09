@@ -1360,10 +1360,10 @@ def addDown4(name,url,mode,iconimage,plot,fanart,dur,genre,year):
 
 def addInfo(name,url,mode,iconimage,genre,year):
     mi = [('Search Movie25','XBMC.Container.Update(%s?mode=4&url=%s)'% (sys.argv[0],'###'))]
-    return addDirX(name,url,mode,iconimage,'','','',genre,year,searchMeta=1,fav_t='Movies',fav_addon_t='Movie25',menuItemPos=0,menuItems=mi)
+    return addDirX(name,url,mode,iconimage,'','','',genre,year,searchMeta=1,fav_t='Movies',fav_addon_t='Movie',menuItemPos=0,menuItems=mi)
 
 def addDirIWO(name,url,mode,iconimage,plot,fanart,dur,genre,year):
-    return addDirX(name,url,mode,iconimage,plot,fanart,dur,genre,year,searchMeta=1,fav_t='Movies',fav_addon_t='iWatchOnline')
+    return addDirX(name,url,mode,iconimage,plot,fanart,dur,genre,year,searchMeta=1,fav_t='Movies',fav_addon_t='Movie')
     
 def addDLog(name,url,mode,iconimage,plot,fanart,dur,genre,year):
     mi=[("[B][COLOR red]Remove[/COLOR][/B]",'XBMC.RunPlugin(%s?mode=243&name=%s&url=%s)'% (sys.argv[0],name,url))]

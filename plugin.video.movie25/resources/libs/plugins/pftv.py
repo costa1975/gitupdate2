@@ -9,15 +9,26 @@ selfAddon = xbmcaddon.Addon(id=addon_id)
 art = main.art
 prettyName = 'PFTV'
 
-BASE_URL='http://free-tv-video-online.me/internet/'
+if selfAddon.getSetting("tube-proxy") == "true":
+    BASE_URL='http://freetv.unblock.pro/internet/'
+    BASE_URL2='http://freetv.unblock.pro/'
+else:
+    BASE_URL='http://free-tv-video-online.me/internet/'
+    BASE_URL2='http://free-tv-video-online.me/'
+
+
 
 def MAINPFTV(index=False):
         main.addDir('Search','s',468,art+'/search.png',index=index)
         main.addDir('A-Z','s',463,art+'/az.png',index=index)
-        main.addDir('Yesterdays Episodes','http://www.free-tv-video-online.me/internet/index_last_3_days.html',460,art+'/yesepi.png',index=index)
-        main.addDir('Todays Episodes','http://www.free-tv-video-online.me/internet/index_last.html',460,art+'/toepi2.png',index=index)
+        main.addDir('Yesterdays Episodes',BASE_URL+'index_last_3_days.html',460,art+'/yesepi.png',index=index)
+        main.addDir('Todays Episodes',BASE_URL+'index_last.html',460,art+'/toepi2.png',index=index)
         main.addDir('Popular Shows','shows',467,art+'/popshowsws.png',index=index)
         main.addDir('This Weeks Popular Episodes','season',467,art+'/thisweek.png',index=index)
+        if selfAddon.getSetting("tube-proxy") == "true":
+                main.addPlayc('Proxy [COLOR green]ON[/COLOR]',BASE_URL,1004,art+'/pftv.png','','','','','')
+        else:
+                main.addPlayc('Proxy [COLOR red]OFF[/COLOR]',BASE_URL,1004,art+'/pftv.png','','','','','')
         main.GA("Plugin",prettyName)
         main.VIEWSB()
 
@@ -48,23 +59,23 @@ def superSearch(encode,type):
             s = int(epi.group(1))
             ss=str(s)
             encodewithoutepi = urllib.quote(re.sub('(?i)(\ss(\d+)e(\d+))|(Season(.+?)Episode)|(\d+)x(\d+)','',urllib.unquote(encode)).strip())
-            surl='http://www.free-tv-video-online.me/search/?q='+encodewithoutepi+'&md=shows'
+            surl=BASE_URL2+'search/?q='+encodewithoutepi+'&md=shows'
             link=main.OPENURL(surl,verbose=False)
             link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
             match=re.compile(' class="mnlcategorylist"><a href="([^"]+)"><b>([^<]+)</b>',re.DOTALL).findall(link)
             for url,nameds in match:
-                url = 'http://www.free-tv-video-online.me' + url+'/season_'+ss+'.html'
+                url = BASE_URL2 + url+'/season_'+ss+'.html'
             if(len(str(e))==1): e = "0" + str(e)
             if len(str(s))==1: s= "0" + str(s)
             name=nameds+' S'+str(s)+'E'+str(e)
             returnList.append((name,prettyName,url,'',461,True))
             return returnList
-        surl='http://www.free-tv-video-online.me/search/?q='+encode+'&md=shows'
+        surl=BASE_URL2+'search/?q='+encode+'&md=shows'
         link=main.OPENURL(surl,verbose=False)
         link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
         match=re.compile(' class="mnlcategorylist"><a href="([^"]+)"><b>([^<]+)</b>',re.DOTALL).findall(link)
         for url,name in match:
-            url = 'http://www.free-tv-video-online.me' + url
+            url = BASE_URL2 + url
             returnList.append((name,prettyName,url,'',461,True))
         return returnList
     except: return []
@@ -72,12 +83,12 @@ def superSearch(encode,type):
 def SEARCHPFTV(murl = '',index=False):
         encode = main.updateSearchFile(murl,'TV')
         if not encode: return False   
-        surl='http://www.free-tv-video-online.me/search/?q='+encode+'&md=shows'
+        surl=BASE_URL2+'search/?q='+encode+'&md=shows'
         link=main.OPENURL(surl)
         link=link.replace('\r','').replace('\n','').replace('\t','')
         match=re.compile(' class="mnlcategorylist"><a href="([^"]+)"><b>([^<]+)</b>',re.DOTALL).findall(link)
         for url,name in match:
-                main.addDirT(name,'http://free-tv-video-online.me'+url,465,'','','','','','',index=index)
+                main.addDirT(name,BASE_URL2+url,465,'','','','','','',index=index)
         main.GA(prettyName,"Search")
 def AtoZPFTV(index=False):
     main.addDir('0-9','#',464,art+'/09.png',index=index)
@@ -102,7 +113,7 @@ def LISTSHOW(mname,murl,index=False):
             main.addDirT(name,BASE_URL+url,465,'','','','','','',index=index)
 
 def POPULARPFTV(murl,index=False):
-        link=main.OPENURL('http://www.free-tv-video-online.me/')
+        link=main.OPENURL(BASE_URL2)
         link=link.replace('\r','').replace('\n','').replace('\t','')
         if 'season' in murl:
                 match=re.compile('(?sim)<td class="tleft" style="text-align:center"><a href="([^"]+?)">([^<]+?)</a>').findall(link)
@@ -115,9 +126,9 @@ def POPULARPFTV(murl,index=False):
                             name=re.sub('(?sim)(\(s(\d+)e(\d+)\))','',name)
                             fname = re.sub('-',sepi[0],name).replace('(','').replace(')','')
                     if index == 'True':
-                        main.addDirTE(fname,'http://free-tv-video-online.me'+url,21,'','','','','','')
+                        main.addDirTE(fname,BASE_URL2+url,21,'','','','','','')
                     else:
-                        main.addDirTE(fname,'http://free-tv-video-online.me'+url,461,'','','','','','')
+                        main.addDirTE(fname,BASE_URL2+url,461,'','','','','','')
             else:
                     main.addDirT(name,url,465,'','','','','','',index=index)
             #main.addDir(name,murl,461,thumb)

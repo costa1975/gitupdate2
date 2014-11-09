@@ -14,7 +14,7 @@ def SEARCHistory():
     if xbmcgui.Window(10000).getProperty('MASH_SSR_TYPE'):
         ret = int(xbmcgui.Window(10000).getProperty('MASH_SSR_TYPE'))-1
     else:
-        ret = dialog.select('[B]Choose A Search Type[/B]',['[B]TV Shows[/B]','[B]Movies[/B]'])
+        ret = dialog.select('[B]Choose A Search Type[/B]',['[B]TV Shows[/B]','[B]Movies[/B]','[B]By Artist[/B]'])
     if ret == -1:
         xbmcplugin.endOfDirectory(int(sys.argv[1]), False, False)
     if ret == 0:
@@ -45,6 +45,21 @@ def SEARCHistory():
             for seahis in reversed(searchis):
                 seahis=urllib.unquote(seahis)    
                 main.addDir(seahis,searchType,20,thumb)
+    if ret == 2:
+        import artist
+        searchType = 'Artist'
+        seapath=os.path.join(main.datapath,'Search')
+        SeaFile=os.path.join(seapath,'SearchHistoryArtist')
+        if not os.path.exists(SeaFile):
+            artist.SearchArtist('','')
+        else:
+            main.addDir('Search','atrtist',487,art+'/search.png')
+            main.addDir('Clear History',SeaFile,128,art+'/cleahis.png')
+            thumb=art+'/link.png'
+            searchis=re.compile('search="(.+?)",').findall(open(SeaFile,'r').read())
+            for seahis in reversed(searchis):
+                seahis=urllib.unquote(seahis)    
+                main.addDir(seahis,searchType,487,thumb)
 
 def sortSearchList(searchList,query):
     import locale
@@ -54,7 +69,8 @@ def sortSearchList(searchList,query):
     except:
         locale.setlocale(locale.LC_ALL, "C")
     searchList.sort(key=lambda tup: tup[0].decode('utf-8').encode('utf-8'),cmp=locale.strcoll)
-    locale.setlocale(locale.LC_ALL, loc)
+    try:locale.setlocale(locale.LC_ALL, loc)
+    except:pass
     temp = []
     itemstoremove = []
     i = 0
@@ -328,7 +344,8 @@ def SEARCH(mname,type,libID=''):
             del dialogWait
             if type=='Movies':
                 xbmcgui.Window(10000).setProperty('MASH_SSR_TYPE', '2')
-            else: xbmcgui.Window(10000).setProperty('MASH_SSR_TYPE', '1')
+            elif type == 'TV':
+                xbmcgui.Window(10000).setProperty('MASH_SSR_TYPE', '1')
             try:
                 filelist = [ f for f in os.listdir(cachedir) if f.endswith(".fi") ]
                 for f in filelist: os.remove(os.path.join(cachedir,f))
