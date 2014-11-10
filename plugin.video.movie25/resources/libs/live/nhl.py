@@ -92,7 +92,7 @@ def LINK(mname,murl,thumb):
             jarfile = xbmc.translatePath('special://home/addons/plugin.video.movie25/resources/libs/live/FuckNeulionV2.jar')
             if 'Home' in mname:
                 Side='home'
-            if 'Away' in murl:
+            if 'Away' in mname:
                 Side='away'
             SelectGame=murl.split('x0xe')[1]
             murl=murl.split('x0xe')[0]
@@ -105,6 +105,7 @@ def LINK(mname,murl,thumb):
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT,
                           startupinfo=startupinfo)
+            xbmc.sleep(1000)
             link=main.OPENURL(murl)
             link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','').replace('  ','')
             part= re.findall('/([^/]+)ipad.m3u8',murl)[0]

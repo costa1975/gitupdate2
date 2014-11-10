@@ -822,7 +822,7 @@ def DLLIBRTMP(mname,key,trigger):
     link=link.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')    
     match=re.findall('kNO = "([^"]+?)";',link)[0]
     lib=os.path.join(path,name)
-    downloadFileWithDialog(match,lib)
+    main.downloadFile(match,lib)
     if re.search('(?i)linux',trigger):
         keyb = xbmc.Keyboard('', 'Enter Root Password')
         keyb.doModal()
@@ -875,7 +875,7 @@ def FIXDOWN(name,filename,location,path):
     print "#############  Downloading from "+ url+"  #####################"
     path = xbmc.translatePath(os.path.join(str(location),str(path)))
     lib=os.path.join(path, str(filename))
-    downloadFileWithDialog(url,lib)
+    main.downloadFile(url,lib)
     dialog = xbmcgui.Dialog()
     name  = name.split('[COLOR red]')[0]
     dialog.ok("Mash Up", "Thats It All Done", "[COLOR blue]Now "+name+" should be Fixed[/COLOR]")
@@ -886,7 +886,7 @@ def ADSettings(name,filename):
     print "#############  Downloading from "+ url+"  #####################"
     path = xbmc.translatePath(os.path.join('special://home/','userdata'))
     lib=os.path.join(path,'advancedsettings.xml')
-    downloadFileWithDialog(url,lib)
+    main.downloadFile(url,lib)
     dialog = xbmcgui.Dialog()
     name  = name.split('[COLOR red]')[0]
     dialog.ok("Mash Up", "Thats It All Done", "[COLOR blue]Now "+name+" should be Installed[/COLOR]")

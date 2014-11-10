@@ -122,7 +122,7 @@ def LISTHOSTS(name,murl,thumb):
         idnum=re.findall('"id":"(.+?)"',link,re.DOTALL)[0]
     else:
         idnum=murl
-    link=main.OPENURL('http://api.dramago.com/GetVideos/'+idnum).replace('\/','/')
+    link=main.OPENURL('http://api.animeplus.tv/GetVideos/'+idnum).replace('\/','/')
     collect=re.findall('"(.+?)"',link,re.DOTALL)
     for links in collect:
         if 'videobug' in links or 'easyvideo' in links:
